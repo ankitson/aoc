@@ -9,4 +9,5 @@ fn main() {
 
     println!("---Day 2---");
     println!("{}", aoc::day2::part1()); //1728414
+    println!("{}", aoc::day2::part2()); //1765720035
 }

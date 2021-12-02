@@ -42,3 +42,21 @@ pub fn part1() -> String {
     println!("Final Pos: {}, {}", x, y);
     (x * y).to_string()
 }
+
+pub fn part2() -> String {
+    let mut x: u32 = 0;
+    let mut y: u32 = 0;
+    let mut aim: u32 = 0;
+    instrs().for_each(|instr| match instr {
+        Instruction::Down(amt) => aim += amt,
+        Instruction::Up(amt) => aim -= amt,
+        Instruction::Forward(amt) => {
+            x += amt;
+            y += aim * amt;
+        }
+        Instruction::Empty => (),
+    });
+
+    println!("Final Pos: {}, {}", x, y);
+    (x * y).to_string()
+}
