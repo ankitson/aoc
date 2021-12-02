@@ -1,6 +1,9 @@
 fn parse() -> Vec<i32> {
     let contents: &str = include_str!("../../input/day1.txt");
-    contents.split('\n').map(|x| x.parse::<i32>().unwrap()).collect()
+    contents
+        .split('\n')
+        .map(|x| x.parse::<i32>().expect("Unable to parse int"))
+        .collect()
 }
 
 fn count_window(input: Vec<i32>, window_size: usize) -> i32 {
