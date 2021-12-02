@@ -1,16 +1,9 @@
-use std::fs;
-use std::path::Path;
-
 fn parse() -> Vec<i32> {
-    let path = Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("input")
-        .join("day1.txt");
-    let contents = fs::read_to_string(path).expect("Could not read file");
-    let lines: Vec<i32> = contents
+    let contents: &str = include_str!("../../input/day1.txt");
+    contents
         .split('\n')
         .map(|x| x.parse::<i32>().unwrap())
-        .collect();
-    lines
+        .collect()
 }
 
 pub fn part1() -> String {
