@@ -27,5 +27,5 @@ fn main() {
     println!("moves: {:?}\n board: {:?}", moves, boards[0]);
     let (sum, winning_num) = aoc::day4::part1(moves, boards);
     println!("sum: {} winning num: {}", sum, winning_num);
-    println!("part 1 answer = {}", sum * winning_num);
+    println!("part 1 answer = {}", sum * winning_num); //49860
 }
