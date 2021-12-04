@@ -29,25 +29,21 @@ fn most_least_common(nums: &[u32], bit_index: u32) -> (Option<u16>, Option<u16>)
             c0 += 1
         }
     }
-    let most_common = {
-        if c1 > c0 {
-            Some(1)
-        } else if c0 > c1 {
-            Some(0)
-        } else {
-            None
-        }
+    let most_common = match c1.cmp(&c0) {
+        std::cmp::Ordering::Greater => Some(1),
+        std::cmp::Ordering::Less => Some(0),
+        std::cmp::Ordering::Equal => None,
     };
     let least_common = most_common.map(|x| 1 - x);
     (most_common, least_common)
 }
-pub fn part1(nums: &Vec<u32>, bit_width: u16) -> (u16, u16) {
+pub fn part1(nums: &[u32], bit_width: u16) -> (u16, u16) {
     let mut gamma: u16 = 0; //most common
     for bi in 0..bit_width {
         let mcb = most_least_common(nums, bi.into()).0.unwrap();
         gamma |= mcb << bi;
     }
-    let mask = 0b111111111111;
+    let mask = (1 << bit_width) - 1; //0b111111111111;
     let epsilon = (!gamma) & mask;
     (gamma, epsilon)
     //println!("gamma = {} epsilon = {}", gamma, epsilon);
@@ -61,50 +57,30 @@ pub fn part2(nums: &Vec<u32>, bit_width: u16) -> (u16, u16) {
     let mut bi: i32 = (bit_width - 1).into();
     let mut mask = 1 << bi;
     while nums1.len() > 1 || nums2.len() > 1 {
-        let mlc = most_least_common(&nums1, bi as u32);
-        let mc = mlc.0.unwrap_or(1);
-        let lc = mlc.1.unwrap_or(0);
+        let mlc1 = most_least_common(&nums1, bi as u32);
+        let mlc2 = most_least_common(&nums2, bi as u32);
+        let mc = mlc1.0.unwrap_or(1);
+        let lc = mlc2.1.unwrap_or(0);
 
-        // if (bi <= 4) {
-        //     println!("bit {} most common {} least common {}", bi, mc, lc);
-        //     println!("nums1");
-        //     println!("---------------");
-        //     println!(
-        //         //"nums1: {:?}",
-        //         "{}",
-        //         nums1
-        //             .iter()
-        //             .map(|x| format!("{:#014b}", x))
-        //             .collect::<Vec<String>>()
-        //             .join("\n")
-        //     );
-        //     println!("nums2");
-        //     println!("---------------");
-        //     println!(
-        //         //"nums2: {:?}",
-        //         "{}",
-        //         nums2
-        //             .iter()
-        //             .map(|x| format!("{:#014b}", x))
-        //             .collect::<Vec<String>>()
-        //             .join("\n")
-        //     );
-        //     println!("---------------");
-        // }
-
-        //println!("nums2: {:?}", nums)
-
-        if (nums.len() > 1) {
+        println!("bit index {}", bi);
+        println!("most commmon {}", mc);
+        println!("mask {:#014b}", mask);
+        println!("2561 {:#014b}", 2561);
+        println!("2560 {:#014b}", 2560);
+        if nums1.len() > 1 {
+            println!("nums1 size: {}", nums1.len());
+            println!("nums1 {:?}", nums1);
             nums1.retain(|x| (*x & mask) >> bi == (mc as u32));
+            println!("nums1 size: {}", nums1.len());
         }
 
-        if (nums2.len() > 1) {
+        if nums2.len() > 1 {
             nums2.retain(|x| (*x & mask) >> bi == (lc as u32));
         }
         mask >>= 1;
         bi -= 1;
     }
-    assert!(nums1.len() == 1 && nums2.len() == 1);
+    assert!(nums1.len() == 1 && nums2.len() == 1, "{:?} {:?}", nums1, nums2);
     let oxygen = nums1[0].try_into().unwrap();
     let co2 = nums2[0].try_into().unwrap();
     (oxygen, co2)

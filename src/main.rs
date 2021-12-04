@@ -17,11 +17,8 @@ fn main() {
     let nums = nums_iter.collect::<Vec<u32>>();
     let (a, b) = aoc::day3::part1(&nums, bit_width);
     println!("gamma = {} epsilon = {}", a, b);
-    println!("answer = {}", aoc::day3::widen_mul(a, b));
+    println!("answer = {}", aoc::day3::widen_mul(a, b)); //3923414
     let (c, d) = aoc::day3::part2(&nums, bit_width);
     println!("oxygen = {} co2 = {}", c, d);
-    println!("answer = {}", aoc::day3::widen_mul(c, d));
-
-    //println!("{}", aoc::day3::part1(&nums, bit_width)); //3923414
-    //println!("{}", aoc::day3::part2(&nums, bit_width)); //3923414
+    println!("answer = {}", aoc::day3::widen_mul(c, d)); //5852595
 }
