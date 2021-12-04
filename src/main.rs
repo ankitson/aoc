@@ -17,8 +17,15 @@ fn main() {
     let nums = nums_iter.collect::<Vec<u32>>();
     let (a, b) = aoc::day3::part1(&nums, bit_width);
     println!("gamma = {} epsilon = {}", a, b);
-    println!("part 1 answer = {}", aoc::day3::widen_mul(a, b)); //3923414
+    println!("part 1 answer = {}", u32::from(a) * u32::from(b)); //3923414
     let (c, d) = aoc::day3::part2(&nums, bit_width);
     println!("oxygen = {} co2 = {}", c, d);
-    println!("part 2 answer = {}", aoc::day3::widen_mul(c, d)); //5852595
+    println!("part 2 answer = {}", u32::from(c) * u32::from(d)); //5852595
+
+    println!("---Day 4---");
+    let (moves, boards) = aoc::day4::input();
+    println!("moves: {:?}\n board: {:?}", moves, boards[0]);
+    let (sum, winning_num) = aoc::day4::part1(moves, boards);
+    println!("sum: {} winning num: {}", sum, winning_num);
+    println!("part 1 answer = {}", sum * winning_num);
 }

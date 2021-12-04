@@ -16,3 +16,13 @@ There is no implicit mapping between files and modules - this is built explicitl
 
 https://hermanradtke.com/2015/06/22/effectively-using-iterators-in-rust.html
 
+*
+
+```
+    let boards: Vec<&[&[u8; BOARD_SIZE]; BOARD_SIZE]> = Vec::new();
+    ...
+    let board: [[u8; BOARD_SIZE]; BOARD_SIZE] = [[0; BOARD_SIZE]; BOARD_SIZE];
+    ...
+    boards.append(board);
+```    
+
