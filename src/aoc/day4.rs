@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 const BOARD_SIZE: usize = 5;
 
@@ -23,8 +23,8 @@ const test_input: &str = "7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,1
  2  0 12  3  7";
 
 pub fn input() -> (Vec<u8>, Vec<[[i8; BOARD_SIZE]; BOARD_SIZE]>) {
-    //let contents = test_input;
-    let contents: &str = include_str!("../../input/day4.txt");
+    let contents = test_input;
+    //let contents: &str = include_str!("../../input/day4.txt");
     let mut lines = contents.split('\n').filter(|x| !x.is_empty()).collect::<Vec<&str>>();
 
     let mut boards: Vec<[[i8; BOARD_SIZE]; BOARD_SIZE]> = Vec::new();
@@ -37,16 +37,12 @@ pub fn input() -> (Vec<u8>, Vec<[[i8; BOARD_SIZE]; BOARD_SIZE]>) {
     lines.remove(0);
 
     for board_lines in lines.chunks(BOARD_SIZE) {
-        println!("{:?}", board_lines);
         let mut board: [[i8; BOARD_SIZE]; BOARD_SIZE] = [[0; BOARD_SIZE]; BOARD_SIZE];
         for i in 0..BOARD_SIZE {
             let line = board_lines[i];
             let nums: Vec<i8> = line
                 .split_whitespace()
-                .map(|x| {
-                    println!("x = {}", x);
-                    x.parse::<i8>().expect(&format!("unable to parse num from {}", x))
-                })
+                .map(|x| x.parse::<i8>().unwrap_or_else(|x| panic!("unable to parse num {}", x)))
                 .clone()
                 .collect();
             board[i][..BOARD_SIZE].clone_from_slice(&nums[..BOARD_SIZE]);
@@ -103,13 +99,58 @@ pub fn part1(moves: Vec<u8>, mut boards: Vec<[[i8; BOARD_SIZE]; BOARD_SIZE]>) ->
 }
 
 fn board_sum(board: [[i8; BOARD_SIZE]; BOARD_SIZE]) -> u32 {
-    let x: i32 = board
-        .iter()
-        .flatten()
-        .copied()
-        .filter(|x| *x > 0)
-        .map(i32::from)
-        //.map(|row| row.iter().map(|x| *x as u32).sum::<u32>())
-        .sum();
+    let x: i32 = board.iter().flatten().copied().filter(|x| *x > 0).map(i32::from).sum();
     x.try_into().unwrap()
+}
+
+pub fn part2(moves: Vec<u8>, mut boards: Vec<[[i8; BOARD_SIZE]; BOARD_SIZE]>) -> (u32, u32) {
+    let mut board_row_filled: Vec<[usize; BOARD_SIZE]> = vec![[0; BOARD_SIZE]; boards.len()]; //Vec::with_capacity(boards.len());
+    let mut board_col_filled: Vec<[usize; BOARD_SIZE]> = vec![[0; BOARD_SIZE]; boards.len()];
+
+    let mut winning_num: Option<u8> = None;
+    let mut remaining_boards: HashSet<usize> = (0..boards.len()).into_iter().collect();
+    let mut last_board: Option<usize> = None;
+    'outer: for num in moves {
+        for board_idx in 0..boards.len() {
+            if !remaining_boards.contains(&board_idx) {
+                continue;
+            }
+            for ri in 0..BOARD_SIZE {
+                for ci in 0..BOARD_SIZE {
+                    let mut board = &mut boards[board_idx];
+                    if board[ri][ci] == num.try_into().expect("msg") {
+                        println!("board: {:?}", board);
+                        println!("zeroing value {}", num);
+                        board[ri][ci] = -1;
+                        println!("board: {:?}", board);
+                        board_row_filled[board_idx][ri] += 1;
+                        if (board_row_filled[board_idx][ri] == BOARD_SIZE) {
+                            last_board = Some(board_idx);
+                            remaining_boards.remove(&board_idx);
+                            winning_num = Some(num);
+                        }
+                        board_col_filled[board_idx][ci] += 1;
+                        if (board_col_filled[board_idx][ci] == BOARD_SIZE) {
+                            last_board = Some(board_idx);
+                            remaining_boards.remove(&board_idx);
+                            winning_num = Some(num);
+                        }
+                    }
+                }
+            }
+        }
+        if remaining_boards.len() == 0 {
+            break 'outer;
+        }
+    }
+
+    let winning_board = boards[last_board.unwrap()]; //remaining_boards.into_iter().collect::<Vec<usize>>()[0]];
+    println!(
+        "Found a winning board: {:?} and number {}",
+        winning_board,
+        winning_num.unwrap()
+    );
+
+    let sum = board_sum(winning_board);
+    (sum, winning_num.unwrap() as u32)
 }
