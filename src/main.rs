@@ -33,9 +33,9 @@ fn main() {
 
     let start = Instant::now();
     for i in 0..10 {
-        let (moves, boards) = aoc::day4::input(); 
-        let (sum, winning_num) = aoc::day4::part2(moves, boards); 
-        println!("{}", sum * winning_num); //24628
+        let (moves, boards) = aoc::day4::input(); //60us
+                                                  //let (sum, winning_num) = aoc::day4::part2(moves, boards);
+                                                  //println!("{}", sum * winning_num); //24628
     }
     let total = start.elapsed();
     let avg = (total / 10).as_micros();
