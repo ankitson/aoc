@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 
 const BOARD_SIZE: usize = 5;
 
@@ -117,7 +117,7 @@ pub fn part2(moves: Vec<u8>, mut boards: Vec<[[i8; BOARD_SIZE]; BOARD_SIZE]>) ->
             }
             for ri in 0..BOARD_SIZE {
                 for ci in 0..BOARD_SIZE {
-                    let mut board = &mut boards[board_idx];
+                    let board = &mut boards[board_idx];
                     if board[ri][ci] == num.try_into().expect("msg") {
                         board[ri][ci] = -1;
                         board_row_filled[board_idx][ri] += 1;
@@ -136,17 +136,17 @@ pub fn part2(moves: Vec<u8>, mut boards: Vec<[[i8; BOARD_SIZE]; BOARD_SIZE]>) ->
                 }
             }
         }
-        if remaining_boards.len() == 0 {
+        if remaining_boards.is_empty() {
             break 'outer;
         }
     }
 
-    let winning_board = boards[last_board.unwrap()]; //remaining_boards.into_iter().collect::<Vec<usize>>()[0]];
-    println!(
-        "Found a winning board: {:?} and number {}",
-        winning_board,
-        winning_num.unwrap()
-    );
+    let winning_board = boards[last_board.unwrap()];
+    // println!(
+    //     "Found a winning board: {:?} and number {}",
+    //     winning_board,
+    //     winning_num.unwrap()
+    // );
 
     let sum = board_sum(winning_board);
     (sum, winning_num.unwrap() as u32)

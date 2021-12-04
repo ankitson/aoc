@@ -1,3 +1,5 @@
+use std::time::Instant;
+
 mod aoc;
 mod tests;
 
@@ -29,8 +31,13 @@ fn main() {
     println!("sum: {} winning num: {}", sum, winning_num);
     println!("part 1 answer = {}", sum * winning_num); //49860
 
-    let (moves, boards) = aoc::day4::input();
-    let (sum, winning_num) = aoc::day4::part2(moves, boards);
-    println!("sum: {} winning num: {}", sum, winning_num);
-    println!("part 2 answer = {}", sum * winning_num); //49860
+    let start = Instant::now();
+    for i in 0..10 {
+        let (moves, boards) = aoc::day4::input(); 
+        let (sum, winning_num) = aoc::day4::part2(moves, boards); 
+        println!("{}", sum * winning_num); //24628
+    }
+    let total = start.elapsed();
+    let avg = (total / 10).as_micros();
+    println!("Avg time: {}us", avg)
 }
