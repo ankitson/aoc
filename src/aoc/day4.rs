@@ -23,8 +23,8 @@ const test_input: &str = "7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,1
  2  0 12  3  7";
 
 pub fn input() -> (Vec<u8>, Vec<[[i8; BOARD_SIZE]; BOARD_SIZE]>) {
-    let contents = test_input;
-    //let contents: &str = include_str!("../../input/day4.txt");
+    //let contents = test_input;
+    let contents: &str = include_str!("../../input/day4.txt");
     let mut lines = contents.split('\n').filter(|x| !x.is_empty()).collect::<Vec<&str>>();
 
     let mut boards: Vec<[[i8; BOARD_SIZE]; BOARD_SIZE]> = Vec::new();
@@ -104,7 +104,7 @@ fn board_sum(board: [[i8; BOARD_SIZE]; BOARD_SIZE]) -> u32 {
 }
 
 pub fn part2(moves: Vec<u8>, mut boards: Vec<[[i8; BOARD_SIZE]; BOARD_SIZE]>) -> (u32, u32) {
-    let mut board_row_filled: Vec<[usize; BOARD_SIZE]> = vec![[0; BOARD_SIZE]; boards.len()]; //Vec::with_capacity(boards.len());
+    let mut board_row_filled: Vec<[usize; BOARD_SIZE]> = vec![[0; BOARD_SIZE]; boards.len()];
     let mut board_col_filled: Vec<[usize; BOARD_SIZE]> = vec![[0; BOARD_SIZE]; boards.len()];
 
     let mut winning_num: Option<u8> = None;
@@ -119,18 +119,15 @@ pub fn part2(moves: Vec<u8>, mut boards: Vec<[[i8; BOARD_SIZE]; BOARD_SIZE]>) ->
                 for ci in 0..BOARD_SIZE {
                     let mut board = &mut boards[board_idx];
                     if board[ri][ci] == num.try_into().expect("msg") {
-                        println!("board: {:?}", board);
-                        println!("zeroing value {}", num);
                         board[ri][ci] = -1;
-                        println!("board: {:?}", board);
                         board_row_filled[board_idx][ri] += 1;
-                        if (board_row_filled[board_idx][ri] == BOARD_SIZE) {
+                        if board_row_filled[board_idx][ri] == BOARD_SIZE {
                             last_board = Some(board_idx);
                             remaining_boards.remove(&board_idx);
                             winning_num = Some(num);
                         }
                         board_col_filled[board_idx][ci] += 1;
-                        if (board_col_filled[board_idx][ci] == BOARD_SIZE) {
+                        if board_col_filled[board_idx][ci] == BOARD_SIZE {
                             last_board = Some(board_idx);
                             remaining_boards.remove(&board_idx);
                             winning_num = Some(num);

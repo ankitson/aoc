@@ -30,7 +30,6 @@ fn main() {
     println!("part 1 answer = {}", sum * winning_num); //49860
 
     let (moves, boards) = aoc::day4::input();
-    //println!("moves: {:?}\n board: {:?}", moves, boards[0]);
     let (sum, winning_num) = aoc::day4::part2(moves, boards);
     println!("sum: {} winning num: {}", sum, winning_num);
     println!("part 2 answer = {}", sum * winning_num); //49860
