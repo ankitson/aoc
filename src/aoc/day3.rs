@@ -46,9 +46,6 @@ pub fn part1(nums: &[u32], bit_width: u16) -> (u16, u16) {
     let mask = (1 << bit_width) - 1; //0b111111111111;
     let epsilon = (!gamma) & mask;
     (gamma, epsilon)
-    //println!("gamma = {} epsilon = {}", gamma, epsilon);
-    //let prod = widen_mul(gamma, epsilon);
-    //format!("{}", prod)
 }
 
 pub fn part2(nums: &Vec<u32>, bit_width: u16) -> (u16, u16) {
@@ -62,16 +59,8 @@ pub fn part2(nums: &Vec<u32>, bit_width: u16) -> (u16, u16) {
         let mc = mlc1.0.unwrap_or(1);
         let lc = mlc2.1.unwrap_or(0);
 
-        println!("bit index {}", bi);
-        println!("most commmon {}", mc);
-        println!("mask {:#014b}", mask);
-        println!("2561 {:#014b}", 2561);
-        println!("2560 {:#014b}", 2560);
         if nums1.len() > 1 {
-            println!("nums1 size: {}", nums1.len());
-            println!("nums1 {:?}", nums1);
             nums1.retain(|x| (*x & mask) >> bi == (mc as u32));
-            println!("nums1 size: {}", nums1.len());
         }
 
         if nums2.len() > 1 {
@@ -84,12 +73,4 @@ pub fn part2(nums: &Vec<u32>, bit_width: u16) -> (u16, u16) {
     let oxygen = nums1[0].try_into().unwrap();
     let co2 = nums2[0].try_into().unwrap();
     (oxygen, co2)
-
-    // println!("{:#014b}     - oxygen", nums1[0]);
-    // println!("{:#014b}     - co2", nums2[0]);
-    // println!("oxygen = {} co2 = {}", nums1[0], nums2[0]);
-    // format!(
-    // "{}",
-    // widen_mul(nums1[0].try_into().unwrap(), nums2[0].try_into().unwrap())
-    // )
 }
