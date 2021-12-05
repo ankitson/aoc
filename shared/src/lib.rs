@@ -8,15 +8,21 @@ pub trait Solution<InputType, OutputType> {
 
     fn unparse(output: OutputType) -> String;
 
-    fn part1_core(input: InputType) -> OutputType;
+    fn core(input: InputType) -> OutputType;
 
-    fn part2_core(input: InputType) -> OutputType;
-
-    fn part1(input: &str) -> String {
-        Self::unparse(Self::part1_core(Self::parse(input)))
+    fn run(input: &str) -> String {
+        Self::unparse(Self::core(Self::parse(input)))
     }
 
-    fn part2(input: &str) -> String {
-        Self::unparse(Self::part2_core(Self::parse(input)))
-    }
+    // fn part1_core(input: InputType) -> OutputType;
+
+    // fn part2_core(input: InputType) -> OutputType;
+
+    // fn part1(input: &str) -> String {
+    // Self::unparse(Self::part1_core(Self::parse(input)))
+    // }
+
+    // fn part2(input: &str) -> String {
+    // Self::unparse(Self::part2_core(Self::parse(input)))
+    // }
 }
