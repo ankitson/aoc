@@ -2,7 +2,7 @@ use shared;
 
 pub struct Day1 {}
 
-impl Solution for Day1 {}
+impl shared::Solution<Vec<i32>, i32> for Day1 {}
 
 // fn parse(input: &str) -> InputType {
 //     input

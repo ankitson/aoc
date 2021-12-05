@@ -3,7 +3,7 @@
 
     This compiles, but what if say the output type is a String, and unparse should return a slice of that string only?
 */
-trait Solution<InputType, OutputType> {
+pub trait Solution<InputType, OutputType> {
     fn parse(input: &str) -> InputType;
 
     fn unparse(output: OutputType) -> String;
