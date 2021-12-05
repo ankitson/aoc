@@ -1,34 +1,16 @@
 mod soln;
+use shared::Solution;
 
-/*
-   BROKEN: Why does this not compile?
-*/
-// pub fn main() {
-//     println!("Hello World");
-//     let contents: &str = include_str!("../day1.txt");
-//     let soln = soln::Soln1;
-//     soln.parse(contents);
-// }
+pub fn main() {
+    println!("Hello World");
+    let contents: &str = include_str!("../day1.txt");
+    let input = soln::Soln1::parse(contents);
+    let part1 = soln::Soln1::part1_core(input);
+    let part1_out = soln::Soln1::unparse(part1);
+    println!("Part 1 = {}", part1_out);
 
-// reproducible case
-fn main() {
-    trait Woofer {
-        fn bark(tree: String) -> String;
-    }
-
-    struct Dog {}
-    impl Dog {
-        fn constant_bark() -> String {
-            "grrrr".to_string()
-        }
-    }
-
-    impl Woofer for Dog {
-        fn bark(tree: String) -> String {
-            Self::constant_bark()
-        }
-    }
-
-    let d = Dog {};
-    d.bark("pine");
+    let input = soln::Soln1::parse(contents);
+    let part2 = soln::Soln1::part2_core(input);
+    let part2_out = soln::Soln1::unparse(part2);
+    println!("Part 2 = {}", part2_out);
 }
