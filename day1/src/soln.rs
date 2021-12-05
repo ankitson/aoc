@@ -1,4 +1,4 @@
-use std::{fmt::Display, net::IpAddr};
+use shared;
 
 pub struct Day1 {}
 

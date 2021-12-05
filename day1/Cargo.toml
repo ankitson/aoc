@@ -9,6 +9,9 @@ edition = "2021"
 [dev-dependencies]
 criterion = "0.3.5"
 
+[dependencies]
+shared = { path = "../shared" }
+
 # [[bench]]
 # name = "bench"
 # harness = false
