@@ -26,3 +26,7 @@ https://hermanradtke.com/2015/06/22/effectively-using-iterators-in-rust.html
     boards.append(board);
 ```    
 
+
+#TODO:
+
+Is the benchmark for part1 core right? is it measuring time to copy input as well?
