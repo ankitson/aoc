@@ -19,18 +19,17 @@ impl Debug for Board {
     }
 }
 impl Board {
-    //todo: this wont compile
-    pub fn axis_line(p1: (usize, usize), p2: (usize, usize)) -> impl Iterator<Item = (usize, usize)> {
+    pub fn axis_line(p1: (usize, usize), p2: (usize, usize)) -> Box<dyn Iterator<Item = (usize, usize)>> {
         let (x1, y1) = p1;
         let (x2, y2) = p2;
         if x1 == x2 {
             let maxY = usize::max(y1, y2);
             let minY = usize::min(y1, y2);
-            iter::repeat(x1).take(maxY - minY + 1).zip(minY..maxY + 1)
+            Box::new(iter::repeat(x1).take(maxY - minY + 1).zip(minY..maxY + 1))
         } else if y1 == y2 {
             let maxX = usize::max(x1, x2);
             let minX = usize::min(x1, x2);
-            (minX..maxX + 1).into_iter().zip(iter::repeat(y1).take(maxX - minX + 1))
+            Box::new((minX..maxX + 1).into_iter().zip(iter::repeat(y1).take(maxX - minX + 1)))
         } else {
             panic!("not an axis line")
         }
@@ -60,7 +59,6 @@ impl Soln1 {
             .filter(|t| t.0 .0 == t.1 .0 || t.0 .1 == t.1 .1)
             .for_each(|((x1, y1), (x2, y2))| {
                 for (x, y) in Board::axis_line((x1, y1), (x2, y2)) {
-                    println!("drawing point {},{} for line ({},{}) - ({},{})", x, y, x1, y1, x2, y2);
                     board.grid[x][y] += 1
                 }
             });
