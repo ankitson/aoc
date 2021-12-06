@@ -3,7 +3,7 @@
 version = 3
 
 [[package]]
-name = "aoc-2021-day05"
+name = "aoc-2021-day06"
 version = "0.1.0"
 dependencies = [
  "criterion",
