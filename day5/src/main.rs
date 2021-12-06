@@ -2,8 +2,8 @@ mod soln;
 
 pub fn main() {
     let contents: &str = include_str!("../day5.txt");
-    let parsed = soln::Soln1::part1(contents, 1000);
-    println!("{:?}", parsed);
+    let part1 = soln::Soln1::part1(contents, 1000);
+    println!("{:?}", part1);
 }
 
 #[cfg(test)]

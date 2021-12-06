@@ -1,5 +1,5 @@
 use shared;
-use std::{fmt::Debug, iter};
+use std::{fmt::Debug, iter, ops::Range};
 
 pub struct Board {
     grid: Vec<Vec<usize>>,
@@ -19,7 +19,7 @@ impl Debug for Board {
     }
 }
 impl Board {
-    pub fn axis_line(p1: (usize, usize), p2: (usize, usize)) -> Box<dyn Iterator<Item = (usize, usize)>> {
+    pub fn line(p1: (usize, usize), p2: (usize, usize)) -> Box<dyn Iterator<Item = (usize, usize)>> {
         let (x1, y1) = p1;
         let (x2, y2) = p2;
         if x1 == x2 {
@@ -31,7 +31,22 @@ impl Board {
             let minX = usize::min(x1, x2);
             Box::new((minX..maxX + 1).into_iter().zip(iter::repeat(y1).take(maxX - minX + 1)))
         } else {
-            panic!("not an axis line")
+            //todo: broken iterator code here. learn how to work with collections.
+            let maxX = usize::max(x1, x2);
+            let minX = usize::min(x1, x2);
+            let maxY = usize::max(y1, y2);
+            let minY = usize::min(y1, y2);
+            let xRange  = (minX..maxX+1).into_iter();
+            let yRange = (minY..maxY+1).into_iter();
+            if (x1 > x2) {
+                xRange = xRange.rev();
+            }
+            if (y1 > y2) {
+                yRange = yRange.rev();
+            }
+        } 
+        else {
+            panic!("illegal")
         }
     }
 }
