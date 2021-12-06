@@ -1,18 +1,19 @@
-use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion, Throughput};
 
 include!("../src/soln.rs");
 
-pub fn part1_core(c: &mut Criterion) {
+pub fn bench(c: &mut Criterion) {
     let contents: &str = include_str!("../inputs/day6.txt");
 
-    // c.bench_with_input(
-    // BenchmarkId::new("day1", contents.len()),
-    // &Soln1::parse(contents),
-    // |b, c| {
-    // b.iter(|| Soln1::part1_core(c.clone()));
-    // },
-    // );
+    let mut group = c.benchmark_group("day6");
+    for num_days in [32, 64, 128, 256, 384, 512, 768, 1024].iter() {
+        group.throughput(Throughput::Elements(*num_days as u64));
+        group.bench_with_input(BenchmarkId::new("part2", num_days), &num_days, |b, &nd| {
+            b.iter(|| Soln1::part2(contents, *nd))
+        });
+    }
+    group.finish();
 }
 
-criterion_group!(benches, part1_core);
+criterion_group!(benches, bench);
 criterion_main!(benches);

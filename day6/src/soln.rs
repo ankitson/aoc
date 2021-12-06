@@ -20,7 +20,7 @@ impl Soln1 {
         //ba: [0,1,1,2,1,0,0,0,0]
         //ba: [1,1,2,1,0,0,0,0,0] == 0,1,2,2,3
         //ba: [1,2,1,0,0,0,1,0,1] == 0,1,1,2,6,8
-        for day in 0..days {
+        for _ in 0..days {
             by_age[7] += by_age[0];
             by_age.rotate_left(1);
         }
