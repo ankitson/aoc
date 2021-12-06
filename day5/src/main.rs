@@ -4,6 +4,8 @@ pub fn main() {
     let contents: &str = include_str!("../day5.txt");
     let part1 = soln::Soln1::part1(contents, 1000);
     println!("{:?}", part1);
+    let part2 = soln::Soln1::part2(contents, 1000);
+    println!("{:?}", part2);
 }
 
 #[cfg(test)]
