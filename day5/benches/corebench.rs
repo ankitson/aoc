@@ -1,10 +1,9 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 
 include!("../src/soln.rs");
-use shared::Solution;
 
 pub fn part1_core(c: &mut Criterion) {
-    let contents: &str = include_str!("../day5.txt");
+    let contents: &str = include_str!("../inputs/day5.txt");
 
     // c.bench_with_input(
     // BenchmarkId::new("day1", contents.len()),
