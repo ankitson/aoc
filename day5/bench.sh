@@ -20,7 +20,8 @@ cp -R ../target/criterion/day5-part1/ "bench_results/${GIT_COMMIT}/criterion/"
 
 echo "Running release binary (dhat)...";
 cargo run --release
-mv dhat-heap.json "bench_results/${GIT_COMMIT}/dhat-heap.json"
+mv dhat-heap.json "bench_results/${GIT_COMMIT}/dhat-heap.json";
 
-echo "Results ready at bench_results/${GIT_COMMIT}/"
-echo `ls -l bench_results/${GIT_COMMIT}/"
+echo "Results ready at bench_results/${GIT_COMMIT}/";
+
+cp -r "bench_results/" /mnt/host/home/ankit/
