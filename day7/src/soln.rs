@@ -8,7 +8,6 @@ impl Soln1 {
             .split(',')
             .map(|x| x.parse::<i32>().expect("illegal int"))
             .collect::<Vec<i32>>();
-        dbg!("{:?}", &nums);
         nums
     }
 
@@ -96,11 +95,7 @@ impl Soln1 {
             .iter()
             .map(|p| {
                 let diff = (p - at).abs();
-                if diff <= 1 {
-                    diff
-                } else {
-                    diff * (diff + 1) / 2
-                }
+                diff * (diff + 1) / 2
             })
             .sum()
     }

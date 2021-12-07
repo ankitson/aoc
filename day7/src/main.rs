@@ -4,13 +4,13 @@ mod soln;
 pub fn main() {
     let contents: &str = include_str!("../inputs/day7.txt");
     let part1 = soln::Soln1::part1(contents);
-    println!("{:?}", part1);
+    println!("Part 1: {:?}", part1);
     let part2 = soln::Soln1::part2(contents);
-    println!("{:?}", part2);
+    println!("Part 2: {:?}", part2);
     let part1 = soln::Soln1::part1_fast(contents);
-    println!("{:?}", part1);
+    println!("Part 1 (quickselect+median): {:?}", part1);
     let part2 = soln::Soln1::part2_fast(contents);
-    println!("{:?}", part2);
+    println!("Part 2 (mean): {:?}", part2);
 }
 
 #[cfg(test)]
