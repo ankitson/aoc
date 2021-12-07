@@ -1,13 +1,17 @@
 pub struct Soln1 {}
 impl Soln1 {
-    pub fn part1(input: &str) -> i32 {
+    fn parse(input: &str) -> Vec<i32> {
         let nums = input
             .trim()
             .split(',')
             .map(|x| x.parse::<i32>().expect("illegal int"))
             .collect::<Vec<i32>>();
-        println!("{:?}", nums);
+        dbg!("{:?}", &nums);
+        nums
+    }
 
+    pub fn part1(input: &str) -> i32 {
+        let nums = Soln1::parse(input);
         let min = nums.iter().min().unwrap();
         let max = nums.iter().max().unwrap();
         let mut min_fuel = i32::MAX;
@@ -19,13 +23,7 @@ impl Soln1 {
     }
 
     pub fn part2(input: &str) -> i32 {
-        let nums = input
-            .trim()
-            .split(',')
-            .map(|x| x.parse::<i32>().expect("illegal int"))
-            .collect::<Vec<i32>>();
-        println!("{:?}", nums);
-
+        let nums = Soln1::parse(input);
         let min = nums.iter().min().unwrap();
         let max = nums.iter().max().unwrap();
         let mut min_fuel = i32::MAX;
