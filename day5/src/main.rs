@@ -1,11 +1,17 @@
 mod soln;
 
+// use dhat::{Dhat, DhatAlloc};
+
+// #[global_allocator]
+// static ALLOCATOR: DhatAlloc = DhatAlloc;
+
 pub fn main() {
+    // let _dhat = Dhat::start_heap_profiling();
     let contents: &str = include_str!("../inputs/day5.txt");
     let part1 = soln::Soln1::part1(contents, 1000);
-    println!("{:?}", part1);
+    println!("Part 1: {:?}", part1);
     let part2 = soln::Soln1::part2(contents, 1000);
-    println!("{:?}", part2);
+    println!("Part 2: {:?}", part2);
 }
 
 #[cfg(test)]
