@@ -1,5 +1,4 @@
-use shared;
-use std::{fmt::Debug, iter, ops::Range};
+use std::{fmt::Debug, iter};
 
 pub struct Board {
     grid: Vec<Vec<usize>>,
@@ -23,36 +22,40 @@ impl Board {
         let (x1, y1) = p1;
         let (x2, y2) = p2;
         if x1 == x2 {
-            let maxY = usize::max(y1, y2);
-            let minY = usize::min(y1, y2);
-            Box::new(iter::repeat(x1).take(maxY - minY + 1).zip(minY..maxY + 1))
+            let max_y = usize::max(y1, y2);
+            let min_y = usize::min(y1, y2);
+            Box::new(iter::repeat(x1).take(max_y - min_y + 1).zip(min_y..max_y + 1))
         } else if y1 == y2 {
-            let maxX = usize::max(x1, x2);
-            let minX = usize::min(x1, x2);
-            Box::new((minX..maxX + 1).into_iter().zip(iter::repeat(y1).take(maxX - minX + 1)))
+            let max_x = usize::max(x1, x2);
+            let min_x = usize::min(x1, x2);
+            Box::new(
+                (min_x..max_x + 1)
+                    .into_iter()
+                    .zip(iter::repeat(y1).take(max_x - min_x + 1)),
+            )
         } else {
-            let maxX = usize::max(x1, x2);
-            let minX = usize::min(x1, x2);
-            let maxY = usize::max(y1, y2);
-            let minY = usize::min(y1, y2);
+            let max_x = usize::max(x1, x2);
+            let min_x = usize::min(x1, x2);
+            let max_y = usize::max(y1, y2);
+            let min_y = usize::min(y1, y2);
 
-            let xRange = (minX..maxX + 1);
-            let yRange = (minY..maxY + 1);
+            let x_range = min_x..max_x + 1;
+            let y_range = min_y..max_y + 1;
 
-            if (x1 > x2) {
-                let xRange = xRange.rev();
-                if (y1 > y2) {
-                    let yRange = yRange.rev();
-                    Box::new(xRange.zip(yRange))
+            if x1 > x2 {
+                let x_range = x_range.rev();
+                if y1 > y2 {
+                    let y_range = y_range.rev();
+                    Box::new(x_range.zip(y_range))
                 } else {
-                    Box::new(xRange.zip(yRange))
+                    Box::new(x_range.zip(y_range))
                 }
             } else {
-                if (y1 > y2) {
-                    let yRange = yRange.rev();
-                    Box::new(xRange.zip(yRange))
+                if y1 > y2 {
+                    let y_range = y_range.rev();
+                    Box::new(x_range.zip(y_range))
                 } else {
-                    Box::new(xRange.zip(yRange))
+                    Box::new(x_range.zip(y_range))
                 }
             }
         }
