@@ -1,12 +1,15 @@
 mod soln;
 
-// use dhat::{Dhat, DhatAlloc};
+#[cfg(feature = "heapprofile")]
+use dhat::{Dhat, DhatAlloc};
 
-// #[global_allocator]
-// static ALLOCATOR: DhatAlloc = DhatAlloc;
+#[cfg_attr(feature = "heapprofile", global_allocator)]
+#[cfg(feature = "heapprofile")]
+static ALLOCATOR: DhatAlloc = DhatAlloc;
 
 pub fn main() {
-    // let _dhat = Dhat::start_heap_profiling();
+    #[cfg(feature = "heapprofile")]
+    let _dhat = Dhat::start_heap_profiling();
     let contents: &str = include_str!("../inputs/day5.txt");
     let part1 = soln::Soln1::part1(contents, 1000);
     println!("Part 1: {:?}", part1);
