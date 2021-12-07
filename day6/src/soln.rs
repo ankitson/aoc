@@ -4,29 +4,31 @@ pub struct Soln1 {}
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SquareMatrix<const N: usize>(pub [[u8; N]; N]);
-impl<const N: usize> Mul<SquareMatrix<N>> for SquareMatrix<N> {
-    type Output = SquareMatrix<N>;
 
-    fn mul(self, rhs: SquareMatrix<N>) -> Self::Output {
+//PROBLEM: ownership woes
+impl<const N: usize> SquareMatrix<N> {
+    fn mul(lhs: &SquareMatrix<N>, rhs: &SquareMatrix<N>) -> Self {
         let mut result = SquareMatrix([[0; N]; N]);
         for i in 0..N {
             for j in 0..N {
                 for k in 0..N {
-                    result.0[i][j] += self.0[i][k] * rhs.0[k][j];
+                    result.0[i][j] += lhs.0[i][k] * rhs.0[k][j];
                 }
             }
         }
         result
     }
-}
 
-//PROBLEM: cant recurse in impl fn?
-impl<const N: usize> SquareMatrix<N> {
-    fn exponent(m: SquareMatrix<N>, p: u8) -> Self {
-        if (p == 1) {
-            m
+    fn exponent(m: &SquareMatrix<N>, p: u8) -> Self {
+        if p == 1 {
+            *m
         } else {
-            exponent(m, p / 2).mul(exponent(m, p / 2))
+            let exp = SquareMatrix::exponent(m, p / 2);
+            if (p % 2 == 1) {
+                SquareMatrix::mul(&SquareMatrix::mul(&exp, &exp), m)
+            } else {
+                SquareMatrix::mul(&exp, &exp)
+            }
         }
     }
 }
