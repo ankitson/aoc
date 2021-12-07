@@ -18,7 +18,7 @@ mod tests {
     fn test_part1() {
         let sample: &str = include_str!("../inputs/sample7.txt");
         let soln = soln::Soln1::part1(sample);
-        println!("done");
+        assert_eq!(soln, 37);
 
         // assert_eq!(soln, 26);
         // let soln = soln::Soln1::part1(sample, 80);
