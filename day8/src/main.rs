@@ -16,6 +16,8 @@ pub fn main() {
 
 #[cfg(test)]
 mod tests {
+    use std::collections::{HashMap, HashSet};
+
     use crate::soln;
 
     #[test]
@@ -32,5 +34,27 @@ mod tests {
         let answer = soln::Soln1::part2(sample);
         println!("Part 2 = {:?}", answer);
         assert_eq!(answer, 61229);
+        // let part2 = soln::Soln2::part2(contents);
+        // println!("Part 2 (constraint propagation) = {:?}", part2);
+    }
+
+    #[test]
+    fn test_part2_constraint_prop() {
+        let sample: &str = include_str!("../inputs/sample8.txt");
+        let answer = soln::Soln2::part2(sample.split('\n').next().unwrap());
+        println!("Part 2 (constraint prop) = {:?}", answer);
+        // assert_eq!(answer, 61229);
+        // let part2 = soln::Soln2::part2(contents);
+        // println!("Part 2 (constraint propagation) = {:?}", part2);
+    }
+
+    #[test]
+    fn test_part2_merge_maps() {
+        let mut m1: HashMap<char, HashSet<char>> = HashMap::from_iter([('a', HashSet::from_iter(['a', 'b', 'c']))]);
+        let m2: HashMap<char, HashSet<char>> = HashMap::from_iter([('a', HashSet::from_iter(['b', 'c', 'd']))]);
+
+        let merged: HashMap<char, HashSet<char>> = HashMap::from_iter([('a', HashSet::from_iter(['b', 'c']))]);
+        soln::Soln2::merge_maps(&mut m1, m2);
+        assert_eq!(m1, merged);
     }
 }

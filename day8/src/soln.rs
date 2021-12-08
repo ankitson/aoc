@@ -127,7 +127,7 @@ impl Soln1 {
  * cgdf eagcbf fc adefg eacdb fbedga geafcd efc dacfe fdgaecb | dcefbag dgcf fc daefc
  *
  * 4 is the only number with 4 segs
- * we know cgdf = {bcdf}
+ * we know cgdf = {bcdf} (in some order)
  *
  * representation of constraints:
  * c1 = map(
@@ -154,60 +154,107 @@ pub struct Soln2 {
 impl Soln2 {
     // type ConstraintSet;
     // type ConstraintMap;
+    // TODO: The constraints seem to be fine, but they dont converge.
+    // Im not considering the entire constraint set together - only each character at a time
     pub fn part2(input: &str) -> usize {
         let lines = Soln1::parse(input);
 
-        let digits: HashMap<&str, usize> = HashMap::from_iter([
-            ("abcefg", 0),
-            ("cf", 1),
-            ("acdeg", 2),
-            ("acdfg", 3),
-            ("bcdf", 4),
-            ("abdfg", 5),
-            ("abdefg", 6),
-            ("acf", 7),
-            ("abcdefg", 8),
-            ("abcdfg", 9),
-        ]);
-
-        type ConstraintSet = HashSet<char>;
-        type ConstraintMap = HashMap<char, ConstraintSet>;
         let chars: Vec<char> = ('a'..='g').into_iter().collect();
         let open_set: HashSet<char> = HashSet::from_iter(chars);
-        let mut open_map: HashMap<char, ConstraintSet> = HashMap::new();
+        let mut open_map: HashMap<char, HashSet<char>> = HashMap::new();
         for char in open_set.iter() {
             open_map.insert(*char, open_set.clone());
         }
         let open_map = open_map;
 
         for (words, to_decode) in lines {
+            println!("Decoding line: {:?} {:?}", &words, &to_decode);
             let mut constraints = open_map.clone();
             for word in words {
+                let new_constraints = Soln2::gen_constraints(word, &constraints);
+                Soln2::merge_maps(&mut constraints, new_constraints);
+                println!("constrains after {} =", &word);
+                println!("{:?}", &constraints);
+                if (Soln2::finished(&constraints)) {
+                    dbg!(&word);
+                    dbg!(&constraints);
+                }
                 // let new_constraints =
             }
+            println!("final constraints:");
+            println!("{:?}", &constraints);
         }
         5
     }
 
-    //TODO: cant define the type alias for the entire impl?
-    fn merge_maps(m1: &mut HashMap<char, HashSet<char>>, m2: HashMap<char, HashSet<char>>) {
-        for (char, allowed_vals) in m1 {
-            if (m2.contains_key(char)) {
-                // let merge: HashSet<char> = allowed_vals & m2.get(char).unwrap();
+    fn finished(constraints: &HashMap<char, HashSet<char>>) -> bool {
+        for (k, v) in constraints.iter() {
+            if (v.len() != 1) {
+                return false;
+            }
+        }
+        true
+    }
 
-                //TODO: Doesnt work??
-                // let merge: HashSet<char> = allowed_vals
-                // .intersection(&m2.get(char).cloned().unwrap())
-                // .into_iter()
-                // .collect();
-                let merge: HashSet<char> = allowed_vals
+    fn gen_constraints(
+        word: &str,
+        existing_constraints: &HashMap<char, HashSet<char>>,
+    ) -> HashMap<char, HashSet<char>> {
+        let digits: HashMap<usize, &str> = HashMap::from_iter([
+            (0, "abcefg"),
+            (1, "cf"),
+            (2, "acdeg"),
+            (3, "acdfg"),
+            (4, "bcdf"),
+            (5, "abdfg"),
+            (6, "abdefg"),
+            (7, "acf"),
+            (8, "abcdefg"),
+            (9, "bcdfg"),
+        ]);
+        let candidates: Vec<&str> = digits
+            .iter()
+            .filter(|(k, v)| v.len() == word.len())
+            .map(|x| *x.1)
+            .into_iter()
+            .collect();
+        for digit in 0..10 {
+            let digit_segments = digits.get(&digit).unwrap();
+        }
+        let mut constraints: HashMap<char, HashSet<char>> = HashMap::new();
+        for char in word.chars() {
+            let mut could_map_to: HashSet<char> = HashSet::new();
+            for candidate in &candidates {
+                for candidate_char in candidate.chars() {
+                    if (existing_constraints.get(&char).unwrap().contains(&candidate_char)) {
+                        could_map_to.insert(candidate_char);
+                    }
+                }
+            }
+            constraints.insert(char, could_map_to);
+        }
+        constraints
+    }
+
+    pub fn merge_maps(m1: &mut HashMap<char, HashSet<char>>, m2: HashMap<char, HashSet<char>>) {
+        let existing_keys: Vec<char> = m1.keys().into_iter().cloned().collect();
+        for char in &existing_keys {
+            if (m2.contains_key(char)) {
+                let merge: HashSet<char> = m1
+                    .get(char)
+                    .unwrap()
                     .intersection(&m2.get(char).cloned().unwrap())
                     .into_iter()
                     .cloned()
                     .collect();
-                
+                m1.insert(*char, merge);
             }
-            // *m1.insert()
+        }
+        for char in m2.keys() {
+            if (!existing_keys.contains(&char)) {
+                m1.insert(*char, m2.get(char).cloned().unwrap());
+            } else {
+            }
         }
     }
 }
