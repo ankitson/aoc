@@ -1,0 +1,17 @@
+[package]
+name = "aoc-2021-day08"
+version = "0.1.0"
+authors = ["Ankit Soni <ankitsoni9@gmail.com>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dev-dependencies]
+criterion = "0.3.5"
+
+[dependencies]
+shared = { path = "../shared" }
+
+[[bench]]
+name = "corebench"
+harness = false
