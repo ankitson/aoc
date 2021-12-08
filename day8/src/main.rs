@@ -18,12 +18,19 @@ pub fn main() {
 mod tests {
     use crate::soln;
 
-    #[test]
     fn test_part1() {
         //TODO: Fix parsing
         let sample: &str = include_str!("../inputs/sample8.txt");
         let part1 = soln::Soln1::part1(sample);
         println!("Part 1: {}", part1);
         assert_eq!(part1, 26);
+    }
+
+    #[test]
+    fn test_part2() {
+        //TODO: Fix parsing
+        let sample: &str = include_str!("../inputs/day8.txt");
+        let part1 = soln::Soln1::part2(sample);
+        println!("Part 2: {}", part1);
     }
 }
