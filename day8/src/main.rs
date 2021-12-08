@@ -21,5 +21,6 @@ mod tests {
     #[test]
     fn test_part1() {
         let sample: &str = include_str!("../inputs/sample8.txt");
+        let part1 = soln::Soln1::part1(sample);
     }
 }
