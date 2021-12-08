@@ -11,6 +11,7 @@ criterion = "0.3.5"
 
 [dependencies]
 shared = { path = "../shared" }
+itertools = "0.10.3"
 
 [[bench]]
 name = "corebench"
