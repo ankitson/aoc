@@ -3,67 +3,6 @@ use std::collections::{HashMap, HashSet};
 use itertools::Itertools;
 
 pub struct Soln1 {}
-pub struct BitVec {
-    bits: u8,
-}
-impl BitVec {
-    pub fn new(mut self) {
-        self.bits = 0;
-    }
-
-    pub fn from(nums: Vec<usize>) -> Self {
-        let bitvec = BitVec { bits: 0 };
-        for num in nums {
-            if (num > 7) {
-                panic!("out of bounds")
-            }
-            let mask = (1 << num);
-            bitvec.bits |= mask;
-        }
-        bitvec
-    }
-
-    pub fn set(mut self, index: u8) {
-        if (index > 7) {
-            panic!("illegal index")
-        }
-        let mask = (1 << index);
-        self.bits |= mask;
-    }
-
-    pub fn get(self, index: u8) -> bool {
-        if (index > 7) {
-            panic!("illegal index")
-        }
-        let mask = (1 << index);
-        ((self.bits & mask) >> index) & 1 == 1
-    }
-
-    pub fn len(self) -> u8 {
-        let mut copy = self.bits.clone();
-        let mut cnt = 0u8;
-        while copy > 0 {
-            if (copy & 1 == 1) {
-                cnt += 1
-            }
-            copy = copy >> 1;
-        }
-        cnt
-    }
-
-    pub fn get_any(self) -> u8 {
-        let mut i = 0;
-        let mut mask = 1;
-        while i < 8 {
-            if (self.bits & mask == 1) {
-                return i;
-            }
-            i += 1;
-            mask <<= 1;
-        }
-        8
-    }
-}
 
 impl Soln1 {
     fn parse(input: &str) -> Vec<(Vec<&str>, Vec<&str>)> {
@@ -73,7 +12,6 @@ impl Soln1 {
             .map(|line| {
                 let l = line.split('|').collect::<Vec<&str>>();
                 let mut left = l[0].split_ascii_whitespace().collect::<Vec<&str>>();
-                left.remove(left.len() - 1);
                 let right = l[1].split_ascii_whitespace().collect::<Vec<&str>>();
                 (left, right)
             })
@@ -85,7 +23,6 @@ impl Soln1 {
         let mut count: usize = 0;
         for (_, second) in lines {
             let add = second.iter().filter(|x| vec![2, 4, 3, 7].contains(&x.len())).count();
-            println!("adding {} for line {:?}", add, second);
             count += add
         }
         count
@@ -127,10 +64,15 @@ impl Soln1 {
             ("abcdfg", 9),
         ]);
 
-        //TODO: Broken borrows
-        let transform_lookup_letters = |letters: &str, perm: &[i32]| -> Option<&'static usize> {
+        let transform_lookup_letters = |letters: &str, perm: &[i32]| -> Option<usize> {
             let letter_map = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
 
+            let mut map: HashMap<char, char> = HashMap::new();
+            for idx in 0..7 {
+                let letter = (idx + b'a') as char;
+                let mapletter = (perm[idx as usize] as u8 + b'a') as char;
+                map.insert(letter, mapletter);
+            }
             let mut new_chars: Vec<char> = vec![];
 
             for letter in letters.chars() {
@@ -141,45 +83,46 @@ impl Soln1 {
             }
             new_chars.sort();
             let lookup: String = new_chars.into_iter().collect();
-            digits.get(&*lookup)
+            digits.get(&lookup as &str).cloned() //NOTE: digits.get(&lookup) fails because of type inference..
         };
 
-        //Return the letter this letter corresponds to under the permutation
-        fn letter_map(letter: char, perm: Vec<i32>) -> char {
-            let letter_map = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
-            let letter_idx = letter as u32 - 'a' as u32;
-            let newpos = perm[letter_idx as usize];
-            let newletter = letter_map[newpos as usize];
-            newletter
-        }
-
-        let perms = (0..6).permutations(7);
+        let mut decodedLines: Vec<usize> = vec![];
         let mut map: HashMap<String, usize> = HashMap::new();
-        'outer: for (letters_to_digits, decode) in &lines {
-            map = HashMap::new();
-            for perm in perms {
+        for (letters_to_digits, decode) in &lines {
+            let mut maxHits = 0;
+            let mut maxHitPerm: Vec<i32> = vec![0; 7];
+            let mut maxHitMap: HashMap<String, usize> = HashMap::new();
+            // println!("Decoding line: {:?} {:?}", &letters_to_digits, &decode);
+            for perm in (0..7).permutations(7) {
+                map = HashMap::new();
                 for word in letters_to_digits {
                     let mut wordc: Vec<char> = (*word).chars().collect();
-                    wordc.sort();
+                    wordc.sort_unstable();
                     let word: String = wordc.into_iter().collect();
-                    //word = "cda"
-                    //decrypt_word(perm, word) -> "acf"
-                    //lookup_word("acf") -> 7
                     let lookup = transform_lookup_letters(&word, &perm);
-                    match lookup {
-                        Some(digit) => {
-                            map.insert(word, *digit);
-                            // map.insert();
-                            ()
-                        }
-                        None => (),
+                    if let Some(digit) = lookup {
+                        map.insert(word, digit);
                     }
                 }
                 if map.len() == 10 {
-                    break 'outer;
+                    maxHits = maxHits.max(map.len());
+                    maxHitPerm = perm.clone();
+                    maxHitMap = map.clone();
+                    // dbg!("found working map: {:?}", map);
+                    break;
                 }
             }
+            // dbg!("max hits = {} at perm {:?}", maxHits, maxHitPerm);
+            let mut lineDecode = String::new();
+            for word in decode {
+                let mut wordc: Vec<char> = (*word).chars().collect();
+                wordc.sort_unstable();
+                let word: String = wordc.into_iter().collect();
+                let digit = maxHitMap.get(&word).unwrap();
+                lineDecode.push((*digit as u8 + '0' as u8) as char) //.push_str(&digit);
+            }
+            decodedLines.push(lineDecode.parse::<usize>().unwrap());
         }
-        5
+        decodedLines.iter().sum()
     }
 }
