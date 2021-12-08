@@ -11,7 +11,7 @@ impl Soln1 {
             .iter()
             .map(|line| {
                 let l = line.split('|').collect::<Vec<&str>>();
-                let mut left = l[0].split_ascii_whitespace().collect::<Vec<&str>>();
+                let left = l[0].split_ascii_whitespace().collect::<Vec<&str>>();
                 let right = l[1].split_ascii_whitespace().collect::<Vec<&str>>();
                 (left, right)
             })
@@ -41,11 +41,7 @@ impl Soln1 {
     * candidate = mapping from letter to segment
     * (a-f) -> (0-6)
     *
-    * 7! mappings to start with
-    * then filter
-    *
-    * mapping format
-    * segment
+    * 7! mappings to start with - one for each permutation of [0..6]
     */
 
     pub fn part2(input: &str) -> usize {
@@ -119,7 +115,7 @@ impl Soln1 {
                 wordc.sort_unstable();
                 let word: String = wordc.into_iter().collect();
                 let digit = maxHitMap.get(&word).unwrap();
-                lineDecode.push((*digit as u8 + '0' as u8) as char) //.push_str(&digit);
+                lineDecode.push((*digit as u8 + '0' as u8) as char) 
             }
             decodedLines.push(lineDecode.parse::<usize>().unwrap());
         }
