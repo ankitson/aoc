@@ -1,29 +1,48 @@
 #![feature(drain_filter)]
-mod soln;
+mod soln1;
+mod soln2;
 
 pub fn main() {
     println!("Hello Day 8!");
     let contents: &str = include_str!("../inputs/day8.txt");
-    let part1 = soln::Soln1::part1(contents);
+    let part1 = soln1::Soln1::part1(contents);
     println!("Part 1: {:?}", part1);
-    let part2 = soln::Soln1::part2(contents);
+    let part2 = soln1::Soln1::part2(contents);
     println!("Part 2: {:?}", part2);
+    // let part2 = soln::Soln2::part2(contents);
+    // println!("Part 2 (constraint propagation) = {:?}", part2);
     // let part1 = soln::Soln1::part1_fast(contents);
     // println!("Part 1 (quickselect+median): {:?}", part1);
     // let part2 = soln::Soln1::part2_fast(contents);
     // println!("Part 2 (mean): {:?}", part2);
 }
 
+pub mod shared {
+    pub fn parse(input: &str) -> Vec<(Vec<&str>, Vec<&str>)> {
+        let lines = input.trim().split('\n').collect::<Vec<&str>>();
+        let lines = lines
+            .iter()
+            .map(|line| {
+                let l = line.split('|').collect::<Vec<&str>>();
+                let left = l[0].split_ascii_whitespace().collect::<Vec<&str>>();
+                let right = l[1].split_ascii_whitespace().collect::<Vec<&str>>();
+                (left, right)
+            })
+            .collect::<Vec<(Vec<&str>, Vec<&str>)>>();
+        lines
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use std::collections::{HashMap, HashSet};
 
-    use crate::soln;
+    use crate::{soln1, soln2};
 
     #[test]
     fn test_part1() {
         let sample: &str = include_str!("../inputs/sample8.txt");
-        let part1 = soln::Soln1::part1(sample);
+        let part1 = soln1::Soln1::part1(sample);
         println!("Part 1: {}", part1);
         assert_eq!(part1, 26);
     }
@@ -31,7 +50,7 @@ mod tests {
     #[test]
     fn test_part2() {
         let sample: &str = include_str!("../inputs/sample8.txt");
-        let answer = soln::Soln1::part2(sample);
+        let answer = soln1::Soln1::part2(sample);
         println!("Part 2 = {:?}", answer);
         assert_eq!(answer, 61229);
         // let part2 = soln::Soln2::part2(contents);
@@ -41,7 +60,7 @@ mod tests {
     #[test]
     fn test_part2_constraint_prop() {
         let sample: &str = include_str!("../inputs/sample8.txt");
-        let answer = soln::Soln2::part2(sample.split('\n').next().unwrap());
+        let answer = soln2::Soln2::part2(sample.split('\n').next().unwrap());
         println!("Part 2 (constraint prop) = {:?}", answer);
         // assert_eq!(answer, 61229);
         // let part2 = soln::Soln2::part2(contents);
@@ -54,7 +73,7 @@ mod tests {
         let m2: HashMap<char, HashSet<char>> = HashMap::from_iter([('a', HashSet::from_iter(['b', 'c', 'd']))]);
 
         let merged: HashMap<char, HashSet<char>> = HashMap::from_iter([('a', HashSet::from_iter(['b', 'c']))]);
-        soln::Soln2::merge_maps(&mut m1, m2);
+        soln2::Soln2::merge_maps(&mut m1, m2);
         assert_eq!(m1, merged);
     }
 }
