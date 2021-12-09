@@ -31,7 +31,7 @@ impl Soln1 {
                     to_visit.push((nx, ny));
                 }
             }
-            if (grid[visitx][visity] != 10) {
+            if grid[visitx][visity] != 10 {
                 size += 1;
             }
             grid[visitx][visity] = 10;
@@ -49,7 +49,7 @@ impl Soln1 {
                 let pt = heights[i][j];
                 let mut lower = true;
                 for (nx, ny) in nbr {
-                    if (pt >= heights[nx][ny]) {
+                    if pt >= heights[nx][ny] {
                         lower = false;
                     }
                 }
@@ -71,7 +71,7 @@ impl Soln1 {
                 let pt = heights[i][j];
                 let mut lower = true;
                 for (nx, ny) in nbr {
-                    if (pt >= heights[nx][ny]) {
+                    if pt >= heights[nx][ny] {
                         lower = false;
                     }
                 }
@@ -98,7 +98,7 @@ impl Soln1 {
                 let pt = heights[i][j];
                 let mut lower = true;
                 for (nx, ny) in nbr {
-                    if (pt >= heights[nx][ny]) {
+                    if pt >= heights[nx][ny] {
                         lower = false;
                     }
                 }
