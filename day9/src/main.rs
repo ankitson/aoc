@@ -6,6 +6,9 @@ pub fn main() {
     let contents: &str = include_str!("../inputs/part1.txt");
     let part1 = soln1::Soln1::part1(contents);
     println!("Part 1 = {:?}", part1);
+    let part2 = soln1::Soln1::part2(contents);
+    let product: usize = part2.iter().product();
+    println!("Part 2 = {:?} = {}", part2, product);
 }
 
 pub mod shared {
@@ -18,8 +21,6 @@ pub mod shared {
                     .collect::<Vec<u8>>()
             })
             .collect::<Vec<Vec<u8>>>();
-
-        println!("{:?}", &parsed);
         parsed
     }
 }
