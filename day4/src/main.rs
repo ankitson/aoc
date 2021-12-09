@@ -2,7 +2,7 @@ mod soln;
 use shared::Solution;
 
 pub fn main() {
-    let contents: &str = include_str!("../day4.txt");
+    let contents: &str = include_str!("../inputs/day4.txt");
     let (moves, boards) = soln::Soln1::parse(contents);
     let part1 = soln::Soln1::part1(moves, boards);
     let part1_out = soln::Soln1::unparse(part1);

@@ -48,20 +48,18 @@ impl Soln1 {
                 let mut board = &mut boards[board_idx];
                 for ri in 0..BOARD_SIZE {
                     for ci in 0..BOARD_SIZE {
-                        if board[ri][ci] == num.try_into().expect("msg") {
+                        if board[ri][ci] == (num as i8) {
                             board[ri][ci] = -1;
                             board_row_filled[board_idx][ri] += 1;
                             if (board_row_filled[board_idx][ri] == BOARD_SIZE) {
                                 winning_board_idx = Some(board_idx);
                                 winning_num = Some(num);
-                                println!("{:?}", boards[winning_board_idx.unwrap()]);
                                 break 'outer;
                             }
                             board_col_filled[board_idx][ci] += 1;
                             if (board_col_filled[board_idx][ci] == BOARD_SIZE) {
                                 winning_board_idx = Some(board_idx);
                                 winning_num = Some(num);
-                                println!("{:?}", boards[winning_board_idx.unwrap()]);
                                 break 'outer;
                             }
                             //board_row_filled
@@ -72,12 +70,6 @@ impl Soln1 {
         }
 
         let winning_board = boards[winning_board_idx.unwrap()];
-        println!(
-            "Found a winning board: {:?} and number {}",
-            winning_board,
-            winning_num.unwrap()
-        );
-
         let sum = Self::board_sum(winning_board);
         (sum, winning_num.unwrap() as u32)
     }
@@ -102,7 +94,7 @@ impl Soln1 {
                 for ri in 0..BOARD_SIZE {
                     for ci in 0..BOARD_SIZE {
                         let board = &mut boards[board_idx];
-                        if board[ri][ci] == num.try_into().expect("msg") {
+                        if board[ri][ci] == (num as i8) {
                             board[ri][ci] = -1;
                             board_row_filled[board_idx][ri] += 1;
                             if board_row_filled[board_idx][ri] == BOARD_SIZE {

@@ -3,7 +3,7 @@ use shared::Solution;
 
 pub fn main() {
     println!("Hello World");
-    let contents: &str = include_str!("../day3.txt");
+    let contents: &str = include_str!("../inputs/day3.txt");
     let (input_iter, input_width) = soln::Soln1::parse(contents);
     let nums = input_iter.collect::<Vec<u32>>();
     let part1 = soln::Soln1::part1(&nums, input_width);

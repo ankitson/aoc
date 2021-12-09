@@ -6,8 +6,6 @@ pub fn main() {
     println!("{:?}", part1);
     let part2 = soln::Soln1::part2(contents, 256);
     println!("{:?}", part2);
-    // let part2 = soln::Soln1::part2(contents, 1000);
-    // println!("{:?}", part2);
 }
 
 #[cfg(test)]

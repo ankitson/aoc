@@ -2,7 +2,7 @@ mod soln;
 
 pub fn main() {
     println!("Hello World");
-    let contents: &str = include_str!("../day1.txt");
+    let contents: &str = include_str!("../inputs/day1.txt");
     let input = soln::Soln1::parse(contents);
     let part1 = soln::Soln1::part1_core(input);
     let part1_out = soln::Soln1::unparse(part1);

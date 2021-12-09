@@ -3,6 +3,7 @@
 
     This compiles, but what if say the output type is a String, and unparse should return a slice of that string only?
 */
+
 pub trait Solution<InputType, OutputType> {
     fn parse(input: &str) -> InputType;
 
