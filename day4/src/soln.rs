@@ -1,6 +1,5 @@
 use std::collections::HashSet;
 
-use shared;
 const BOARD_SIZE: usize = 5;
 pub struct Soln1 {}
 impl Soln1 {

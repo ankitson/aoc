@@ -1,5 +1,3 @@
-use shared;
-
 pub struct Soln1 {}
 impl Soln1 {
     pub fn parse(input: &str) -> (impl Iterator<Item = u32> + '_, u16) {

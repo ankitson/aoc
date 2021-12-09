@@ -1,4 +1,6 @@
 use std::collections::{HashMap, HashSet};
+#[path = "shared.rs"]
+mod shared;
 
 /*
  * Constraint propagation idea:
@@ -35,7 +37,7 @@ impl Soln2 {
     // TODO: The constraints seem to be fine, but they dont converge.
     // Im not considering the entire constraint set together - only each character at a time
     pub fn part2(input: &str) -> usize {
-        let lines = crate::shared::parse(input);
+        let lines = shared::parse(input);
 
         let chars: Vec<char> = ('a'..='g').into_iter().collect();
         let open_set: HashSet<char> = HashSet::from_iter(chars);

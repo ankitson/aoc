@@ -1,5 +1,4 @@
 mod soln;
-use shared::Solution;
 
 pub fn main() {
     let contents: &str = include_str!("../inputs/day4.txt");

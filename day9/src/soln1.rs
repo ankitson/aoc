@@ -1,4 +1,7 @@
 use std::collections::HashSet;
+#[path = "shared.rs"]
+mod shared;
+
 pub struct Soln1 {}
 impl Soln1 {
     fn bfs(grid: &Vec<Vec<u8>>, x: usize, y: usize) -> HashSet<(usize, usize)> {
@@ -18,7 +21,7 @@ impl Soln1 {
     }
 
     pub fn part1(input: &str) -> u32 {
-        let heights = crate::shared::parse(input);
+        let heights = shared::parse(input);
 
         let mut risk: u32 = 0;
         for i in 0..heights.len() {
@@ -40,7 +43,7 @@ impl Soln1 {
     }
 
     pub fn part2(input: &str) -> Vec<usize> {
-        let heights = crate::shared::parse(input);
+        let heights = shared::parse(input);
 
         let mut islands: Vec<usize> = Vec::new();
         for i in 0..heights.len() {

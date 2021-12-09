@@ -1,4 +1,3 @@
-use shared;
 
 #[derive(Debug)]
 pub enum Instruction {

@@ -1,11 +1,13 @@
 use std::collections::{HashMap, HashSet};
 
+#[path = "shared.rs"]
+mod shared;
 use itertools::Itertools;
 
 pub struct Soln1 {}
 impl Soln1 {
     pub fn part1(input: &str) -> usize {
-        let lines = crate::shared::parse(input);
+        let lines = shared::parse(input);
         let mut count: usize = 0;
         for (_, second) in lines {
             let add = second.iter().filter(|x| vec![2, 4, 3, 7].contains(&x.len())).count();
@@ -31,7 +33,7 @@ impl Soln1 {
     */
 
     pub fn part2(input: &str) -> usize {
-        let lines = crate::shared::parse(input);
+        let lines = shared::parse(input);
 
         let digits: HashMap<&str, usize> = HashMap::from_iter([
             ("abcefg", 0),

@@ -1,6 +1,6 @@
 #![feature(drain_filter)]
 use criterion::{criterion_group, criterion_main, Criterion};
-include!("../src/soln.rs");
+include!("../src/soln1.rs");
 
 pub fn benchmarks(c: &mut Criterion) {
     let contents: &str = include_str!("../inputs/day8.txt");

@@ -10,7 +10,6 @@ edition = "2021"
 criterion = { version = "0.3.5", features = ["html_reports"] }
 
 [dependencies]
-shared = { path = "../shared" }
 dhat = "0.2.4"
 
 [features]

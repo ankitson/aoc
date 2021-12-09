@@ -1,5 +1,4 @@
 mod soln;
-use shared::Solution;
 
 pub fn main() {
     println!("Hello World");
