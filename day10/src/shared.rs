@@ -1,3 +1,3 @@
-pub fn parse(input: &str) -> Vec<Vec<u8>> {
-    todo!()
+pub fn parse(input: &str) -> impl Iterator<Item = &str> {
+    input.lines()
 }
