@@ -1,5 +1,5 @@
-use itertools::Itertools;
-use std::collections::HashMap;
+use lazy_static::lazy_static;
+use phf::phf_map;
 
 #[path = "shared.rs"]
 mod shared;
@@ -9,40 +9,48 @@ enum Either<A, B> {
     Right(B),
 }
 
-pub struct Soln1 {
-    brackets: Vec<char>,
-    bracket_matchers: HashMap<char, char>,
-    scores: HashMap<char, i32>,
-}
-/**
- * Compared to the previous commit, this is a more
- * high-level soln similar to a typical Python/Scala soln
- * using "classes" & dictionaries liberally.
- *
- * It runs ~50-100% slower (from ~60us to 90-120us)
- * in a super basic benchmark
- */
-impl Soln1 {
-    pub fn new() -> Soln1 {
-        let brs = [(')', '('), (']', '['), ('}', '{'), ('>', '<')];
-        let scores1 = brs.map(|x| x.0).zip([3, 57, 1197, 25137]);
-        let scores2 = brs.map(|x| x.1).zip([1, 2, 3, 4]);
-        let scores = [scores1, scores2].concat();
-        Soln1 {
-            brackets: brs.iter().map(|x| x.1).collect_vec(),
-            bracket_matchers: HashMap::from_iter(brs),
-            scores: HashMap::from_iter(scores),
+lazy_static! {
+    static ref OPEN_TO_CLOSE: phf::Map<char, char> = phf_map! {
+        '(' => ')',
+        '[' => ']',
+        '{' => '}',
+        '<' => '>'
+    };
+    static ref CLOSE_TO_OPEN: phf::Map<char, char> = phf_map! {
+        ')' => '(',
+        ']' => '[',
+        '}' => '{',
+        '>' => '<'
+    };
+    static ref SCORES: phf::Map<char, i32> = {
+        println!("initializing SCORES");
+        phf_map! {
+            ')' => 3,
+            ']' => 57,
+            '}' => 1197,
+            '>' => 25137,
+            '(' => 1,
+            '[' => 2,
+            '{' => 3,
+            '<' => 4
         }
-    }
+    };
+}
 
-    fn first_illegal(&self, line: &str) -> Either<usize, Vec<char>> {
+/**
+ * Using lazy_statics to avoid
+ */
+pub struct Soln1 {}
+impl Soln1 {
+    fn first_illegal(line: &str) -> Either<usize, Vec<char>> {
         let mut stack: Vec<char> = Vec::new();
         let mut illegal_idx: Option<usize> = None;
         for (idx, char) in line.chars().enumerate() {
-            if self.brackets.contains(&char) {
+            if OPEN_TO_CLOSE.contains_key(&char) {
                 stack.push(char);
             } else {
-                let matching_open = self.bracket_matchers.get(&char).unwrap();
+                let matching_open =
+                    CLOSE_TO_OPEN.get(&char).expect("illegal char");
                 if *stack.last().unwrap() == *matching_open {
                     stack.pop();
                 } else {
@@ -58,18 +66,21 @@ impl Soln1 {
         }
     }
 
-    fn score_illegal(&self, bracket: &char) -> i32 {
-        *self.scores.get(bracket).unwrap()
+    fn score_illegal(bracket: &char) -> i32 {
+        println!("running score_illegal");
+        *SCORES.get(bracket).expect("illegal bracket")
     }
 
-    pub fn part1(&self, input: &str) -> i32 {
+    pub fn part1(input: &str) -> i32 {
+        println!("running part1");
         let lines = shared::parse(input);
         let mut total_score = 0;
         for line in lines {
-            let line_score = match Self::first_illegal(self, line) {
+            let line_score = match Self::first_illegal(line) {
                 Either::Left(bad_index) => {
-                    let bad_char = &line.chars().nth(bad_index).unwrap();
-                    let score = Self::score_illegal(self, bad_char);
+                    let bad_char =
+                        line.chars().nth(bad_index).expect("illegal char");
+                    let score = Self::score_illegal(&bad_char);
                     score
                 }
                 _ => 0,
@@ -79,26 +90,30 @@ impl Soln1 {
         total_score
     }
 
-    fn score_completion(&self, completion: Vec<char>) -> i64 {
+    fn score_completion(completion: Vec<char>) -> i64 {
         let mut score = 0i64;
         for char in completion.iter().rev() {
-            let br_score = *self.scores.get(char).unwrap();
+            let br_score = *SCORES.get(char).expect("illegal char");
             score = (score * 5) + (i64::from(br_score));
         }
         score
     }
 
-    pub fn part2(&self, input: &str) -> i64 {
+    pub fn part2(input: &str) -> i64 {
+        println!("running part2");
         let lines = shared::parse(input);
         let mut scores: Vec<i64> = vec![];
         for line in lines {
-            let case = Self::first_illegal(self, line);
+            let case = Self::first_illegal(line);
             if let Either::Right(stack) = case {
-                let completion_score = Self::score_completion(self, stack);
+                let completion_score = Self::score_completion(stack);
                 scores.push(completion_score);
             }
         }
         scores.sort_unstable();
         scores[scores.len() / 2]
+        // let pos = _scores.len() / 2;
+        // _scores.select_nth_unstable(pos);
+        // _scores[pos]
     }
 }
