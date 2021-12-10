@@ -23,7 +23,7 @@ lazy_static! {
         '>' => '<'
     };
     static ref SCORES: phf::Map<char, i32> = {
-        println!("initializing SCORES");
+        // println!("initializing SCORES");
         phf_map! {
             ')' => 3,
             ']' => 57,
@@ -42,6 +42,15 @@ lazy_static! {
  */
 pub struct Soln1 {}
 impl Soln1 {
+    pub fn init_statics() {
+        #[allow(dead_code)]
+        OPEN_TO_CLOSE.get(&'(');
+        #[allow(dead_code)]
+        CLOSE_TO_OPEN.get(&')');
+        #[allow(dead_code)]
+        SCORES.get(&'(');
+    }
+
     fn first_illegal(line: &str) -> Either<usize, Vec<char>> {
         let mut stack: Vec<char> = Vec::new();
         let mut illegal_idx: Option<usize> = None;
@@ -67,12 +76,12 @@ impl Soln1 {
     }
 
     fn score_illegal(bracket: &char) -> i32 {
-        println!("running score_illegal");
+        // println!("running score_illegal");
         *SCORES.get(bracket).expect("illegal bracket")
     }
 
     pub fn part1(input: &str) -> i32 {
-        println!("running part1");
+        // println!("running part1");
         let lines = shared::parse(input);
         let mut total_score = 0;
         for line in lines {
@@ -100,7 +109,7 @@ impl Soln1 {
     }
 
     pub fn part2(input: &str) -> i64 {
-        println!("running part2");
+        // println!("running part2");
         let lines = shared::parse(input);
         let mut scores: Vec<i64> = vec![];
         for line in lines {
