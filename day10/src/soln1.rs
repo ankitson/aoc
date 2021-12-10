@@ -20,6 +20,7 @@ pub struct Soln1 {
  * using "classes" & dictionaries liberally.
  *
  * It runs ~50-100% slower (from ~60us to 90-120us)
+ * in a super basic benchmark
  */
 impl Soln1 {
     pub fn new() -> Soln1 {
@@ -30,7 +31,7 @@ impl Soln1 {
         Soln1 {
             brackets: brs.iter().map(|x| x.1).collect_vec(),
             bracket_matchers: HashMap::from_iter(brs),
-            scores: HashMap::from_iter(scores), // scores: HashMap::from_iter(scores1.(scores2)),
+            scores: HashMap::from_iter(scores),
         }
     }
 
