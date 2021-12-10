@@ -4,7 +4,6 @@ mod soln1;
 pub fn main() {
     println!("Hello Day 10!");
     let contents: &str = include_str!("../inputs/day10.txt");
-    soln1::Soln1::init_statics();
     let part1 = soln1::Soln1::part1(contents);
     println!("Part 1 = {:?}", part1);
     let part2 = soln1::Soln1::part2(contents);
