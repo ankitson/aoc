@@ -7,13 +7,27 @@ impl Soln1 {
         let mut grid = shared::parse(input);
         let mut flashes = 0;
         for _ in 0..nsteps {
-            flashes += Self::step(&mut grid);
+            flashes += Self::step(&mut grid).0;
             Self::print_grid(&grid);
         }
         flashes
     }
 
-    fn step(grid: &mut Vec<Vec<u32>>) -> u64 {
+    pub fn part2(input: &str) -> Option<usize> {
+        let mut grid = shared::parse(input);
+        let mut flashes = 0;
+        let mut i = 0;
+        while true {
+            let allflash = Self::step(&mut grid).1;
+            if (allflash) {
+                return Some(i + 1);
+            }
+            i += 1;
+        }
+        return None;
+    }
+
+    fn step(grid: &mut Vec<Vec<u32>>) -> (u64, bool) {
         for i in 0..grid.len() {
             for j in 0..grid[0].len() {
                 grid[i][j] += 1
@@ -42,7 +56,21 @@ impl Soln1 {
                 }
             }
         }
-        nflashes
+
+        // println!("step after");
+        // Self::print_grid(&grid);
+        // println!("flashed after");
+        // Self::print_grid(&flashed);
+        let mut all_flash = true;
+        for i in 0..grid.len() {
+            for j in 0..grid[i].len() {
+                if flashed[i][j] == 0 {
+                    all_flash = false;
+                }
+            }
+        }
+
+        (nflashes, all_flash)
     }
 
     fn print_grid(grid: &Vec<Vec<u32>>) {
