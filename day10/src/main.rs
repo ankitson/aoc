@@ -1,12 +1,20 @@
 #![feature(array_zip)]
+
+use std::thread::sleep;
+use std::time::Duration;
 mod soln1;
 
 pub fn main() {
-    println!("Hello Day 10!");
-    let contents: &str = include_str!("../inputs/day10.txt");
+    println!("Hllo Day 10!");
+
+    let contents: &str = include_str!("../inputs/sample.txt");
     let part1 = soln1::Soln1::part1(contents);
+    print!("\x1b[2K");
+    println!();
     println!("Part 1 = {:?}", part1);
     let part2 = soln1::Soln1::part2(contents);
+    print!("\x1b[2K");
+    println!();
     println!("Part 2 = {}", part2);
 }
 
