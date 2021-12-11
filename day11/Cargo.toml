@@ -11,7 +11,9 @@ criterion = "0.3.5"
 
 [dependencies]
 itertools = "0.10.3"
-reqwest = { version = "0.11", features = ["json"] }
+# reqwest = { version = "0.11", features = ["json"] }
+tui = "0.16"
+termion = "1.5"
 
 [[bench]]
 name = "corebench"

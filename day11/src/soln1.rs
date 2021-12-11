@@ -1,10 +1,37 @@
 #[path = "shared.rs"]
 mod shared;
 
+fn color_ansi(color: &str) -> &str {
+    match color {
+        "black" => &"\x001b[30m",
+        "red" => &"\x001b[31m",
+        "green" => &"\x001b[32m",
+        "yellow" => &"\x001b[33m",
+        "blue" => &"\x001b[34m",
+        "magenta" => &"\x001b[35m",
+        "cyan" => &"\x001b[36m",
+        "white" => &"\x001b[37m",
+        "reset" => &"\x001b[0m",
+        _ => panic!("unknown color"),
+    }
+}
+
 pub struct Soln1 {}
 impl Soln1 {
+    fn alloc<T>(grid: &Vec<Vec<T>>) {
+        let rows = grid.len();
+        let cols = grid[0].len();
+
+        for _ in 0..rows {
+            println!("{}", "0".repeat(cols));
+        }
+        print!("\x001b[{}A", rows);
+        print!("\x001b[{}D", cols);
+    }
+
     pub fn part1(input: &str, nsteps: usize) -> u64 {
         let mut grid = shared::parse(input);
+        Self::alloc(&grid);
         let mut flashes = 0;
         for _ in 0..nsteps {
             flashes += Self::step(&mut grid);
@@ -29,11 +56,16 @@ impl Soln1 {
     }
 
     fn step(grid: &mut Vec<Vec<u32>>) -> u64 {
+        let rows = grid.len();
+        let cols = grid[0].len();
         for i in 0..grid.len() {
             for j in 0..grid[0].len() {
+                print!("{:.1}", grid[i][j]);
                 grid[i][j] += 1
             }
         }
+        print!("\x001b[{}A", rows);
+        print!("\x001b[{}D", cols);
 
         let mut flashed: Vec<Vec<u32>> = vec![vec![0; grid[0].len()]; grid.len()];
         let mut quiet = false;
