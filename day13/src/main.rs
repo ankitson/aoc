@@ -12,16 +12,16 @@ pub fn main() {
 
 #[cfg(test)]
 mod tests {
-    use crate::shared;
-    use crate::soln1;
+    use crate::shared::parse;
+    use crate::soln1::Soln1;
 
     #[test]
     fn test_sample() {
         let contents: &str = include_str!("../inputs/sample.txt");
-        // let parsed = shared::parse(contents);
+        let parsed = parse(contents);
         // println!("{:?}", parsed);
-        // let part1 = soln1::Soln1::part1(contents);
-        // println!("{}", part1);
+        let part1 = Soln1::part1(contents);
+        println!("{}", part1);
         // assert_eq!(part1, 1656);
         // let part2 = soln1::Soln1::part2(contents);
         // println!("{:?}", part2);
