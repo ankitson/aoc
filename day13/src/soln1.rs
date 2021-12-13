@@ -7,8 +7,8 @@ use crate::shared::{Fold, FoldType::XFold, FoldType::YFold};
 
 pub struct Soln1 {}
 impl Soln1 {
-    pub fn part1(input: &str) -> usize {
-        let (mut grid, folds) = parse(input);
+    pub fn part1(input: &str, grid_size: usize) -> usize {
+        let (mut grid, folds) = parse(input, grid_size);
 
         let folds = folds.into_iter().take(1).collect_vec();
 
@@ -20,19 +20,20 @@ impl Soln1 {
                     //fold at x=3
                     //4 -> 2, 5 -> 1, 6 -> 0
                     //(fx+i) -> (fx-i)
-                    for y in 0..100 {
+                    //in math terms:
+                    for y in 0..grid_size {
                         for x in 0..at {
-                            grid[y][x] += grid[y][x + at];
-                            grid[y][x + at] = 0;
+                            grid[y][x] += grid[y][2 * at - x];
+                            grid[y][2 * at - x] = 0;
                         }
                     }
                 }
                 Fold { ftype: YFold, at } => {
                     println!("yfold at {}", at);
                     for y in 0..at {
-                        for x in 0..100 {
-                            grid[y][x] += grid[y + at][x];
-                            grid[y + at][x] = 0;
+                        for x in 0..grid_size {
+                            grid[y][x] += grid[2 * at - y][x];
+                            grid[2 * at - y][x] = 0;
                         }
                     }
                 }
@@ -43,10 +44,14 @@ impl Soln1 {
         for y in 0..grid.len() {
             for x in 0..grid[0].len() {
                 if grid[y][x] != 0 {
-                    println!("dot: {}, {}", x, y);
+                    // print!("#");
+                    // println!("dot: {}, {}", x, y);
                     dots += 1
+                } else {
+                    // print!(".");
                 }
             }
+            // println!();
         }
         dots
     }

@@ -8,8 +8,8 @@ pub struct Fold {
     pub ftype: FoldType,
     pub at: usize,
 }
-pub fn parse(input: &str) -> (Vec<Vec<usize>>, Vec<Fold>) {
-    let mut grid: Vec<Vec<usize>> = vec![vec![0; 100]; 100];
+pub fn parse(input: &str, grid_size: usize) -> (Vec<Vec<usize>>, Vec<Fold>) {
+    let mut grid: Vec<Vec<usize>> = vec![vec![0; grid_size]; grid_size];
 
     let mut folds: Vec<Fold> = Vec::new();
     let lines = input.lines();
