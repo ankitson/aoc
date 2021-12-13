@@ -1,4 +1,5 @@
-#![feature(array_zip)]
+// #![feature(array_zip)]
+mod shared;
 mod soln1;
 
 pub fn main() {
@@ -12,12 +13,16 @@ pub fn main() {
 
 #[cfg(test)]
 mod tests {
+    use crate::shared;
     use crate::soln1;
 
     #[test]
     fn test_sample() {
         let contents: &str = include_str!("../inputs/sample.txt");
-        // let part1 = soln1::Soln1::part1(contents, 100);
+        let parsed = shared::parse(contents);
+        println!("{:?}", parsed);
+        let part1 = soln1::Soln1::part1(contents);
+        println!("{}", part1);
         // assert_eq!(part1, 1656);
         // let part2 = soln1::Soln1::part2(contents);
         // println!("{:?}", part2);
