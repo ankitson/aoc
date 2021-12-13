@@ -23,48 +23,43 @@ impl Soln1 {
     */
 
     /*
-      This returns 3 on the example not 10
-      Once it visits b, it will never visit it again.
-      In this example, it visits b before A.
-      So it generates the 3 paths starting with b:
+     * Another approach:
+     * 
+     * np(p,q) = number of paths(p,q) = sum ( number of paths (p, vi) * number of paths (vi, q) )
+     *  
+     * we want np(start,end) = sum (np(start,s1),np(start,s2),..,np(start,si)) si = nbr of start
+     * 
+     * calculate np for all pairs?
+     * 
+     * visit start
+     *   visit A
+     *      np(start,A) = 1
+     *      visit c
+     *          np(A,c) = 1
+     *      np(A,A) = 1
+     *      visit b
+     *          np(A,b) = 1
+     *          visit d
+     *              np(b,d) = 1
+     * 
+     *          visit end
+     *              np(b,end) = 1
+     *          
+     *          visit A
+     *              np(b,A) = 2
+     *      visit end
+     *          np(A,end)      
+     *          
+     *          
+     * 
+     * 
+     * 
+     * 
+     */
 
-      start,b,A,c,A,end
-      start,b,A,end
-      start,B,end
-
-      but misses out on the others starting with A. e.g:
-      start,A,b,end
-
-    */
 
     pub fn part1(input: &str) -> u64 {
-        let adjlist = shared::parse(input);
-
-        let mut current_path: Vec<String> = Vec::new();
-        let mut to_visit: VecDeque<String> = VecDeque::from(["start".to_string()]);
-        let mut visited: HashSet<String> = HashSet::new();
-        let mut npaths = 0u64;
-        while !to_visit.is_empty() {
-            let visit = to_visit.pop_back().unwrap();
-            current_path.push(visit.to_string());
-            // println!("visiting {}", &visit);
-            // println!("{:?}", &to_visit);
-            if visit.to_uppercase() == visit {
-                visited.remove(&visit);
-            }
-            if visit == "end" {
-                current_path = Vec::new();
-                npaths += 1;
-            }
-            let empty: Vec<String> = vec![];
-            for nbr in adjlist.nbrs.get(&visit).unwrap_or(&empty) {
-                if nbr == "end" || !visited.contains(nbr) {
-                    to_visit.push_front(nbr.to_string());
-                }
-            }
-            visited.insert(visit.to_string());
-        }
-        npaths
+        todo!()
     }
 
     pub fn part2(input: &str) -> Option<usize> {
