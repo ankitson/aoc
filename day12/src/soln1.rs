@@ -1,8 +1,10 @@
+// use crate::shared;
 use crate::shared::AdjList;
+// use shared;
 use std::collections::{HashSet, VecDeque};
 
-#[path = "shared.rs"]
-mod shared;
+// #[path = "shared.rs"]
+// mod shared;
 
 pub struct Soln1 {}
 impl Soln1 {
@@ -28,14 +30,38 @@ impl Soln1 {
         }
         npaths
     }
+
+    ///Naive backtracking version
     pub fn part1(input: &str) -> u64 {
-        let adj_list = shared::parse(input);
-        let end_adjs = adj_list.nbrs.get("end").unwrap();
+        let adj_list = crate::shared::parse(input);
         let mut npaths = 0u64;
-        for end_adj in end_adjs {
-            npaths += Self::npaths_from(*end_adj, &adj_list);
-        }
+        Self::backtrack(&adj_list, &mut vec!["start".to_string()], &mut npaths, &HashSet::new());
         npaths
+    }
+
+    pub fn backtrack(
+        adj_list: &AdjList,
+        mut current_path: &mut Vec<String>,
+        npaths: &mut u64,
+        visited: &HashSet<String>,
+    ) {
+        let tail = current_path.last().unwrap().clone();
+        if tail == "end" {
+            // println!("discovered path {:?}", current_path);
+            *npaths += 1;
+        }
+        let mut new_visited = visited.clone();
+        if (tail.to_uppercase() != *tail) {
+            new_visited.insert(tail.clone());
+        }
+        for nbr in adj_list.nbrs.get(&tail).unwrap() {
+            //try path current -> nbr
+            if (!visited.contains(nbr)) {
+                current_path.push(nbr.clone());
+                Self::backtrack(adj_list, &mut current_path.clone(), npaths, &new_visited);
+                current_path.pop();
+            }
+        }
     }
 
     pub fn part2(input: &str) -> Option<usize> {
