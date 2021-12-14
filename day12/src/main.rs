@@ -1,6 +1,5 @@
-// #![feature(array_zip)]
-pub mod shared;
-pub mod soln1;
+mod shared;
+mod soln1;
 
 pub fn main() {
     println!("Hello Day 12!");

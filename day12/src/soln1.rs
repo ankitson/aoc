@@ -1,10 +1,5 @@
-// use crate::shared;
-use crate::shared::AdjList;
-// use shared;
+use crate::shared::{parse, AdjList};
 use std::collections::{HashMap, HashSet, VecDeque};
-
-// #[path = "shared.rs"]
-// mod shared;
 
 pub struct Soln1 {}
 impl Soln1 {
@@ -33,7 +28,7 @@ impl Soln1 {
 
     ///Naive backtracking version
     pub fn part1(input: &str) -> u64 {
-        let adj_list = crate::shared::parse(input);
+        let adj_list = parse(input);
         let mut npaths = 0u64;
         Self::backtrack(
             &adj_list,
@@ -102,7 +97,7 @@ impl Soln1 {
     }
 
     pub fn part2(input: &str) -> u64 {
-        let adj_list = crate::shared::parse(input);
+        let adj_list = parse(input);
         let mut npaths = 0u64;
         Self::backtrack(
             &adj_list,
