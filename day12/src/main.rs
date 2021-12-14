@@ -17,7 +17,6 @@ mod tests {
     use crate::soln1;
 
     #[test]
-
     fn test_part1() {
         let sample1: &str = include_str!("../inputs/sample.txt");
         let sample2: &str = include_str!("../inputs/sample2.txt");
@@ -26,11 +25,26 @@ mod tests {
         test_part1_with_sample(sample2, 19);
         test_part1_with_sample(sample3, 226);
     }
+
+    #[test]
+    fn test_part2() {
+        let sample1: &str = include_str!("../inputs/sample.txt");
+        let sample2: &str = include_str!("../inputs/sample2.txt");
+        let sample3: &str = include_str!("../inputs/sample3.txt");
+        test_part2_with_sample(sample1, 36);
+        // test_part2_with_sample(sample2, 103);
+        // test_part2_with_sample(sample3, 3509);
+    }
+
     fn test_part1_with_sample(sample: &str, expected: u64) {
-        let parsed = shared::parse(sample);
-        println!("{:?}", parsed);
         let part1 = soln1::Soln1::part1(sample);
         println!("{}", part1);
         assert_eq!(part1, expected);
+    }
+
+    fn test_part2_with_sample(sample: &str, expected: u64) {
+        let soln = soln1::Soln1::part2(sample);
+        println!("{}", soln);
+        assert_eq!(soln, expected);
     }
 }
