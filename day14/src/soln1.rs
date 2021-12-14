@@ -1,11 +1,29 @@
-use std::collections::HashMap;
+use std::{
+    collections::{BTreeMap, HashMap},
+    hash::Hash,
+    iter::Map,
+};
 
-use itertools::Itertools;
+use itertools::PeekingNext;
 
 use crate::shared::{parse, Rule};
 
-pub struct Soln1 {}
+pub struct Soln1 {
+    // pub dp: [[[String; 10]; 26]; 26],
+    pub dp: BTreeMap<usize, HashMap<String, String>>,
+}
+
 impl Soln1 {
+    pub fn char_idx(char: char) -> usize {
+        (char.to_ascii_lowercase() as u8 - 'a' as u8).into()
+    }
+
+    pub fn new() -> Self {
+        let dp = BTreeMap::new();
+        // let dp = [[["".to_string(); 10]; 26]; 26];
+        Soln1 { dp }
+    }
+
     pub fn apply_n(poly: &str, rules: Vec<Rule>, n: usize) -> String {
         let mut final_poly: String = poly.to_string();
         for i in 0..n {
@@ -49,15 +67,57 @@ impl Soln1 {
         Self::score(&final_poly)
     }
 
+    pub fn expand(chunk: &str, rules: &[Rule]) -> String {
+        let mut pair = chunk.chars().take(2).peekable();
+        let c1 = *pair.peek().unwrap();
+        let c2 = *pair.peek().unwrap();
+        let mut expanded: String = vec![c1].into_iter().collect();
+        for rule in rules {
+            if rule.from == vec![c1, c2].into_iter().collect::<String>() {
+                expanded.push(rule.insert.chars().next().unwrap());
+                break;
+            }
+        }
+        expanded.push(c2);
+        expanded
+    }
+
+    pub fn expand_n(mut self, chunk: &str, rules: &[Rule], n: usize) -> String {
+        let mut found: Option<(usize, &str)> = None;
+        for i in (1..=n).into_iter().rev() {
+            if self.dp.get(&n).is_none() {
+                self.dp.insert(n, HashMap::new());
+            }
+            if let Some(expanded) = self.dp.get(&n).unwrap().get(chunk) {
+                found = Some((i, expanded));
+                break;
+            }
+        }
+        let init_level = found.unwrap_or((0, chunk)).0;
+        let mut curr_str = found.unwrap_or((0, chunk)).1.to_string();
+        for new_level in init_level + 1..=n {
+            curr_str = Self::expand(&curr_str, rules);
+            let mut expansions = self.dp.get_mut(&new_level).unwrap();
+            expansions.insert(chunk.to_string(), curr_str.to_string());
+        }
+        self.dp.get(&n).unwrap().get(chunk).unwrap().to_string()
+    }
+
     pub fn apply(poly: &str, rules: &[Rule]) -> String {
         let mut new_poly = String::new();
 
         for i in 0..poly.len() - 1 {
             let pair = poly.chars().skip(i).take(2).collect::<String>();
-            new_poly.push(pair.chars().next().unwrap());
+            // let mut chars = pair.chars().peekable();
+            // let c1 = chars.next().unwrap();
+            // let c2 = chars.peek().unwrap();
+            new_poly.push(poly.chars().next().unwrap());
             for rule in rules {
                 if rule.from == pair {
-                    new_poly.push(rule.insert.chars().next().unwrap());
+                    new_poly.push(pair.chars().next().unwrap());
+
+                    // self.dp[Self::char_idx(c1)][Self::char_idx(*c2)][0] = "abc".to_string();
+                    // new_poly.push(rule.insert.chars().next().unwrap());
                     break;
                 }
             }

@@ -28,7 +28,64 @@ assuming string length grows exponentially,
 
 apply_nth = O(2^n * S * R) time
 
+----
+# Sample Input
+```
+FNFPPNKPPHSOKFFHOFOC
 
+VS -> B
+SV -> C
+PP -> N
+NS -> N
+BC -> N
+PB -> F
+BK -> P
+NV -> V
+KF -> C
+KS -> C
+PV -> N
+NF -> S
+PK -> F
+SC -> F
+KN -> K
+PN -> K
+OH -> F
+PS -> P
+FN -> O
+```
+-----
+
+Idea 1: 
+
+`FN -> FON -> FAOBN -> ...`
+
+Each pair has a fixed expansion after `n` steps.
+memoize computed expansions?
+
+```
+dp[c1][c2][n] = str
+
+dp[F][N][1] = FON
+df[F][N][2] = FAOBN
+..
+```
+
+for 40 steps, we have 26*26*40 elems.
+max length of step 1 elems = 3
+max length of step 2 elems = (3-1)*3 - 1 = 5
+
+for a string of length i, there are (i-1) new chars inserted max
+
+L(k+1) = L(k) + L(k) -1
+
+L(k+1) = 2L(k) - 1
+
+L(1) = 2*2 - 1 = 3
+L(2) = 2*3 - 1 = 5
+L(3) = 2*5 - 1 = 9
+
+L(n+1) = 2(2*(L(n-1)-1)) - 1 = 2*2*L(n-1) - 2*2 - 1
+L(n+1) = 2^kL(n-k) - (1 + 2^k) 
 
 
 
