@@ -1,4 +1,4 @@
-Naive (f8abcb8)
+# Naive (f8abcb8)
 ------
 
 ```
@@ -29,33 +29,10 @@ assuming string length grows exponentially,
 apply_nth = O(2^n * S * R) time
 
 ----
-# Sample Input
-```
-FNFPPNKPPHSOKFFHOFOC
 
-VS -> B
-SV -> C
-PP -> N
-NS -> N
-BC -> N
-PB -> F
-BK -> P
-NV -> V
-KF -> C
-KS -> C
-PV -> N
-NF -> S
-PK -> F
-SC -> F
-KN -> K
-PN -> K
-OH -> F
-PS -> P
-FN -> O
-```
------
+# V2 
 
-Idea 1: 
+Idea: 
 
 `FN -> FON -> FAOBN -> ...`
 
@@ -70,22 +47,25 @@ df[F][N][2] = FAOBN
 ..
 ```
 
-for 40 steps, we have 26*26*40 elems.
-max length of step 1 elems = 3
-max length of step 2 elems = (3-1)*3 - 1 = 5
+```
+day14-naive/total/5     time:   [142.13 us 142.46 us 142.83 us]                               
+day14-naive/total/6     time:   [343.90 us 344.25 us 344.52 us]                               
+day14-naive/total/7     time:   [924.13 us 924.20 us 924.29 us]                                
+day14-naive/total/8     time:   [2.7890 ms 2.7903 ms 2.7916 ms]                                
+day14-naive/total/9     time:   [9.3626 ms 9.3674 ms 9.3736 ms]                               
+day14-naive/total/10    time:   [33.767 ms 33.884 ms 34.018 ms]                                
+day14-naive/total/11    time:   [127.68 ms 128.02 ms 128.28 ms]                               
+day14-naive/total/12    time:   [496.40 ms 497.15 ms 498.38 ms]                               
+day14-v2/total/5        time:   [31.993 us 32.043 us 32.089 us]                             
+day14-v2/total/6        time:   [59.627 us 59.652 us 59.708 us]                            
+day14-v2/total/7        time:   [115.20 us 115.24 us 115.27 us]                            
+day14-v2/total/8        time:   [223.85 us 223.91 us 223.99 us]                            
+day14-v2/total/9        time:   [440.94 us 441.26 us 441.54 us]                            
+day14-v2/total/10       time:   [878.10 us 878.34 us 878.70 us]                              
+day14-v2/total/11       time:   [1.7533 ms 1.7538 ms 1.7546 ms]                              
+day14-v2/total/12       time:   [3.5018 ms 3.5039 ms 3.5067 ms]   
+```
 
-for a string of length i, there are (i-1) new chars inserted max
+This is 50-150x better. 
 
-L(k+1) = L(k) + L(k) -1
-
-L(k+1) = 2L(k) - 1
-
-L(1) = 2*2 - 1 = 3
-L(2) = 2*3 - 1 = 5
-L(3) = 2*5 - 1 = 9
-
-L(n+1) = 2(2*(L(n-1)-1)) - 1 = 2*2*L(n-1) - 2*2 - 1
-L(n+1) = 2^kL(n-k) - (1 + 2^k) 
-
-
-
+Extrapolated runtime at size 40 = 3.5ms * 2^28 = 10 days!

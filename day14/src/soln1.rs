@@ -4,12 +4,11 @@ use std::{
     iter::Map,
 };
 
-use itertools::PeekingNext;
+use itertools::{Itertools, PeekingNext};
 
 use crate::shared::{parse, Rule};
 
 pub struct Soln1 {
-    // pub dp: [[[String; 10]; 26]; 26],
     pub dp: BTreeMap<usize, HashMap<String, String>>,
 }
 
@@ -40,14 +39,14 @@ impl Soln1 {
 
         let mut freqs: HashMap<char, usize> = HashMap::new();
         for char in poly.chars() {
-            let mut newf = *freqs.get(&char).unwrap_or((&0));
+            let mut newf = *freqs.get(&char).unwrap_or(&0);
             newf += 1;
             freqs.insert(char, newf);
             let new_freq = *freqs.get(&char).unwrap();
-            if (new_freq >= max_freq || char == max_freq_char) {
+            if new_freq >= max_freq || char == max_freq_char {
                 max_freq = new_freq;
                 max_freq_char = char;
-            } else if (new_freq <= min_freq || char == min_freq_char) {
+            } else if new_freq <= min_freq || char == min_freq_char {
                 min_freq = new_freq;
                 min_freq_char = char;
             }
@@ -59,6 +58,19 @@ impl Soln1 {
         let (poly, rules) = parse(input);
         let final_poly = Self::apply_n(poly, rules, 10);
         Self::score(&final_poly)
+    }
+
+    pub fn expand_chunkwise(&mut self, poly: &str, rules: &[Rule], steps: usize) -> String {
+        // let (poly, rules) = parse(input);
+        let mut final_poly = String::new();
+        for (c1, c2) in poly.chars().tuple_windows() {
+            let chunk: String = vec![c1, c2].into_iter().collect();
+            let expanded = Self::expand_n(self, &chunk, rules, steps);
+            final_poly.push_str(&expanded);
+        }
+        final_poly
+        // println!("Final Poly = {}", &final_poly);
+        // Self::score(&final_poly)
     }
 
     pub fn part2(input: &str) -> usize {
@@ -82,23 +94,32 @@ impl Soln1 {
         expanded
     }
 
-    pub fn expand_n(mut self, chunk: &str, rules: &[Rule], n: usize) -> String {
-        let mut found: Option<(usize, &str)> = None;
+    pub fn expand_n(&mut self, chunk: &str, rules: &[Rule], n: usize) -> String {
+        let mut found: Option<(usize, String)> = None;
         for i in (1..=n).into_iter().rev() {
-            if self.dp.get(&n).is_none() {
-                self.dp.insert(n, HashMap::new());
+            if self.dp.get(&i).is_none() {
+                // println!("map empty at level {}", &i);
+                self.dp.insert(i, HashMap::new());
             }
-            if let Some(expanded) = self.dp.get(&n).unwrap().get(chunk) {
-                found = Some((i, expanded));
+            if let Some(expanded) = self.dp.get(&i).unwrap().get(chunk) {
+                // println!(
+                // "found expansion for {} at level {} = {}",
+                // chunk, &i, expanded
+                // );
+                found = Some((i, expanded.to_string()));
                 break;
             }
+            // println!("fin i = {}", &i);
         }
-        let init_level = found.unwrap_or((0, chunk)).0;
-        let mut curr_str = found.unwrap_or((0, chunk)).1.to_string();
+        let (init_level, mut curr_str) = found.unwrap_or((0, chunk.to_string()));
+        // println!("beginning map populate at level: {}", init_level);
+        // println!("map state: {:?}", self.dp);
         for new_level in init_level + 1..=n {
-            curr_str = Self::expand(&curr_str, rules);
+            curr_str = Self::apply(&curr_str, rules);
+            // println!("str after level {} = {}", new_level, curr_str);
             let mut expansions = self.dp.get_mut(&new_level).unwrap();
             expansions.insert(chunk.to_string(), curr_str.to_string());
+            // println!("level {} len {}", new_level, curr_str.len());
         }
         self.dp.get(&n).unwrap().get(chunk).unwrap().to_string()
     }
@@ -111,10 +132,10 @@ impl Soln1 {
             // let mut chars = pair.chars().peekable();
             // let c1 = chars.next().unwrap();
             // let c2 = chars.peek().unwrap();
-            new_poly.push(poly.chars().next().unwrap());
+            new_poly.push(pair.chars().next().unwrap());
             for rule in rules {
                 if rule.from == pair {
-                    new_poly.push(pair.chars().next().unwrap());
+                    new_poly.push(rule.insert.chars().next().unwrap());
 
                     // self.dp[Self::char_idx(c1)][Self::char_idx(*c2)][0] = "abc".to_string();
                     // new_poly.push(rule.insert.chars().next().unwrap());

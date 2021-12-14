@@ -6,7 +6,7 @@ pub fn benchmarks(c: &mut Criterion) {
     let contents: &str = include_str!("../inputs/day14.txt");
 
     let (poly, rules) = parse(contents);
-    let mut group = c.benchmark_group("day14");
+    let mut group = c.benchmark_group("day14-naive");
     for iters in 5..=12 {
         group.bench_with_input(BenchmarkId::new("total", iters), &iters, |b, &i| {
             b.iter(|| {
@@ -15,7 +15,19 @@ pub fn benchmarks(c: &mut Criterion) {
             })
         });
     }
-    group.finish()
+    group.finish();
+
+    let mut group = c.benchmark_group("day14-v2");
+    let mut soln = Soln1::new();
+    for iters in 5..=12 {
+        group.bench_with_input(BenchmarkId::new("total", iters), &iters, |b, &i| {
+            b.iter(|| {
+                let final_poly = soln.expand_chunkwise(poly, &rules, i);
+                Soln1::score(&final_poly)
+            })
+        });
+    }
+    group.finish();
 }
 
 criterion_group!(
