@@ -55,3 +55,16 @@ from the [`Copy`](https://doc.rust-lang.org/std/marker/trait.Copy.html) trait do
 > It’s important to note that in these two examples, the only difference is whether you are allowed to access x after the assignment. Under the hood, both a copy and a move can result in bits being copied in memory, although this is sometimes optimized away.
 
 in what cases would a move result in a memory copy?
+
+-------
+
+```rust
+error[E0308]: mismatched types
+  --> day12/src/soln1.rs:36:51
+   |
+36 |             npaths += Self::npaths_from(*end_adj, &adj_list);
+   |                                                   ^^^^^^^^^ expected struct `shared::AdjList`, found struct `soln1::shared::AdjList`
+   |
+   = note: expected reference `&shared::AdjList`
+              found reference `&soln1::shared::AdjList`
+```
