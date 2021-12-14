@@ -1,6 +1,7 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 use day14::shared::parse;
 use day14::soln1::Soln1;
+use day14::soln2;
 
 pub fn benchmarks(c: &mut Criterion) {
     let contents: &str = include_str!("../inputs/day14.txt");
@@ -28,6 +29,15 @@ pub fn benchmarks(c: &mut Criterion) {
         });
     }
     group.finish();
+
+    let mut group = c.benchmark_group("day14-fast");
+    for iters in [5, 10, 20, 40] {
+        group.bench_with_input(BenchmarkId::new("total", iters), &iters, |b, &i| {
+            b.iter(|| {
+                soln2::run(contents, i);
+            })
+        });
+    }
 }
 
 criterion_group!(

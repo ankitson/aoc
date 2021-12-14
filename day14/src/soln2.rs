@@ -61,7 +61,6 @@ pub fn run(input: &str, n: usize) -> usize {
     for _ in 0..n {
         pair_count = iterate(&mut pair_count, &rule_map);
     }
-    println!("final map: {:?}", pair_count);
     let char_counts = char_counts(poly.chars().nth(0).unwrap(), &pair_count);
     let mx = char_counts
         .values()
@@ -69,7 +68,6 @@ pub fn run(input: &str, n: usize) -> usize {
         .minmax()
         .into_option()
         .unwrap();
-    println!("min max: {:?}", mx);
     *mx.1 - *mx.0
 }
 

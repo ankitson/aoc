@@ -69,3 +69,15 @@ day14-v2/total/12       time:   [3.5018 ms 3.5039 ms 3.5067 ms]
 This is 50-150x better. 
 
 Extrapolated runtime at size 40 = 3.5ms * 2^28 = 10 days!
+
+# V3
+
+the good algo.. only keep track of counts of pairs of chars - this is enough to apply rules and recover character counts from.
+
+```
+day14-fast/total/5      time:   [43.428 us 43.446 us 43.477 us]                               
+day14-fast/total/10     time:   [92.610 us 92.656 us 92.734 us]                               
+day14-fast/total/20     time:   [191.12 us 191.20 us 191.37 us]                               
+day14-fast/total/40     time:   [385.70 us 385.83 us 385.98 us]                               
+```
+
