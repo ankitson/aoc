@@ -1,5 +1,4 @@
-#[path = "shared.rs"]
-mod shared;
+use crate::shared;
 
 pub struct Soln1 {}
 impl Soln1 {

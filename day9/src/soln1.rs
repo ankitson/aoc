@@ -1,6 +1,5 @@
+use crate::shared;
 use std::collections::HashSet;
-#[path = "shared.rs"]
-mod shared;
 
 pub struct Soln1 {}
 impl Soln1 {
@@ -11,7 +10,10 @@ impl Soln1 {
             let (visitx, visity) = to_visit.remove(0);
             let nbrs = Self::nbrs(visitx, visity, grid);
             for (nx, ny) in nbrs {
-                if grid[nx][ny] > grid[visitx][visity] && grid[nx][ny] != 9 && !visited.contains(&(nx, ny)) {
+                if grid[nx][ny] > grid[visitx][visity]
+                    && grid[nx][ny] != 9
+                    && !visited.contains(&(nx, ny))
+                {
                     to_visit.push((nx, ny));
                 }
             }

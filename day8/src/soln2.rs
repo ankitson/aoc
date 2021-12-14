@@ -1,6 +1,5 @@
+use crate::shared;
 use std::collections::{HashMap, HashSet};
-#[path = "shared.rs"]
-mod shared;
 
 /*
  * Constraint propagation idea:
@@ -34,7 +33,7 @@ pub struct Soln2 {
 impl Soln2 {
     // type ConstraintSet;
     // type ConstraintMap;
-    // TODO: The constraints seem to be fine, but they dont converge.
+    // TODO: The constraints dont converge.
     // Im not considering the entire constraint set together - only each character at a time
     pub fn part2(input: &str) -> usize {
         let lines = shared::parse(input);
@@ -109,7 +108,11 @@ impl Soln2 {
             let mut could_map_to: HashSet<char> = HashSet::new();
             for candidate in &candidates {
                 for candidate_char in candidate.chars() {
-                    if (existing_constraints.get(&char).unwrap().contains(&candidate_char)) {
+                    if (existing_constraints
+                        .get(&char)
+                        .unwrap()
+                        .contains(&candidate_char))
+                    {
                         could_map_to.insert(candidate_char);
                     }
                 }

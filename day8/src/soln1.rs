@@ -1,7 +1,7 @@
 use std::collections::{HashMap, HashSet};
 
-#[path = "shared.rs"]
-mod shared;
+// use crate::shared;
+use crate::shared;
 use itertools::Itertools;
 
 pub struct Soln1 {}
@@ -10,7 +10,10 @@ impl Soln1 {
         let lines = shared::parse(input);
         let mut count: usize = 0;
         for (_, second) in lines {
-            let add = second.iter().filter(|x| vec![2, 4, 3, 7].contains(&x.len())).count();
+            let add = second
+                .iter()
+                .filter(|x| vec![2, 4, 3, 7].contains(&x.len()))
+                .count();
             count += add
         }
         count

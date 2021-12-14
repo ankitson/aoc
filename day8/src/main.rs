@@ -1,4 +1,4 @@
-#![feature(drain_filter)]
+mod shared;
 mod soln1;
 mod soln2;
 
@@ -16,8 +16,6 @@ pub fn main() {
     // let part2 = soln::Soln1::part2_fast(contents);
     // println!("Part 2 (mean): {:?}", part2);
 }
-
-
 
 #[cfg(test)]
 mod tests {
@@ -55,10 +53,13 @@ mod tests {
 
     #[test]
     fn test_part2_merge_maps() {
-        let mut m1: HashMap<char, HashSet<char>> = HashMap::from_iter([('a', HashSet::from_iter(['a', 'b', 'c']))]);
-        let m2: HashMap<char, HashSet<char>> = HashMap::from_iter([('a', HashSet::from_iter(['b', 'c', 'd']))]);
+        let mut m1: HashMap<char, HashSet<char>> =
+            HashMap::from_iter([('a', HashSet::from_iter(['a', 'b', 'c']))]);
+        let m2: HashMap<char, HashSet<char>> =
+            HashMap::from_iter([('a', HashSet::from_iter(['b', 'c', 'd']))]);
 
-        let merged: HashMap<char, HashSet<char>> = HashMap::from_iter([('a', HashSet::from_iter(['b', 'c']))]);
+        let merged: HashMap<char, HashSet<char>> =
+            HashMap::from_iter([('a', HashSet::from_iter(['b', 'c']))]);
         soln2::Soln2::merge_maps(&mut m1, m2);
         assert_eq!(m1, merged);
     }

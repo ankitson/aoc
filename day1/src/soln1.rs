@@ -1,4 +1,3 @@
-
 pub struct Soln1 {}
 impl Soln1 {
     pub fn parse(input: &str) -> Vec<i32> {
@@ -15,7 +14,11 @@ impl Soln1 {
     fn count_window(input: Vec<i32>, window_size: usize) -> i32 {
         let mut count = 0;
         for i in 0..input.len() - window_size {
-            count += if input[i + window_size] > input[i] { 1 } else { 0 };
+            count += if input[i + window_size] > input[i] {
+                1
+            } else {
+                0
+            };
         }
         count
     }

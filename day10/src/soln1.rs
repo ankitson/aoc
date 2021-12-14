@@ -1,5 +1,4 @@
-#[path = "shared.rs"]
-mod shared;
+use crate::shared;
 
 enum Either<A, B> {
     Left(A),
@@ -67,8 +66,7 @@ impl Soln1 {
                 stack.push(char)
             } else {
                 let br_type = Self::close_idx(char).expect("expected close");
-                let matching_open =
-                    Self::idx_open(br_type).expect("no matching open");
+                let matching_open = Self::idx_open(br_type).expect("no matching open");
                 if *stack.last().unwrap() == matching_open {
                     stack.pop();
                 } else {
@@ -90,8 +88,7 @@ impl Soln1 {
         for line in lines {
             let line_score = match Self::first_illegal(line) {
                 Either::Left(bad_index) => {
-                    let bad_char =
-                        line.chars().nth(bad_index).expect("illegal char");
+                    let bad_char = line.chars().nth(bad_index).expect("illegal char");
                     Self::score(&bad_char).expect("no score for char")
                 }
                 _ => 0,

@@ -1,4 +1,5 @@
 #![feature(array_zip)]
+mod shared;
 mod soln1;
 
 pub fn main() {

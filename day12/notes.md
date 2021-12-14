@@ -25,7 +25,7 @@ c-A--b-d
 
 Pure BFS cannot work because CAPS-small edges can be traversed twice.
 
-
+Use backtracking instead.
 
 ----
   paths = {
@@ -34,8 +34,6 @@ Pure BFS cannot work because CAPS-small edges can be traversed twice.
     c: [[start,A,c],[start,b,A,c]]
     d: [[start,b,d],[start,A,b,d]]
   }
-
-----
 
 Another approach:
   
