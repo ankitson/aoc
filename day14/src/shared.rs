@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Rule<'a> {
     pub from: &'a str,
     pub insert: &'a str,

@@ -34,7 +34,6 @@ impl Soln1 {
                 min_freq_char = char;
             }
         }
-        println!("max {} {} min {} {}", max_freq, max_freq_char, min_freq, min_freq_char);
         max_freq - min_freq
     }
 
