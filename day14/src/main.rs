@@ -1,21 +1,23 @@
 mod shared;
 mod soln1;
+mod soln2;
 
 pub fn main() {
     println!("Hello Day 14!");
     let contents: &str = include_str!("../inputs/day14.txt");
-    let part1 = soln1::Soln1::part1(contents);
-    println!("Part 1 = {:?}", part1);
-    // let part2 = soln1::Soln1::part2(contents);
-    // println!("Part 2 =\n{}", part2);
+    let part1_fast = soln2::part1(contents);
+    println!("Part 1 (fast)=  {:?}", part1_fast);
+    let part2_fast = soln2::part2(contents);
+    println!("Part 2 (fast)=  {:?}", part2_fast);
 }
 
 #[cfg(test)]
 mod tests {
     use crate::shared::parse;
     use crate::soln1::Soln1;
+    use crate::soln2;
 
-    #[test]
+    // #[test]
     fn test_sample() {
         let contents: &str = include_str!("../inputs/sample.txt");
         let parsed = parse(contents);
@@ -40,6 +42,27 @@ mod tests {
     }
 
     #[test]
+    fn test_fast() {
+        let contents: &str = include_str!("../inputs/sample.txt");
+        let part1_fast = soln2::part1(contents);
+        println!("Part 1 (fast)=  {:?}", part1_fast);
+        let part2_fast = soln2::part2(contents);
+        println!("Part 2 (fast)=  {:?}", part2_fast);
+    }
+
+    // #[test]
+    fn test_iterate() {
+        let contents: &str = include_str!("../inputs/sample.txt");
+        // let (poly, rules) = parse(contents);
+        // let mut map = soln2::build_map(poly);
+        // let rule_map = soln2::build_rules(&rules);
+        // let mut new_map = soln2::iterate(&mut map, &rule_map);
+        // println!("{:?}", new_map);
+        let part1 = soln2::part1(contents);
+        // println!("{:?}", new_map);
+    }
+
+    // #[test]
     fn test_expand() {
         let contents: &str = include_str!("../inputs/sample.txt");
         let (poly, rules) = parse(contents);
