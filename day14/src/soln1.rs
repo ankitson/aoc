@@ -6,16 +6,15 @@ use crate::shared::{parse, Rule};
 
 pub struct Soln1 {}
 impl Soln1 {
-    pub fn part1_core(poly: &str, rules: Vec<Rule>) -> String {
+    pub fn apply_n(poly: &str, rules: Vec<Rule>, n: usize) -> String {
         let mut final_poly: String = poly.to_string();
-        for i in 0..10 {
+        for i in 0..n {
             final_poly = Self::apply(&final_poly, &rules);
-            // println!("After step {}: {}", i + 1, final_poly);
         }
         final_poly
     }
 
-    pub fn part1_score(poly: &str) -> usize {
+    pub fn score(poly: &str) -> usize {
         let mut max_freq: usize = 0;
         let mut min_freq: usize = usize::MAX;
         let mut max_freq_char: char = 'a';
@@ -38,10 +37,17 @@ impl Soln1 {
         println!("max {} {} min {} {}", max_freq, max_freq_char, min_freq, min_freq_char);
         max_freq - min_freq
     }
+
     pub fn part1(input: &str) -> usize {
         let (poly, rules) = parse(input);
-        let final_poly = Self::part1_core(poly, rules);
-        Self::part1_score(&final_poly)
+        let final_poly = Self::apply_n(poly, rules, 10);
+        Self::score(&final_poly)
+    }
+
+    pub fn part2(input: &str) -> usize {
+        let (poly, rules) = parse(input);
+        let final_poly = Self::apply_n(poly, rules, 40);
+        Self::score(&final_poly)
     }
 
     pub fn apply(poly: &str, rules: &[Rule]) -> String {
