@@ -17,8 +17,8 @@ mod tests {
     use crate::soln1::Soln1;
     use crate::soln2;
 
-    // #[test]
-    fn test_sample() {
+    #[test]
+    fn test_slow() {
         let contents: &str = include_str!("../inputs/sample.txt");
         let parsed = parse(contents);
         println!("{:?}", parsed);
@@ -33,6 +33,7 @@ mod tests {
         println!("{}", part1);
         assert_eq!(part1, 1588);
 
+        // Too slow --
         // let part2 = soln.expand_chunkwise(poly, &rules, 40);
         // println!("{}", part1);
         // assert_eq!(part1, 1588);
@@ -50,19 +51,17 @@ mod tests {
         println!("Part 2 (fast)=  {:?}", part2_fast);
     }
 
-    // #[test]
+    #[test]
     fn test_iterate() {
         let contents: &str = include_str!("../inputs/sample.txt");
-        // let (poly, rules) = parse(contents);
-        // let mut map = soln2::build_map(poly);
-        // let rule_map = soln2::build_rules(&rules);
-        // let mut new_map = soln2::iterate(&mut map, &rule_map);
-        // println!("{:?}", new_map);
-        let part1 = soln2::part1(contents);
-        // println!("{:?}", new_map);
+        let (poly, rules) = parse(contents);
+        let mut map = soln2::build_map(poly);
+        let rule_map = soln2::build_rules(&rules);
+        let new_map = soln2::iterate(&mut map, &rule_map);
+        println!("{:?}", new_map);
     }
 
-    // #[test]
+    #[test]
     fn test_expand() {
         let contents: &str = include_str!("../inputs/sample.txt");
         let (poly, rules) = parse(contents);

@@ -1,8 +1,6 @@
-use std::{collections::HashMap, hash::Hash, ops::RangeFull};
-
-use itertools::Itertools;
-
 use crate::shared::{parse, Rule};
+use itertools::Itertools;
+use std::collections::HashMap;
 
 type PairCount = HashMap<(char, char), usize>;
 type RuleMap = HashMap<(char, char), char>;
@@ -28,7 +26,7 @@ pub fn build_rules(rules: &[Rule]) -> RuleMap {
     rule_map
 }
 
-pub fn iterate<'a>(pair_count: &'a mut PairCount, rule_map: &RuleMap) -> PairCount {
+pub fn iterate(pair_count: &mut PairCount, rule_map: &RuleMap) -> PairCount {
     let mut new_pair: PairCount = HashMap::new();
     for ((c1, c2), n) in pair_count {
         if rule_map.contains_key(&(*c1, *c2)) {

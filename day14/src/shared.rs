@@ -6,10 +6,7 @@ pub struct Rule<'a> {
 
 impl<'a> Rule<'a> {
     pub fn new(from: &'a str, insert: &'a str) -> Rule<'a> {
-        Rule {
-            from: from,
-            insert: insert,
-        }
+        Rule { from, insert }
     }
 }
 

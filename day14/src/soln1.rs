@@ -1,12 +1,6 @@
-use std::{
-    collections::{BTreeMap, HashMap},
-    hash::Hash,
-    iter::Map,
-};
-
-use itertools::{Itertools, PeekingNext};
-
 use crate::shared::{parse, Rule};
+use itertools::Itertools;
+use std::collections::{BTreeMap, HashMap};
 
 pub struct Soln1 {
     pub dp: BTreeMap<usize, HashMap<String, String>>,
@@ -14,12 +8,11 @@ pub struct Soln1 {
 
 impl Soln1 {
     pub fn char_idx(char: char) -> usize {
-        (char.to_ascii_lowercase() as u8 - 'a' as u8).into()
+        (char.to_ascii_lowercase() as u8 - b'a').into()
     }
 
     pub fn new() -> Self {
         let dp = BTreeMap::new();
-        // let dp = [[["".to_string(); 10]; 26]; 26];
         Soln1 { dp }
     }
 
@@ -98,28 +91,18 @@ impl Soln1 {
         let mut found: Option<(usize, String)> = None;
         for i in (1..=n).into_iter().rev() {
             if self.dp.get(&i).is_none() {
-                // println!("map empty at level {}", &i);
                 self.dp.insert(i, HashMap::new());
             }
             if let Some(expanded) = self.dp.get(&i).unwrap().get(chunk) {
-                // println!(
-                // "found expansion for {} at level {} = {}",
-                // chunk, &i, expanded
-                // );
                 found = Some((i, expanded.to_string()));
                 break;
             }
-            // println!("fin i = {}", &i);
         }
         let (init_level, mut curr_str) = found.unwrap_or((0, chunk.to_string()));
-        // println!("beginning map populate at level: {}", init_level);
-        // println!("map state: {:?}", self.dp);
         for new_level in init_level + 1..=n {
             curr_str = Self::apply(&curr_str, rules);
-            // println!("str after level {} = {}", new_level, curr_str);
             let mut expansions = self.dp.get_mut(&new_level).unwrap();
             expansions.insert(chunk.to_string(), curr_str.to_string());
-            // println!("level {} len {}", new_level, curr_str.len());
         }
         self.dp.get(&n).unwrap().get(chunk).unwrap().to_string()
     }
@@ -129,16 +112,10 @@ impl Soln1 {
 
         for i in 0..poly.len() - 1 {
             let pair = poly.chars().skip(i).take(2).collect::<String>();
-            // let mut chars = pair.chars().peekable();
-            // let c1 = chars.next().unwrap();
-            // let c2 = chars.peek().unwrap();
             new_poly.push(pair.chars().next().unwrap());
             for rule in rules {
                 if rule.from == pair {
                     new_poly.push(rule.insert.chars().next().unwrap());
-
-                    // self.dp[Self::char_idx(c1)][Self::char_idx(*c2)][0] = "abc".to_string();
-                    // new_poly.push(rule.insert.chars().next().unwrap());
                     break;
                 }
             }
