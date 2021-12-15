@@ -20,6 +20,7 @@ impl Soln1 {
 
         let mut visited: HashSet<(usize, usize)> = HashSet::new();
         let mut to_visit: VecDeque<(usize, usize)> = VecDeque::from(vec![(0, 0)]);
+        // let mut to_visit_next: HashSet<(usize, usize)> = HashSet::new();
         while to_visit.len() > 0 {
             let (vx, vy) = to_visit.pop_back().unwrap();
             visited.insert((vx, vy));
@@ -43,7 +44,13 @@ impl Soln1 {
                         costs.insert((nx, ny), new_cost);
                     }
                 }
-                to_visit.push_front((nx, ny));
+                if !to_visit.contains(&(nx, ny)) {
+                    to_visit.push_front((nx, ny));
+                }
+                // if to_visit.is_empty() {
+                //     to_visit = to_visit_next;
+                //     to_visit_next = HashSet::new();
+                // }
             }
         }
 
