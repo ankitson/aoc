@@ -1,17 +1,34 @@
 use std::{
     collections::{HashMap, HashSet, VecDeque},
     fmt::Display,
+    iter,
 };
 
 use crate::shared::parse;
-use itertools::Itertools;
+use itertools::{iproduct, Itertools};
 
 pub struct Soln1 {}
 
 impl Soln1 {
-    ///Shortest path in weighted graph
-    /// Maintain list of costs cost[(x,y)] = weight of shortest path from 0,0 to (x,y)
-    ///
+    pub fn part1_fast(input: &str) -> usize {
+        let grid = parse(input);
+        let size = grid.len();
+        let mut costs = iter::repeat(iter::repeat(usize::MAX as usize).take(size).collect_vec())
+            .take(size)
+            .collect_vec();
+        costs[0][0] = 0;
+
+        let mut coords = iproduct!(0..size, 0..size).collect_vec();
+        coords.sort_unstable_by(|(x1, y1), (x2, y2)| (*x1 + *y1).cmp(&(*x2 + *y2)));
+        for (x, y) in coords {
+            for (nx, ny) in Self::nbrs(x, y, size, size) {
+                costs[nx][ny] = costs[nx][ny].min(costs[x][y] + (grid[nx][ny] as usize))
+            }
+        }
+        // Self::print_grid(&costs);
+        costs[size - 1][size - 1]
+    }
+
     pub fn part1(input: &str) -> usize {
         let grid = parse(input);
         let size = grid.len();
@@ -20,7 +37,6 @@ impl Soln1 {
 
         let mut visited: HashSet<(usize, usize)> = HashSet::new();
         let mut to_visit: VecDeque<(usize, usize)> = VecDeque::from(vec![(0, 0)]);
-        // let mut to_visit_next: HashSet<(usize, usize)> = HashSet::new();
         while to_visit.len() > 0 {
             let (vx, vy) = to_visit.pop_back().unwrap();
             visited.insert((vx, vy));
@@ -47,16 +63,12 @@ impl Soln1 {
                 if !to_visit.contains(&(nx, ny)) {
                     to_visit.push_front((nx, ny));
                 }
-                // if to_visit.is_empty() {
-                //     to_visit = to_visit_next;
-                //     to_visit_next = HashSet::new();
-                // }
             }
         }
 
-        Self::print_grid(&grid);
+        // Self::print_grid(&grid);
         // println!("{:?}", grid);
-        println!("{:?}", costs);
+        // println!("{:?}", costs);
         *costs.get(&(size - 1, size - 1)).unwrap()
     }
 
@@ -86,9 +98,5 @@ impl Soln1 {
         }
 
         nbrs
-    }
-
-    pub fn part2(input: &str) -> usize {
-        todo!()
     }
 }
