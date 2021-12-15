@@ -6,21 +6,25 @@ pub fn main() {
     let contents: &str = include_str!("../inputs/day15.txt");
     let part1 = soln1::Soln1::part1(contents);
     println!("Part 1 =  {:?}", part1);
-    let part2 = soln1::Soln1::part2(contents);
-    println!("Part 2 =  {:?}", part2);
+    // let part2 = soln1::Soln1::part2(contents);
+    // println!("Part 2 =  {:?}", part2);
 }
 
 #[cfg(test)]
 mod tests {
+    use day15::soln1;
+
     use crate::shared::parse;
     use crate::soln1::Soln1;
 
     #[test]
     fn test_part1() {
         let sample1: &str = include_str!("../inputs/sample.txt");
+        let grid = parse(sample1);
+        println!("{:?}", grid);
         // let sample2: &str = include_str!("../inputs/sample2.txt");
         // let sample3: &str = include_str!("../inputs/sample3.txt");
-        // test_part1_with_sample(sample1, 10);
+        test_part1_with_sample(sample1, 40);
         // test_part1_with_sample(sample2, 19);
         // test_part1_with_sample(sample3, 226);
     }
@@ -35,12 +39,13 @@ mod tests {
         // test_part2_with_sample(sample3, 3509);
     }
 
-    fn test_part1_with_sample(sample: &str, expected: u64) {
-        // let part1 = soln1::Soln1::part1(sample);
-        // assert_eq!(part1, expected);
+    fn test_part1_with_sample(sample: &str, expected: usize) {
+        let part1 = soln1::Soln1::part1(sample);
+        println!("Part 1 (sample) = {:?}", part1);
+        assert_eq!(part1, expected);
     }
 
-    fn test_part2_with_sample(sample: &str, expected: u64) {
+    fn test_part2_with_sample(sample: &str, expected: usize) {
         // let soln = soln1::Soln1::part2(sample);
         // assert_eq!(soln, expected);
     }
