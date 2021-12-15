@@ -8,8 +8,8 @@ pub fn main() {
     println!("Part 1 =  {:?}", part1);
     let part1_fast = soln1::Soln1::part1_fast(contents);
     println!("Part 1 (fast) =  {:?}", part1_fast);
-    // let part2 = soln1::Soln1::part2(contents);
-    // println!("Part 2 =  {:?}", part2);
+    let part2 = soln1::Soln1::part2(contents);
+    println!("Part 2 =  {:?}", part2);
 }
 
 #[cfg(test)]
@@ -32,7 +32,10 @@ mod tests {
 
     #[test]
     fn test_part2() {
-        let sample1: &str = include_str!("../inputs/sample.txt");
+        let sample: &str = include_str!("../inputs/sample.txt");
+        let part2 = soln1::Soln1::part2(sample);
+        println!("Part 2 (sample) = {:?}", part2);
+        assert_eq!(part2, 315);
         // let sample2: &str = include_str!("../inputs/sample2.txt");
         // let sample3: &str = include_str!("../inputs/sample3.txt");
         // test_part2_with_sample(sample1, 40);

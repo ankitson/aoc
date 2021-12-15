@@ -10,6 +10,57 @@ use itertools::{iproduct, Itertools};
 pub struct Soln1 {}
 
 impl Soln1 {
+    pub fn modulo(a: usize, b: usize) -> usize {
+        let ai = i32::try_from(a).unwrap();
+        let bi = i32::try_from(b).unwrap();
+        let res = ((ai % bi) + bi) % bi;
+        res as usize
+    }
+
+    pub fn part2(input: &str) -> usize {
+        let grid = parse(input);
+        let size = grid.len();
+        let vsize = size * 5;
+        let mut costs = iter::repeat(iter::repeat(usize::MAX as usize).take(vsize).collect_vec())
+            .take(vsize)
+            .collect_vec();
+        costs[0][0] = 0;
+
+        let mut coords = iproduct!(0..vsize, 0..vsize).collect_vec();
+        coords.sort_unstable_by(|(x1, y1), (x2, y2)| (*x1 + *y1).cmp(&(*x2 + *y2)));
+        for (x, y) in coords {
+            for (nx, ny) in Self::nbrs(x, y, vsize, vsize) {
+                let grid_val: usize = {
+                    if nx < size && ny < size {
+                        grid[nx][ny] as usize
+                    } else {
+                        // 0-9: 0
+                        // 10-19: 1
+                        // 20-29: 2
+                        let big_grid_x = nx / 10;
+                        let big_grid_y = ny / 10;
+                        let l1_dist = big_grid_x + big_grid_y;
+                        let cx = Self::modulo(nx, 10);
+                        let cy = Self::modulo(ny, 10);
+                        let gridu: usize = grid[cx][cy].into();
+                        let mut corresponding: usize = Self::modulo(gridu + l1_dist, 10);
+                        if gridu + l1_dist >= 10 {
+                            corresponding += 1;
+                        }
+                        // println!(
+                        //     "Mapping {} {} to {} {} with offset {}. grid ={}, vgrid = {}",
+                        //     nx, ny, cx, cy, l1_dist, grid[cx][cy], corresponding
+                        // );
+                        corresponding
+                    }
+                };
+                costs[nx][ny] = costs[nx][ny].min(costs[x][y] + grid_val)
+            }
+        }
+        // Self::print_grid(&costs);
+        costs[vsize - 1][vsize - 1]
+    }
+
     pub fn part1_fast(input: &str) -> usize {
         let grid = parse(input);
         let size = grid.len();
