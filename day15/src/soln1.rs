@@ -1,133 +1,109 @@
 use std::{
-    collections::{HashMap, HashSet, VecDeque},
+    collections::{BinaryHeap, HashMap, HashSet, VecDeque},
     fmt::Display,
     iter,
 };
 
 use crate::shared::parse;
-use itertools::{iproduct, Itertools};
+use itertools::Itertools;
 
 pub struct Soln1 {}
 
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct State {
+    cost: usize,
+    coord: (usize, usize),
+}
+
+impl Ord for State {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        other.cost.cmp(&self.cost).then_with(|| self.coord.cmp(&other.coord))
+    }
+}
+
+impl PartialOrd for State {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
 impl Soln1 {
-    pub fn modulo(a: usize, b: usize) -> usize {
-        let ai = i32::try_from(a).unwrap();
-        let bi = i32::try_from(b).unwrap();
-        let res = ((ai % bi) + bi) % bi;
-        res as usize
-    }
-
-    pub fn add_one(a: usize) -> usize {
-        if a == 9 {
-            1
-        } else {
-            a + 1
+    fn lookup_grid(grid: &Vec<Vec<u8>>, x: usize, y: usize, scale: usize) -> usize {
+        if scale < 1 {
+            panic!("illegal scale");
         }
-    }
 
-    pub fn add_n(a: usize, n: usize) -> usize {
-        let mut x = a;
-        for _ in 0..n {
-            x = Self::add_one(x)
-        }
-        x
-    }
-
-    pub fn part2(input: &str) -> usize {
-        let grid = parse(input);
         let size = grid.len();
-        let vsize = size * 5;
+        let vsize = size * scale;
+
+        let grid_val = {
+            if x < size && y < size {
+                grid[x][y] as usize
+            } else {
+                let big_grid_x = x / size;
+                let big_grid_y = y / size;
+                let l1_dist = big_grid_x + big_grid_y;
+                let cx = x % size;
+                let cy = y % size;
+                let gridu: usize = grid[cx][cy].into();
+                let mut corresponding: usize = (gridu + l1_dist) % 10;
+                corresponding += (gridu + l1_dist) / 10;
+                corresponding
+            }
+        };
+
+        grid_val
+    }
+
+    pub fn djikstra(grid: &Vec<Vec<u8>>, scale: usize, from: (usize, usize), to: (usize, usize)) -> Option<usize> {
+        let size = grid.len();
+        let vsize = size * scale;
+        let mut to_visit = BinaryHeap::new();
+        to_visit.push(State { cost: 0, coord: (0, 0) });
+
         let mut costs = iter::repeat(iter::repeat(usize::MAX as usize).take(vsize).collect_vec())
             .take(vsize)
             .collect_vec();
         costs[0][0] = 0;
 
-        let mut coords = iproduct!(0..vsize, 0..vsize).collect_vec();
-        coords.sort_unstable_by(|(x1, y1), (x2, y2)| (*x1 + *y1).cmp(&(*x2 + *y2)));
-
-        let mut mapped = iter::repeat(iter::repeat(0_usize).take(vsize).collect_vec())
-            .take(vsize)
-            .collect_vec();
-        for (x, y) in coords {
-            if (x + y > 99 + 99 && x + y < 100 + 100) {
-                // println!("x,y: {},{}", x, y);
+        while let Some(State { cost, coord }) = to_visit.pop() {
+            if coord == to {
+                return Some(cost);
             }
-            for (nx, ny) in Self::nbrs(x, y, vsize, vsize) {
-                // println!("nbr of {} {} = {} {}", x, y, nx, ny);
-                let grid_val: usize = {
-                    if nx < size && ny < size {
-                        mapped[nx][ny] = grid[nx][ny] as usize;
-                        grid[nx][ny] as usize
-                    } else {
-                        // 0-9: 0
-                        // 10-19: 1
-                        // 20-29: 2
-                        let big_grid_x = nx / size;
-                        let big_grid_y = ny / size;
-                        let l1_dist = big_grid_x + big_grid_y;
-                        let cx = Self::modulo(nx, size);
-                        let cy = Self::modulo(ny, size);
-                        let gridu: usize = grid[cx][cy].into();
-                        let mut corresponding = Self::add_n(gridu, l1_dist);
-                        // let mut corresponding: usize = Self::modulo(gridu + l1_dist, 10);
-                        // corresponding += (gridu + l1_dist) / 10;
-                        if l1_dist >= 9 {
-                            println!(
-                                "Mapping {} {} to {} {} with offset {}. grid ={}, vgrid = {}",
-                                nx, ny, cx, cy, l1_dist, grid[cx][cy], corresponding
-                            );
-                        }
-                        mapped[nx][ny] = corresponding;
-                        // println!(
-                        // "Mapping {} {} (diag = {}) to {} {} (diag = {}) with offset {}. grid ={}, vgrid = {}",
-                        // nx, ny, nx+ny, cx, cy, cx+cy, l1_dist, grid[cx][cy], corresponding
-                        // );
-                        corresponding
-                    }
+
+            if cost > costs[coord.0][coord.1] {
+                continue;
+            }
+
+            for (nbrx, nbry) in Self::nbrs(coord.0, coord.1, vsize, vsize) {
+                let nbr_state = State {
+                    cost: cost + Self::lookup_grid(grid, nbrx, nbry, 5) as usize,
+                    coord: (nbrx, nbry),
                 };
-                // println!(
-                // "costs = {}. setting to min {}",
-                // costs[nx][ny],
-                // costs[x][y] + grid_val
-                // );
-                costs[nx][ny] = costs[nx][ny].min(costs[x][y] + grid_val)
+
+                if nbr_state.cost < costs[nbrx][nbry] {
+                    to_visit.push(nbr_state);
+                    costs[nbrx][nbry] = nbr_state.cost;
+                }
             }
         }
-        // Self::print_grid(&grid);
-        // Self::print_grid(&mapped);
-        costs[vsize - 1][vsize - 1]
-    }
 
-    /**
-     * PROBLEM:
-     * this fn is wrong. paths don't always go only right/down.
-     * e.g consider:
-     * 19999
-     * 19111
-     * 11191
-     * 
-     * the best path is following the 1s
-     */
-    pub fn part1_fast(input: &str) -> usize {
-        let grid = parse(input);
-        let size = grid.len();
-        let mut costs = iter::repeat(iter::repeat(usize::MAX as usize).take(size).collect_vec())
-            .take(size)
-            .collect_vec();
-        costs[0][0] = 0;
-
-        let mut coords = iproduct!(0..size, 0..size).collect_vec();
-        coords.sort_unstable_by(|(x1, y1), (x2, y2)| (*x1 + *y1).cmp(&(*x2 + *y2)));
-        for (x, y) in coords {
-            for (nx, ny) in Self::nbrs(x, y, size, size) {
-                costs[nx][ny] = costs[nx][ny].min(costs[x][y] + (grid[nx][ny] as usize))
-            }
-        }
-        // Self::print_grid(&costs);
-        costs[size - 1][size - 1]
+        None
     }
 
     pub fn part1(input: &str) -> usize {
+        let grid = parse(input);
+        let size = grid.len();
+        Self::djikstra(&grid, 1, (0, 0), (size - 1, size - 1)).unwrap()
+    }
+
+    pub fn part2(input: &str) -> usize {
+        let grid = parse(input);
+        let size = grid.len();
+        Self::djikstra(&grid, 5, (0, 0), (size * 5 - 1, size * 5 - 1)).unwrap()
+    }
+
+    pub fn part1_slow(input: &str) -> usize {
         let grid = parse(input);
         let size = grid.len();
         let mut costs: HashMap<(usize, usize), usize> = HashMap::new();
@@ -145,7 +121,7 @@ impl Soln1 {
                 match costs.get_mut(&(nx, ny)).cloned() {
                     Some(existing_cost) => {
                         let cost_to_here = costs.get(&(vx, vy)).cloned().unwrap();
-                        let mut new_cost: usize = cost_to_here + (grid[nx][ny] as usize);
+                        let new_cost: usize = cost_to_here + (grid[nx][ny] as usize);
                         let mut best_cost = existing_cost;
                         if new_cost < existing_cost {
                             best_cost = new_cost;
@@ -183,13 +159,13 @@ impl Soln1 {
     fn nbrs(x: usize, y: usize, max_x: usize, max_y: usize) -> Vec<(usize, usize)> {
         let mut nbrs: Vec<(usize, usize)> = Vec::new();
         if x != 0 {
-        nbrs.push((x - 1, y));
+            nbrs.push((x - 1, y));
         }
         if x + 1 < max_x {
             nbrs.push((x + 1, y));
         }
         if y != 0 {
-        nbrs.push((x, y - 1));
+            nbrs.push((x, y - 1));
         }
         if y + 1 < max_y {
             nbrs.push((x, y + 1));
