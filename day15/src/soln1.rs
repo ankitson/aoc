@@ -17,6 +17,22 @@ impl Soln1 {
         res as usize
     }
 
+    pub fn add_one(a: usize) -> usize {
+        if a == 9 {
+            1
+        } else {
+            a + 1
+        }
+    }
+
+    pub fn add_n(a: usize, n: usize) -> usize {
+        let mut x = a;
+        for _ in 0..n {
+            x = Self::add_one(x)
+        }
+        x
+    }
+
     pub fn part2(input: &str) -> usize {
         let grid = parse(input);
         let size = grid.len();
@@ -28,39 +44,70 @@ impl Soln1 {
 
         let mut coords = iproduct!(0..vsize, 0..vsize).collect_vec();
         coords.sort_unstable_by(|(x1, y1), (x2, y2)| (*x1 + *y1).cmp(&(*x2 + *y2)));
+
+        let mut mapped = iter::repeat(iter::repeat(0_usize).take(vsize).collect_vec())
+            .take(vsize)
+            .collect_vec();
         for (x, y) in coords {
+            if (x + y > 99 + 99 && x + y < 100 + 100) {
+                // println!("x,y: {},{}", x, y);
+            }
             for (nx, ny) in Self::nbrs(x, y, vsize, vsize) {
+                // println!("nbr of {} {} = {} {}", x, y, nx, ny);
                 let grid_val: usize = {
                     if nx < size && ny < size {
+                        mapped[nx][ny] = grid[nx][ny] as usize;
                         grid[nx][ny] as usize
                     } else {
                         // 0-9: 0
                         // 10-19: 1
                         // 20-29: 2
-                        let big_grid_x = nx / 10;
-                        let big_grid_y = ny / 10;
+                        let big_grid_x = nx / size;
+                        let big_grid_y = ny / size;
                         let l1_dist = big_grid_x + big_grid_y;
-                        let cx = Self::modulo(nx, 10);
-                        let cy = Self::modulo(ny, 10);
+                        let cx = Self::modulo(nx, size);
+                        let cy = Self::modulo(ny, size);
                         let gridu: usize = grid[cx][cy].into();
-                        let mut corresponding: usize = Self::modulo(gridu + l1_dist, 10);
-                        if gridu + l1_dist >= 10 {
-                            corresponding += 1;
+                        let mut corresponding = Self::add_n(gridu, l1_dist);
+                        // let mut corresponding: usize = Self::modulo(gridu + l1_dist, 10);
+                        // corresponding += (gridu + l1_dist) / 10;
+                        if l1_dist >= 9 {
+                            println!(
+                                "Mapping {} {} to {} {} with offset {}. grid ={}, vgrid = {}",
+                                nx, ny, cx, cy, l1_dist, grid[cx][cy], corresponding
+                            );
                         }
+                        mapped[nx][ny] = corresponding;
                         // println!(
-                        //     "Mapping {} {} to {} {} with offset {}. grid ={}, vgrid = {}",
-                        //     nx, ny, cx, cy, l1_dist, grid[cx][cy], corresponding
+                        // "Mapping {} {} (diag = {}) to {} {} (diag = {}) with offset {}. grid ={}, vgrid = {}",
+                        // nx, ny, nx+ny, cx, cy, cx+cy, l1_dist, grid[cx][cy], corresponding
                         // );
                         corresponding
                     }
                 };
+                // println!(
+                // "costs = {}. setting to min {}",
+                // costs[nx][ny],
+                // costs[x][y] + grid_val
+                // );
                 costs[nx][ny] = costs[nx][ny].min(costs[x][y] + grid_val)
             }
         }
-        // Self::print_grid(&costs);
+        // Self::print_grid(&grid);
+        // Self::print_grid(&mapped);
         costs[vsize - 1][vsize - 1]
     }
 
+    /**
+     * PROBLEM:
+     * this fn is wrong. paths don't always go only right/down.
+     * e.g consider:
+     * 19999
+     * 19111
+     * 11191
+     * 
+     * the best path is following the 1s
+     */
     pub fn part1_fast(input: &str) -> usize {
         let grid = parse(input);
         let size = grid.len();
@@ -136,13 +183,13 @@ impl Soln1 {
     fn nbrs(x: usize, y: usize, max_x: usize, max_y: usize) -> Vec<(usize, usize)> {
         let mut nbrs: Vec<(usize, usize)> = Vec::new();
         if x != 0 {
-            nbrs.push((x - 1, y));
+        nbrs.push((x - 1, y));
         }
         if x + 1 < max_x {
             nbrs.push((x + 1, y));
         }
         if y != 0 {
-            nbrs.push((x, y - 1));
+        nbrs.push((x, y - 1));
         }
         if y + 1 < max_y {
             nbrs.push((x, y + 1));

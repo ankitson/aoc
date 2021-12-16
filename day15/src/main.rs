@@ -28,6 +28,12 @@ mod tests {
         let part1_fast = soln1::Soln1::part1_fast(sample);
         println!("Part 1 (sample) = {:?}", part1);
         assert_eq!(part1_fast, 40);
+
+        let sample2: &str = include_str!("../inputs/sample2.txt");
+        let part1 = soln1::Soln1::part1(sample2);
+        println!("Part 1 (sample2) = {:?}", part1);
+        let part1_fast = soln1::Soln1::part1_fast(sample2);
+        println!("Part 1 fast (sample2) = {:?}", part1_fast);
     }
 
     #[test]
