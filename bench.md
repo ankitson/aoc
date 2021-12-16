@@ -43,6 +43,8 @@ test day14.part1.naive.realinput/part1 ...                    bench:    3,945,22
 test day14.part1.recursive_memo.realinput/part1 ...           bench:     ,882,509 ns/iter (+/- 2524)
 test day14.part1.mapcount.realinput/part1 ...                 bench:     , 92,585 ns/iter (+/- 235)
 test day14.part2.mapcount.realinput/part2 ...                 bench:     ,387,112 ns/iter (+/- 681)
+test day15.part1.realinput/part1 ...                          bench:    1,107,229 ns/iter (+/- 1473)
+test day15.part2.realinput/part2 ...                          bench:   33,960,206 ns/iter (+/- 28809)
 ```
 
 ## Others
