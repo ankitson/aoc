@@ -68,3 +68,17 @@ error[E0308]: mismatched types
    = note: expected reference `&shared::AdjList`
               found reference `&soln1::shared::AdjList`
 ```
+
+----
+
+```rust
+let f3: &[char; 3] = &input[..3];
+```
+
+does not typecheck. it is typed as a `&[char]` but doesnt have the length.
+
+this is a workaround that compiles. here it will check the length at runtime:
+
+```rust
+let f3: &[char; 3] = &input[..3].try_into().unwrap();
+```
