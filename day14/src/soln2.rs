@@ -1,4 +1,4 @@
-use crate::shared::{parse, Rule};
+use crate::shared::{parse, parse2, Rule};
 use itertools::Itertools;
 use std::collections::HashMap;
 
@@ -12,18 +12,6 @@ pub fn build_map(poly: &str) -> PairCount {
         *count += 1;
     }
     pair_count
-}
-
-pub fn build_rules(rules: &[Rule]) -> RuleMap {
-    let mut rule_map: RuleMap = HashMap::new();
-    for rule in rules {
-        let mut rule_chars = rule.from.chars();
-        let c1 = rule_chars.next().unwrap();
-        let c2 = rule_chars.next().unwrap();
-        let to = rule.insert.chars().next().unwrap();
-        rule_map.insert((c1, c2), to);
-    }
-    rule_map
 }
 
 pub fn iterate(pair_count: &mut PairCount, rule_map: &RuleMap) -> PairCount {
@@ -54,9 +42,9 @@ pub fn char_counts(first_char: char, map: &PairCount) -> HashMap<char, usize> {
 }
 
 pub fn run(input: &str, n: usize) -> usize {
-    let (poly, rules) = parse(input);
+    let (poly, rule_map) = parse2(input);
     let mut pair_count = build_map(poly);
-    let rule_map = build_rules(&rules);
+    // let rule_map = build_rules(&rules);
 
     for _ in 0..n {
         pair_count = iterate(&mut pair_count, &rule_map);

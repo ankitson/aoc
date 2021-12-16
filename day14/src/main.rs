@@ -13,6 +13,8 @@ pub fn main() {
 
 #[cfg(test)]
 mod tests {
+    use day14::shared::parse2;
+
     use crate::shared::parse;
     use crate::soln1::Soln1;
     use crate::soln2;
@@ -54,9 +56,8 @@ mod tests {
     #[test]
     fn test_iterate() {
         let contents: &str = include_str!("../inputs/sample.txt");
-        let (poly, rules) = parse(contents);
+        let (poly, rule_map) = parse2(contents);
         let mut map = soln2::build_map(poly);
-        let rule_map = soln2::build_rules(&rules);
         let new_map = soln2::iterate(&mut map, &rule_map);
         println!("{:?}", new_map);
     }
