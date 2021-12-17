@@ -1,23 +1,7 @@
 use bitvec::prelude::*;
 use itertools::Itertools;
-pub struct Packet<'a> {
-    version: PacketVersion,
-    ptype: PacketType<'a>,
-    size: PacketSize<'a>,
-    subpackets: Vec<Box<Packet<'a>>>,
-}
-
-pub struct PacketVersion(u8); //&'a [char; 3]);
-pub struct PacketType<'a>(&'a [char; 3]);
-pub enum PacketSize<'a> {
-    Length(&'a [char; 15]),
-    Count(&'a [char; 11]),
-}
-
-pub struct OpaquePacket {}
 
 pub fn parse_bv(input: &str) -> BitVec<Msb0, u8> {
-    // println!("parse bv from input: {} {}", input, input.len());
     let bytes: Vec<u8> = (0..input.len())
         .step_by(2)
         .map(|i| u8::from_str_radix(&input[i..i + 2], 16).unwrap())
@@ -28,6 +12,10 @@ pub fn parse_bv(input: &str) -> BitVec<Msb0, u8> {
 type BS = BitSlice<Msb0, u8>;
 
 fn bitslice_to_lit(bits: &BS) -> u64 {
+    if (bits.len() > 64) {
+        panic!("bits too long for a u64")
+    }
+
     let mut result: u64 = 0;
     for bit in bits.iter() {
         let b: u64 = {
@@ -37,7 +25,7 @@ fn bitslice_to_lit(bits: &BS) -> u64 {
                 0
             }
         };
-        result = result | b;
+        result |= b;
         result <<= 1;
     }
     result >>= 1;
@@ -45,34 +33,26 @@ fn bitslice_to_lit(bits: &BS) -> u64 {
 }
 
 pub fn parse_packet<'a>(input: &'a BS, vcounter: &mut u64) -> Option<(&'a BS, u64)> {
-    // println!("parse packet. input: {:?}", input);
     if input.len() < 3 {
         return None;
     }
     let versionb = &input[0..3];
     let version = bitslice_to_lit(versionb);
-    // println!("version: {}", version);
-    unsafe {
-        *vcounter += version;
-    }
+    *vcounter += version;
     let typeid = bitslice_to_lit(&input[3..6]);
     if typeid == 4 {
         let (remaining, literal) = parse_literal(&input[6..]).unwrap();
         let lvalue = bitslice_to_lit(literal[..].into());
-        // println!("parsed literal in packet: {:?}", lvalue);
         return Some((remaining, lvalue));
     } else {
         let ltypeid = input[6];
         let mut subvals: Vec<u64> = Vec::new();
         let mut rem: &BS = &input[7..];
-        // println!("ltype = {}", ltypeid);
         if ltypeid == true {
-            //numsub = nmber of sub packets to parse
+            //parse fixed number of PACKETS
             let numsub = bitslice_to_lit(&input[7..7 + 11]);
-            // println!("parsing {} subpackets", numsub);
             let p = parse_packet(&input[7 + 11..], vcounter);
-            // println!("subpacket parsed subpacket: {:?}", p);
-            let (mut remp, mut lit) = p.unwrap();
+            let (remp, mut lit) = p.unwrap();
             rem = remp;
             subvals.push(lit);
             for _ in 0..numsub - 1 {
@@ -81,29 +61,22 @@ pub fn parse_packet<'a>(input: &'a BS, vcounter: &mut u64) -> Option<(&'a BS, u6
                 lit = p.1;
                 subvals.push(lit);
             }
-
-            // return Some((rem, 0));
         } else {
+            //parse fixed number of BITS
             let totallen: usize = bitslice_to_lit(&input[7..7 + 15]).try_into().unwrap();
-            // println!("parsing next {} bits", totallen);
             rem = &input[7 + 15..];
-            // let mut rem = &input[7 + 15..];
             let mut reml = rem.len();
             let mut lit: u64 = 0;
             let mut consoomlen = 0usize;
             while consoomlen < totallen {
                 let p = parse_packet(rem, vcounter);
-                // println!("consoom parsed subpacket: {:?}", p);
                 let q = p.unwrap();
                 rem = q.0;
                 lit = q.1;
                 subvals.push(lit);
-                consoomlen += (reml - rem.len());
-                // println!("consoomed {}/{} bits", consoomlen, totallen);
+                consoomlen += reml - rem.len();
                 reml = rem.len();
             }
-            // return Some((rem, 0));
-            // parse_packet(&input[7 + 15..]);
         }
         match typeid {
             0 => return Some((rem, subvals.iter().sum())),
@@ -125,31 +98,24 @@ pub fn parse_packet<'a>(input: &'a BS, vcounter: &mut u64) -> Option<(&'a BS, u6
             _ => panic!("unknown op"),
         }
     }
-    unreachable!();
-    return None;
 }
 
 pub fn parse_literal(input: &BS) -> Option<(&BS, BitVec<Msb0, u8>)> {
-    // println!("parse literal. input: {:?}", input);
     let first = input[0];
     let mut lit: BitVec<Msb0, u8> = bitvec![Msb0, u8;];
     lit.extend(&input[1..5]);
     if first {
         let (rem, tailn) = parse_literal(&input[5..]).unwrap();
         lit.extend(tailn);
-        // println!("parsed literal chunk: {:?}", lit);
         Some((rem, lit))
     } else {
-        // println!("parsed tail literal chunk: {:?}", lit);
         Some((&input[5..], lit))
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::shared::{bitslice_to_lit, parse_bv, parse_packet};
-    use bitvec::prelude::*;
-    use itertools::Itertools;
+    use crate::shared::{parse_bv, parse_packet};
 
     #[test]
     fn test_parsebv() {
@@ -190,7 +156,6 @@ mod tests {
     fn test_parse_op_vsum() {
         let ops = vec![
             "38006F45291200",
-            // "EE00D40C823060",
             "8A004A801A8002F478",
             "620080001611562C8802118E34",
             "C0015000016115A2E0802F182340",
@@ -228,7 +193,6 @@ mod tests {
             println!("Test parsing: {}", msgs[i].0);
             let bv = parse_bv(msgs[i].0);
             unsafe {
-                // vcounter = 0;
                 let parsed = parse_packet(&bv, &mut vcounter);
                 let evaled = parsed.unwrap().1;
                 println!("Evaluated = {}", evaled);
