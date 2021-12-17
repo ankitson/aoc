@@ -11,9 +11,7 @@ impl Soln1 {
         let bv = parse_bv(input);
         unsafe {
             let (rem, parsed) = parse_packet(&bv, &mut vcounter).unwrap();
-            println!("parsed literal: {:b}", parsed);
-            println!("rem: {:?}", rem.len());
-            return vcounter;
+            vcounter
         }
     }
 
@@ -22,7 +20,7 @@ impl Soln1 {
         let bv = parse_bv(input);
         unsafe {
             let (rem, evaled) = parse_packet(&bv, &mut vcounter).unwrap();
-            return evaled;
+            evaled
         }
     }
 }

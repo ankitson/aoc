@@ -45,6 +45,9 @@ test day14.part1.mapcount.realinput/part1 ...                 bench:     , 92,58
 test day14.part2.mapcount.realinput/part2 ...                 bench:     ,387,112 ns/iter (+/- 681)
 test day15.part1.realinput/part1 ...                          bench:    1,107,229 ns/iter (+/- 1473)
 test day15.part2.realinput/part2 ...                          bench:   33,960,206 ns/iter (+/- 28809)
+test day16.part1.realinput/part1 ...                          bench:       65,971 ns/iter (+/- 151)
+test day16.part2.realinput/part2 ...                          bench:       67,509 ns/iter (+/- 184)
+
 ```
 
 ## Others
