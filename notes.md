@@ -68,3 +68,39 @@ error[E0308]: mismatched types
    = note: expected reference `&shared::AdjList`
               found reference `&soln1::shared::AdjList`
 ```
+
+----
+
+```rust
+let f3: &[char; 3] = &input[..3];
+```
+
+does not typecheck. it is typed as a `&[char]` but doesnt have the length.
+
+this is a workaround that compiles. here it will check the length at runtime:
+
+```rust
+let f3: &[char; 3] = &input[..3].try_into().unwrap();
+```
+
+----
+
+
+```rust
+type BS = BitSlice<Msb0, u8>;
+pub fn parse_packet(input: &BS) -> Option<(&BS, u64)> {
+pub fn parse_literal(input: &BS) -> Option<(&BS, BitVec)> {
+...
+
+let literal1 = "D2FE28";
+
+//doesnt compile
+let (rem, parsed) = parse_packet(&parse_bv(literal1)).unwrap();
+println!("rem: {:?}", &rem); 
+
+//compiles
+let bv = parse_bv(literal1);
+let (rem, parsed) = parse_packet(&bv).unwrap();
+println!("rem: {:?}", &rem); 
+```
+
