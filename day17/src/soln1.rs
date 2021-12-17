@@ -1,5 +1,5 @@
 use crate::shared::parse;
-use itertools::{iproduct, Itertools};
+use itertools::iproduct;
 
 pub struct Soln1 {}
 impl Soln1 {
@@ -7,14 +7,14 @@ impl Soln1 {
     /// p1 = (a,b) v = (a-1,b-1)
     /// p2 = (a+a-1,b+b-1) v = (a-2,b-2)
     /// Ideally it should iteratively increase the number of steps
-    /// while it still lands and stop simulating after
+    /// while it still lands and stop simulating after. And determine
+    /// the min/max viable velocities instead of hardcoding as well
     /// Or even use a closed formish soln.
     pub fn part1(input: &str) -> isize {
         let ((xl, xh), (yl, yh)) = parse(input);
         let mut highest = isize::MIN;
         for (vx, vy) in iproduct!(-100..100, -100..100) {
             let traj = Self::trajectory(0, 0, vx, vy, 1000);
-            let mut nsteps = 0;
             for &(px, py) in &traj {
                 if px >= xl && px <= xh && py >= yl && py <= yh {
                     let traj_max = traj.iter().map(|p| p.1).max().unwrap();
@@ -22,10 +22,24 @@ impl Soln1 {
                         highest = traj_max;
                     }
                 }
-                nsteps += 1
             }
         }
         highest
+    }
+
+    pub fn part2(input: &str) -> usize {
+        let ((xl, xh), (yl, yh)) = parse(input);
+        let mut nvalidtrajs = 0;
+        for (vx, vy) in iproduct!(-1000..1000, -1000..1000) {
+            let traj = Self::trajectory(0, 0, vx, vy, 1000);
+            for &(px, py) in &traj {
+                if px >= xl && px <= xh && py >= yl && py <= yh {
+                    nvalidtrajs += 1;
+                    break;
+                }
+            }
+        }
+        nvalidtrajs
     }
 
     fn decr(n: isize) -> isize {
@@ -54,10 +68,6 @@ impl Soln1 {
         }
         traj
     }
-
-    pub fn part2(input: &str) -> u64 {
-        todo!()
-    }
 }
 
 #[cfg(test)]
@@ -83,8 +93,6 @@ mod tests {
                 (7 + 6 + 5 + 4 + 3 + 2 + 1 + 0, 2 + 1 + 0 - 1 - 2 - 3 - 4 - 5 - 6),
             ]
         );
-
-        println!("{:?}", Soln1::trajectory(0, 0, 6, 9, 10));
     }
 
     #[test]
@@ -97,9 +105,9 @@ mod tests {
 
     #[test]
     fn test_part2() {
-        // let sample: &str = include_str!("../inputs/sample.txt");
-        // let part2 = soln1::Soln1::part2(sample);
-        // println!("Part 2 (djikstra) = {:?}", part2);
-        // assert_eq!(part2, 315);
+        let sample: &str = include_str!("../inputs/sample.txt");
+        let part2 = Soln1::part2(sample);
+        println!("Part 2 (simulation) = {:?}", part2);
+        assert_eq!(part2, 112);
     }
 }
