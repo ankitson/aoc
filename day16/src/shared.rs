@@ -31,22 +31,6 @@ pub enum PacketSize<'a> {
 
 pub struct OpaquePacket {}
 
-fn extract_at(bytes: u16, mask: u16, len: usize, start: usize) -> u16 {
-    //11111 - mask
-    //43210 - bit indexes
-    //this mask starts at idx 4 = len-1
-    //to start at idx 7, we left shift (7-4) = 3 times
-    let current_start = len - 1;
-    if start < current_start {
-        panic!("illegal start for mask")
-    }
-    let byte_num = start / 16;
-    let byte_start = start % 16;
-    ((mask << (start - current_start)) & bytes) >> (start - len - 1)
-}
-
-const PTYPE_LITERAL: u8 = 0b100;
-
 pub fn parse_bv(input: &str) -> BitVec<Msb0, u8> {
     let bytes: Vec<u8> = (0..input.len())
         .step_by(2)
@@ -55,100 +39,52 @@ pub fn parse_bv(input: &str) -> BitVec<Msb0, u8> {
     BitVec::from_vec(bytes)
 }
 
-pub fn parse(input: &str) {
-    let bv = parse_bv(input);
-}
-
 type BS = BitSlice<Msb0, u8>;
+
+fn bitvec_to_lit(bitvec: BitVec) -> u64 {
+    let mut result: u64 = 0;
+    for bit in bitvec {
+        let b: u64 = {
+            if bit {
+                1
+            } else {
+                0
+            }
+        };
+        result = result | b;
+        result <<= 1;
+    }
+    result >>= 1;
+    result
+}
 
 pub fn parse_packet(input: &BS) -> Option<(&BS, u64)> {
     let version = &input[0..3];
     let typeid = &input[3..6];
     if typeid == bits![1, 0, 0] {
         let (remaining, literal) = parse_literal(&input[6..]).unwrap();
-        return Some((remaining, literal.reverse_bits()));
+        return Some((remaining, bitvec_to_lit(literal)));
     }
     return None;
 }
 
-pub fn parse_literal(input: &BS) -> Option<(&BS, u64)> {
+pub fn parse_literal(input: &BS) -> Option<(&BS, BitVec)> {
     println!("input: {:b}", input);
     let first = input[0];
-    let half: u64 = input[1..5].load_le::<u64>();
-    println!("half: {:04b}", half);
+    let mut lit = bitvec![];
+    lit.extend(&input[1..5]);
     if first {
-        let (rem, lit) = parse_literal(&input[5..]).unwrap();
-        let cval = (lit >> 4) | (half << (64 - 4));
-        Some((&input[5..], cval))
+        let (rem, tailn) = parse_literal(&input[5..]).unwrap();
+        lit.extend(tailn);
+        Some((&input[5..], lit))
     } else {
-        Some((&input[5..], half))
+        Some((&input[5..], lit))
     }
-    // todo!()
 }
-
-// pub fn parse(input: &str) -> Packet {
-//     let mut offset = 0;
-//     let mut two_bytes = input.as_bytes().chunks(2).map(|chunk| -> u16 {
-//         let b: [u8; 2] = match chunk.try_into() {
-//             Ok(bb) => bb,
-//             Err(_) => todo!(),
-//         };
-//         // let twob: [u8; 2] = *chunk.try_into().unwrap();
-//         u16::from_be_bytes(b)
-//         //u16::from_be_bytes(*chunk.try_into().unwrap())
-//     });
-//     let mut bytes = two_bytes.next().unwrap();
-//     dbg!(bytes);
-//     let version = extract_at(bytes, 0b111, 3, 7 + 8);
-//     let ptype = extract_at(bytes, 0b111, 3, 4 + 8);
-//     dbg!(version);
-//     dbg!(ptype);
-//     offset = 6;
-//     if ptype == 4 {
-//         let mut lit_bytes: Vec<u8> = Vec::new();
-//         let mut current: u8 = 0;
-//         let mut lower = false;
-//         let mut mode: Option<bool> = None;
-//         loop {
-//             let first_bit = extract_at(bytes, 0b1, 1, 15 - offset);
-//             offset += 1;
-//             if offset >= 16 {
-//                 bytes = two_bytes.next().unwrap()
-//             }
-//             let next4: u8 = extract_at(bytes, 0xF, 4, 15 - offset).try_into().unwrap();
-//             println!("extraced literal 4bytes {:02x}", next4);
-//             offset += 4;
-//             if offset >= 16 {
-//                 bytes = two_bytes.next().unwrap()
-//             }
-//             if !lower {
-//                 current = current & (next4 << 4);
-//             } else {
-//                 current = current & next4;
-//                 lit_bytes.push(current);
-//                 current = 0;
-//             }
-//             lower = !lower;
-//             if first_bit == 0 {
-//                 if current != 0 {
-//                     current = current >> 4;
-//                     lit_bytes.push(current)
-//                 }
-//                 break;
-//             }
-//         }
-//         println!("Parsed literal: {:?}", lit_bytes);
-//     }
-
-//     // let bytes = input.as_bytes().iter();
-//     // let byte = bytes.next().unwrap();
-//     todo!();
-//     // let version = extract_at(bytes, 0b111, 3, 7)
-// }
 
 #[cfg(test)]
 mod tests {
-    use crate::shared::{parse_bv, parse_packet};
+    use crate::shared::{bitvec_to_lit, parse_bv, parse_packet};
     use bitvec::prelude::*;
     use itertools::Itertools;
 
@@ -163,6 +99,8 @@ mod tests {
             "C0015000016115A2E0802F182340",
             "A0016C880162017C3686B18A3D4780",
         ];
+        //1101 0010 1111 1110 0010 1000
+        //VVVT TTMH HHHM HHHH MHHH HZZZ
         assert_eq!(parse_bv(literal1).as_raw_slice(), &[0xD2, 0xFE, 0x28]);
         assert_eq!(
             parse_bv(ops[0]).as_raw_slice(),
@@ -182,29 +120,7 @@ mod tests {
             "A0016C880162017C3686B18A3D4780",
         ];
         let (rem, parsed) = parse_packet(&parse_bv(literal1)).unwrap();
-        println!("{:02x}", parsed);
-        assert_eq!(parse_packet(&parse_bv(literal1)).unwrap().1, 2021u64)
+        println!("parsed literal: {:b}", parsed);
+        assert_eq!(parsed, 2021u64)
     }
 }
-
-// fn parse_rec(input: &[char]) -> (&[char], T) {
-//     let (rem, version) = parse_version(input);
-//     let (rem, etype) = parse_etype(rem);
-//     if etype.unwrap() == 4
-// }
-
-// fn parse_version(input: &[char]) -> (&[char], Option<PacketVersion>) {
-//     if input.len() < 3 {
-//         return (input, None);
-//     }
-//     let f3: &[char; 3] = &input[..3].try_into().unwrap();
-//     (&input[3..], Some(PacketVersion(f3)))
-// }
-
-// fn parse_etype(input: &[char]) -> (&[char], Option<PacketType>) {
-//     if input.len() < 3 {
-//         return (input, None);
-//     }
-//     let f3: &[char; 3] = &input[..3].try_into().unwrap();
-//     (&input[3..], Some(PacketType(f3)))
-// }
