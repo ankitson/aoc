@@ -1,7 +1,7 @@
 [workspace]
 
 members = [
-  "day*"
+  "day*", "util"
 ]
 
 [profile.release]
