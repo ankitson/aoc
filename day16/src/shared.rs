@@ -55,14 +55,16 @@ pub fn parse_packet<'a>(input: &'a BS, vcounter: &mut u64) -> Option<(&'a BS, u6
     unsafe {
         *vcounter += version;
     }
-    let typeid = &input[3..6];
-    if typeid == bits![1, 0, 0] {
+    let typeid = bitslice_to_lit(&input[3..6]);
+    if typeid == 4 {
         let (remaining, literal) = parse_literal(&input[6..]).unwrap();
         let lvalue = bitslice_to_lit(literal[..].into());
         // println!("parsed literal in packet: {:?}", lvalue);
         return Some((remaining, lvalue));
     } else {
         let ltypeid = input[6];
+        let mut subvals: Vec<u64> = Vec::new();
+        let mut rem: &BS = &input[7..];
         // println!("ltype = {}", ltypeid);
         if ltypeid == true {
             //numsub = nmber of sub packets to parse
@@ -70,33 +72,60 @@ pub fn parse_packet<'a>(input: &'a BS, vcounter: &mut u64) -> Option<(&'a BS, u6
             // println!("parsing {} subpackets", numsub);
             let p = parse_packet(&input[7 + 11..], vcounter);
             // println!("subpacket parsed subpacket: {:?}", p);
-            let (mut rem, mut lit) = p.unwrap();
+            let (mut remp, mut lit) = p.unwrap();
+            rem = remp;
+            subvals.push(lit);
             for _ in 0..numsub - 1 {
                 let p = parse_packet(rem, vcounter).unwrap();
                 rem = p.0;
                 lit = p.1;
+                subvals.push(lit);
             }
-            return Some((rem, 0));
+
+            // return Some((rem, 0));
         } else {
             let totallen: usize = bitslice_to_lit(&input[7..7 + 15]).try_into().unwrap();
             // println!("parsing next {} bits", totallen);
-            let mut rem = &input[7 + 15..];
+            rem = &input[7 + 15..];
+            // let mut rem = &input[7 + 15..];
             let mut reml = rem.len();
+            let mut lit: u64 = 0;
             let mut consoomlen = 0usize;
             while consoomlen < totallen {
                 let p = parse_packet(rem, vcounter);
                 // println!("consoom parsed subpacket: {:?}", p);
                 let q = p.unwrap();
                 rem = q.0;
-                // lit = p.1;
+                lit = q.1;
+                subvals.push(lit);
                 consoomlen += (reml - rem.len());
                 // println!("consoomed {}/{} bits", consoomlen, totallen);
                 reml = rem.len();
             }
-            return Some((rem, 0));
+            // return Some((rem, 0));
             // parse_packet(&input[7 + 15..]);
         }
+        match typeid {
+            0 => return Some((rem, subvals.iter().sum())),
+            1 => return Some((rem, subvals.iter().product())),
+            2 => return Some((rem, *subvals.iter().min().unwrap())),
+            3 => return Some((rem, *subvals.iter().max().unwrap())),
+            5 => {
+                let v = if subvals[0] > subvals[1] { 1u64 } else { 0u64 };
+                return Some((rem, v));
+            }
+            6 => {
+                let v = if subvals[0] < subvals[1] { 1u64 } else { 0u64 };
+                return Some((rem, v));
+            }
+            7 => {
+                let v = if subvals[0] == subvals[1] { 1u64 } else { 0u64 };
+                return Some((rem, v));
+            }
+            _ => panic!("unknown op"),
+        }
     }
+    unreachable!();
     return None;
 }
 
@@ -158,7 +187,7 @@ mod tests {
     }
 
     #[test]
-    fn test_parse_op() {
+    fn test_parse_op_vsum() {
         let ops = vec![
             "38006F45291200",
             // "EE00D40C823060",
@@ -175,8 +204,35 @@ mod tests {
             let bv = parse_bv(ops[i]);
             unsafe {
                 vcounter = 0;
-                parse_packet(&bv, &mut vcounter);
+                let parsed = parse_packet(&bv, &mut vcounter);
+                println!("Parsed: {}", parsed.unwrap().1);
                 assert_eq!(vcounter, vsums[i]);
+            }
+        }
+    }
+
+    #[test]
+    fn test_parse_op() {
+        let msgs = vec![
+            ("C200B40A82", 3),
+            ("04005AC33890", 54),
+            ("880086C3E88112", 7),
+            ("CE00C43D881120", 9),
+            ("D8005AC2A8F0", 1),
+            ("F600BC2D8F", 0),
+            ("9C005AC2F8F0", 0),
+            ("9C0141080250320F1802104A08", 1),
+        ];
+        static mut vcounter: u64 = 0u64;
+        for i in 0..5 {
+            println!("Test parsing: {}", msgs[i].0);
+            let bv = parse_bv(msgs[i].0);
+            unsafe {
+                // vcounter = 0;
+                let parsed = parse_packet(&bv, &mut vcounter);
+                let evaled = parsed.unwrap().1;
+                println!("Evaluated = {}", evaled);
+                assert_eq!(evaled, msgs[i].1);
             }
         }
     }

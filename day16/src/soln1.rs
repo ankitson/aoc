@@ -16,4 +16,13 @@ impl Soln1 {
             return vcounter;
         }
     }
+
+    pub fn part2(input: &str) -> u64 {
+        static mut vcounter: u64 = 0u64;
+        let bv = parse_bv(input);
+        unsafe {
+            let (rem, evaled) = parse_packet(&bv, &mut vcounter).unwrap();
+            return evaled;
+        }
+    }
 }
