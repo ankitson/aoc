@@ -1,10 +1,39 @@
 use crate::shared::parse;
 use itertools::iproduct;
 
+type FN = Vec<(usize, usize)>;
 pub struct Soln1 {}
 impl Soln1 {
-    pub fn part1(input: &str) -> usize {
+    fn reduce(fishnum: FN) -> FN {
         todo!()
+    }
+
+    pub fn reduce_full(mut fishnum: FN) -> FN {
+        let mut reduced = Self::reduce(fishnum);
+        while fishnum != reduced {
+            fishnum = reduced;
+            reduced = Self::reduce(reduced);
+        }
+        reduced
+    }
+
+    pub fn magnitude(fishnum: FN) -> usize {
+        todo!()
+    }
+
+    pub fn add(l: &mut FN, r: &FN) -> () {
+        l.extend(r)
+    }
+
+    pub fn part1(input: &str) -> usize {
+        let mut parsed = parse(input);
+        let mut accum = parsed[0].clone();
+        for num in &parsed[1..] {
+            Self::add(&mut accum, num)
+        }
+        println!("Sum: {:?}", accum);
+        let mut reduced = Self::reduce_full(accum);
+        Self::magnitude(reduced)
     }
 
     pub fn part2(input: &str) -> usize {
