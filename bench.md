@@ -47,7 +47,8 @@ test day15.part1.realinput/part1 ...                          bench:    1,107,22
 test day15.part2.realinput/part2 ...                          bench:   33,960,206 ns/iter (+/- 28809)
 test day16.part1.realinput/part1 ...                          bench:       65,971 ns/iter (+/- 151)
 test day16.part2.realinput/part2 ...                          bench:       67,509 ns/iter (+/- 184)
-
+test day18.part1.realinput/part1 (mutable) ...                bench:      451,844 ns/iter (+/- 14153)
+test day18.part2.realinput/part2 (mutable) ...                bench:    9,001,033 ns/iter (+/- 523578)
 ```
 
 ## Others
