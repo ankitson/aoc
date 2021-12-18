@@ -4,18 +4,24 @@ use itertools::iproduct;
 type FN = Vec<(usize, usize)>;
 pub struct Soln1 {}
 impl Soln1 {
-    pub fn split(fishnum: &FN) -> Option<FN> {
+    pub fn split(fishnum: &mut FN) -> Option<&FN> {
         let mut next: FN = vec![];
         for i in 0..fishnum.len() {
             let (num, depth) = fishnum[i];
             if num >= 10 {
-                next.extend_from_slice(&fishnum[0..i]);
-                next.push((num.unstable_div_floor(2), depth + 1));
-                next.push((num.unstable_div_ceil(2), depth + 1));
-                if i + 1 < fishnum.len() {
-                    next.extend_from_slice(&fishnum[i + 1..]);
-                }
-                return Some(next);
+                fishnum.remove(i);
+                fishnum.insert(i, (num.unstable_div_floor(2), depth + 1));
+                fishnum.insert(i, (num.unstable_div_ceil(2), depth + 1));
+
+                // let (mut a, mut b) = fishnum.split_at_mut(i);
+
+                // next.extend_from_slice(&fishnum[0..i]);
+                // next.push((num.unstable_div_floor(2), depth + 1));
+                // next.push((num.unstable_div_ceil(2), depth + 1));
+                // if i + 1 < fishnum.len() {
+                //     next.extend_from_slice(&fishnum[i + 1..]);
+                // }
+                return Some(fishnum);
             }
         }
         None
@@ -28,7 +34,6 @@ impl Soln1 {
 
             if depthl >= 5 && depthr == depthl {
                 //pair of adjacent elems at equal depth represents a leaf fishnum
-                // let mut next = fishnum.clone();
                 if i > 0 {
                     fishnum[i - 1].0 += numl;
                 }
@@ -37,12 +42,6 @@ impl Soln1 {
                 }
                 fishnum.remove(i);
                 fishnum.remove(i + 1);
-                // let (lef, mut rig) = fishnum.split_at(i);
-                // rig = &rig[2..];
-
-                // reduced.extend_from_slice(lef);
-                // reduced.push((0, depthl - 1));
-                // reduced.extend_from_slice(rig);
                 return Some(fishnum);
             }
         }
@@ -53,13 +52,13 @@ impl Soln1 {
         if let Some(next) = Self::explode(fishnum) {
             next
         } else if let Some(next) = Self::split(fishnum) {
-            &mut next
+            next
         } else {
             fishnum
         }
     }
 
-    pub fn reduce_full(fishnum: &mut FN) -> &FN {
+    pub fn reduce_full(mut fishnum: &mut FN) -> &FN {
         let mut reduced = Self::reduce(&mut fishnum);
         while fishnum != reduced {
             // println!("Reduce {} = {}", Self::fmt_num(&fishnum), Self::fmt_num(&reduced));
@@ -107,12 +106,12 @@ impl Soln1 {
 
     pub fn part1(input: &str) -> usize {
         let mut parsed = parse(input);
-        let mut accum: &mut Vec<(usize, usize)> = &mut parsed[0];
-        for num in &parsed[1..] {
+        let (mut accum, rest) = parsed.split_first_mut().unwrap();
+        for num in rest {
             // let lhs = accum.clone();
-            Self::add(&mut accum, num);
+            Self::add(accum, num);
             let prered = accum.clone();
-            accum = &mut *Self::reduce_full(accum);
+            let accum = Self::reduce_full(accum);
             // println!(
             //     "Step: {} + {} = {}",
             //     Self::fmt_num(&lhs),
