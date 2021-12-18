@@ -6,10 +6,79 @@ impl Soln1 {
     /// p0 = (0,0) v = (a,b)
     /// p1 = (a,b) v = (a-1,b-1)
     /// p2 = (a+a-1,b+b-1) v = (a-2,b-2)
-    /// Ideally it should iteratively increase the number of steps
-    /// while it still lands and stop simulating after. And determine
-    /// the min/max viable velocities instead of hardcoding as well
-    /// Or even use a closed formish soln.
+    ///
+    /// yn = b+(b-1)+(b-2)+...+(b-n+1)
+    /// xn = a+(a-1)+(a-2)+...+max(0,(a-n+1))
+    ///
+    /// given a velocity (a,b), do binary search?
+    /// as long as we can compute the max feasible timestep
+    ///
+    /// p(a,b,n) = (xn,yn)
+    /// xn = a + (a-1) + ... + c
+    ///
+    /// p(a+1,b,n) =  (xn1,yn1)
+    /// xn1 = a+1 + a + ... + c+1 = xn + 2
+    ///
+    /// vel 7
+    /// 0 -> 7 -> 13
+    /// vel 8
+    /// 0 -> 8 -> 15
+    ///
+    /// max ht vel?
+    /// vel reaches max ht at dy = 0
+    /// if y = 7, dy = 0 after 7 steps
+    /// max ht of v=7 = 7+6+5+4+3+2+1 = 7*8/2 = 28
+    ///
+    /// max ht of vy = vy*(vy-1)/2
+    ///
+    /// max ht of vy after n steps = vy...+(vy-n+1)
+    /// (vx,vy) lands in (xl,xh),(yl,yh) when -
+    ///
+    /// S(a, i) = a + a-1 + ... + max(a-i+1,0)
+    /// times when vx is in [xl,xh]
+    /// i where xl <= S(vx, i) <= xh
+    ///
+    ///
+    ///
+    /// yn = vn - (1+2+3+..=(n-1))
+    /// for v = 2
+    ///     y0 = 0
+    ///     y1 = 2*1 - 0 = 2
+    ///     y2 = 2*2 - 1 = 3
+    ///     y3 = 2*3 - 3 = 3
+    /// so when is yn within a range [a..b]
+    /// its the soln to a quadratic
+    ///
+    /// yn = vn - (n-1)*n/2
+    ///
+    /// yn = a
+    ///
+    /// vn - (n-1)*n/2 - a = 0
+    /// 2vn - n^2 +n - a = 0
+    /// -n^2 + n(2v+1) - a = 0
+    /// n^2 - (2v+1)n + a = 0
+    ///
+    /// r1 = (-b + sqrt(b2-4ac))/2a = ((2v+1) + sqrt((2v+1)^2  - 4a))/2
+    ///
+
+    pub fn partial_sum(mut n: isize, mut i: usize, pos_only: bool) -> isize {
+        let mut s = 0;
+        while i > 0 {
+            s += n;
+            i -= 1;
+            if pos_only && i == 0 {
+                break;
+            }
+        }
+        s
+    }
+
+    pub fn steps_in_range(v: isize, l: isize, h: isize) {
+        if l > 0 && v < 0 || l < 0 && v > 0 {
+            return None;
+        }
+    }
+
     pub fn part1(input: &str) -> isize {
         let ((xl, xh), (yl, yh)) = parse(input);
         let mut highest = isize::MIN;
@@ -20,6 +89,7 @@ impl Soln1 {
                     let traj_max = traj.iter().map(|p| p.1).max().unwrap();
                     if traj_max > highest {
                         highest = traj_max;
+                        println!("max ht {} reached by velocity {}", highest, vy);
                     }
                 }
             }
