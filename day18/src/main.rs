@@ -1,3 +1,7 @@
+#![allow(unused_variables)]
+#![allow(unused_mut)]
+#![feature(int_roundings)]
+
 mod shared;
 mod soln1;
 

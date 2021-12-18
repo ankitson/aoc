@@ -15,7 +15,7 @@ pub fn parse_one(input: &str) -> Vec<(usize, usize)> {
 }
 
 fn parse_comma(chars: &[char], depth: usize, label: String) -> usize {
-    println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
+    // println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
     if chars.is_empty() || chars[0] != ',' {
         panic!()
     }
@@ -23,7 +23,7 @@ fn parse_comma(chars: &[char], depth: usize, label: String) -> usize {
 }
 
 fn parse_open(chars: &[char], depth: usize, label: String) -> usize {
-    println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
+    // println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
     if chars.is_empty() || chars[0] != '[' {
         panic!()
     }
@@ -31,7 +31,7 @@ fn parse_open(chars: &[char], depth: usize, label: String) -> usize {
 }
 
 fn parse_close(chars: &[char], depth: usize, label: String) -> usize {
-    println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
+    // println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
     if chars.is_empty() || chars[0] != ']' {
         panic!()
     }
@@ -39,7 +39,7 @@ fn parse_close(chars: &[char], depth: usize, label: String) -> usize {
 }
 
 fn parse_num(chars: &[char], depth: usize, label: String) -> (usize, usize) {
-    println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
+    // println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
     if chars.is_empty() || !chars[0].is_numeric() {
         panic!()
     }
@@ -50,7 +50,7 @@ fn parse_num(chars: &[char], depth: usize, label: String) -> (usize, usize) {
 /// EXPR = LIT
 /// "[1,[2,[3,[4,4]]],1]"
 pub fn parse_rec(chars: &[char], depth: usize, vec: &mut Vec<(usize, usize)>, label: String) -> usize {
-    println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
+    // println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
     if chars.is_empty() {
         return 0;
     }
@@ -83,7 +83,7 @@ mod tests {
             ("6", vec![(6, 0)]),
             ("[1,2]", vec![(1, 1), (2, 1)]),
             ("[1,[2,[3,[4,4]]]]", vec![(1, 1), (2, 2), (3, 3), (4, 4), (4, 4)]),
-            ("[[[[[9,8],1],2],3],4]", vec![]),
+            // ("[[[[[9,8],1],2],3],4]", vec![]),
         ];
         for (str, expected_parse) in inputs {
             let vec = parse_one(str);
