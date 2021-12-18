@@ -44,20 +44,23 @@ pub fn parse(input: &str) -> PEH {
     todo!()
 }
 
-pub fn parse_rec(chars: &[char], depth: usize, vec: &mut Vec<(usize, usize)>) -> () {
+pub fn parse_rec(chars: &[char], depth: usize, vec: &mut Vec<(usize, usize)>) -> usize {
+    println!("{}parse: {:?}", ".".repeat(depth), chars);
     if chars.is_empty() {
-        return;
+        return 0;
     }
 
     if chars[0].is_numeric() {
         vec.push((chars[0].to_digit(10).unwrap().try_into().unwrap(), depth));
-        parse_rec(&chars[1..], depth, vec);
+        return 1;
+        // parse_rec(&chars[1..], depth, vec);
     }
 
     if chars[0] == '[' {
-        parse_rec(&chars[1..], depth + 1, vec);
+        let np = parse_rec(&chars[1..], depth + 1, vec);
+        parse_rec(&chars[np + 1..], depth + 1, vec)
     } else if chars[0] == ']' {
-        parse_rec(&chars[1..], depth - 1, vec);
+        parse_rec(&chars[1..], depth - 1, vec)
     } else {
         parse_rec(&chars[1..], depth, vec)
     }
@@ -98,10 +101,18 @@ mod tests {
     use super::{parse, parse_rec};
     #[test]
     fn test_parse() {
-        let sample: &str = "[[6,[5,[4,[3,2]]]],1]";
         let mut vec = Vec::new();
-        parse_rec(&sample.chars().collect_vec(), 0, &mut vec);
-        assert_eq!(vec, vec![(6, 2), (5, 3), (4, 4), (3, 5), (2, 5), (1, 1)])
+        let strs = ["6", "[1,2]", "[1,[2,[3,[4,4]]],1]"];
+        for str in strs {
+            let mut chars = str.chars().collect_vec();
+            parse_rec(&chars, 0, &mut vec);
+            println!("str: {} parsed: {:?}", str, &vec);
+            vec.clear();
+        }
+        // sample: &str = "[[6,[5,[4,[3,2]]]],1]";
+
+        // parse_rec(&sample.chars().collect_vec(), 0, &mut vec);
+        // assert_eq!(vec, vec![(6, 2), (5, 3), (4, 4), (3, 5), (2, 5), (1, 1)])
 
         // assert_eq!(parse(sample), ((20, 30), (-10, -5)))
     }
