@@ -73,10 +73,11 @@ impl Soln1 {
         s
     }
 
-    pub fn steps_in_range(v: isize, l: isize, h: isize) {
+    pub fn steps_in_range(v: isize, l: isize, h: isize) -> isize {
         if l > 0 && v < 0 || l < 0 && v > 0 {
-            return None;
+            return 0;
         }
+        todo!()
     }
 
     pub fn part1(input: &str) -> isize {
@@ -89,7 +90,7 @@ impl Soln1 {
                     let traj_max = traj.iter().map(|p| p.1).max().unwrap();
                     if traj_max > highest {
                         highest = traj_max;
-                        println!("max ht {} reached by velocity {}", highest, vy);
+                        // println!("max ht {} reached by velocity {}", highest, vy);
                     }
                 }
             }
