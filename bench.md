@@ -48,6 +48,10 @@ test day15.part2.realinput/part2 ...                          bench:   33,960,20
 test day16.part1.realinput/part1 ...                          bench:       65,971 ns/iter (+/- 151)
 test day16.part2.realinput/part2 ...                          bench:       67,509 ns/iter (+/- 184)
 
+test day18.part1.realinput/part1 (copy) ...                   bench:    2,757,639 ns/iter (+/- 11480)
+test day18.part2.realinput/part2 (copy) ...                   bench:   50,614,155 ns/iter (+/- 1105099)
+test day18.part1.realinput/part1 (mutable) ...                bench:      451,844 ns/iter (+/- 14153)
+test day18.part2.realinput/part2 (mutable) ...                bench:    9,001,033 ns/iter (+/- 523578)
 ```
 
 ## Others

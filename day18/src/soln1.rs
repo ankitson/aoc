@@ -4,14 +4,14 @@ use itertools::iproduct;
 type FN = Vec<(usize, usize)>;
 pub struct Soln1 {}
 impl Soln1 {
-    pub fn split(fishnum: &mut FN) -> Option<&FN> {
+    pub fn split(fishnum: &mut FN) -> bool {
         let mut next: FN = vec![];
         for i in 0..fishnum.len() {
             let (num, depth) = fishnum[i];
             if num >= 10 {
                 fishnum.remove(i);
                 fishnum.insert(i, (num.unstable_div_floor(2), depth + 1));
-                fishnum.insert(i, (num.unstable_div_ceil(2), depth + 1));
+                fishnum.insert(i + 1, (num.unstable_div_ceil(2), depth + 1));
 
                 // let (mut a, mut b) = fishnum.split_at_mut(i);
 
@@ -21,13 +21,15 @@ impl Soln1 {
                 // if i + 1 < fishnum.len() {
                 //     next.extend_from_slice(&fishnum[i + 1..]);
                 // }
-                return Some(fishnum);
+                return true;
+                // return Some(fishnum);
             }
         }
-        None
+        false
+        // None
     }
 
-    pub fn explode(fishnum: &mut FN) -> Option<&FN> {
+    pub fn explode(fishnum: &mut FN) -> bool {
         for i in 0..fishnum.len() - 1 {
             let (numl, depthl) = fishnum[i];
             let (numr, depthr) = fishnum[i + 1];
@@ -41,36 +43,38 @@ impl Soln1 {
                     fishnum[i + 2].0 += numr;
                 }
                 fishnum.remove(i);
-                fishnum.remove(i + 1);
-                return Some(fishnum);
+                fishnum[i] = (0, depthl - 1);
+                // fishnum.remove(i);
+                return true;
+                // return Some(fishnum);
             }
         }
-        None
+        false
+        // None
     }
 
-    pub fn reduce(fishnum: &mut FN) -> &FN {
-        if let Some(next) = Self::explode(fishnum) {
-            next
-        } else if let Some(next) = Self::split(fishnum) {
-            next
-        } else {
-            fishnum
-        }
+    pub fn reduce(fishnum: &mut FN) -> bool {
+        Self::explode(fishnum) || Self::split(fishnum)
+        // if Self::explode(fishnum) || Self::split(fishnum) {
+        // true
+        // } else if Self::split(fishnum) {
+        // true
+        // } else {
+        // false
+        // }
     }
 
-    pub fn reduce_full(mut fishnum: &mut FN) -> &FN {
-        let mut reduced = Self::reduce(&mut fishnum);
-        while fishnum != reduced {
+    pub fn reduce_full(mut fishnum: &mut FN) {
+        let mut changed = Self::reduce(&mut fishnum);
+        while changed {
             // println!("Reduce {} = {}", Self::fmt_num(&fishnum), Self::fmt_num(&reduced));
-            fishnum = &mut *reduced;
-            reduced = Self::reduce(fishnum);
+            changed = Self::reduce(fishnum);
         }
-        reduced
     }
 
-    pub fn magnitude_step(fishnum: &FN) -> FN {
+    pub fn magnitude_step(fishnum: &mut FN) -> bool {
         if fishnum.len() == 1 {
-            return fishnum.to_vec();
+            return false;
         }
         let mut next: FN = vec![];
         for i in 0..fishnum.len() - 1 {
@@ -79,22 +83,26 @@ impl Soln1 {
             if depthl == depthr {
                 //pair of adjacent elems at equal depth represents a leaf fishnum
                 let magn = numl * 3 + numr * 2;
-                let (l, mut r) = fishnum.split_at(i);
-                next.extend_from_slice(l);
-                next.push((magn, depthl - 1));
-                next.extend_from_slice(&r[2..]);
-                return next;
+                fishnum.remove(i);
+                fishnum.remove(i);
+                fishnum.insert(i, (magn, depthl - 1));
+                // let (l, mut r) = fishnum.split_at(i);
+
+                // next.extend_from_slice(l);
+                // next.push((magn, depthl - 1));
+                // next.extend_from_slice(&r[2..]);
+                return true;
             }
         }
         panic!("cant magnitude step this num: {:?}", fishnum);
     }
 
-    pub fn magnitude(fishnum: FN) -> usize {
-        let mut fncopy = fishnum;
-        while fncopy.len() > 1 {
-            fncopy = Self::magnitude_step(&fncopy);
+    pub fn magnitude(fishnum: &mut FN) -> usize {
+        // let mut fncopy = fishnum;
+        while fishnum.len() > 1 {
+            Self::magnitude_step(fishnum);
         }
-        fncopy[0].0
+        fishnum[0].0
     }
 
     pub fn add(l: &mut FN, r: &FN) {
@@ -111,7 +119,7 @@ impl Soln1 {
             // let lhs = accum.clone();
             Self::add(accum, num);
             let prered = accum.clone();
-            let accum = Self::reduce_full(accum);
+            Self::reduce_full(accum);
             // println!(
             //     "Step: {} + {} = {}",
             //     Self::fmt_num(&lhs),
@@ -119,7 +127,7 @@ impl Soln1 {
             //     Self::fmt_num(&accum)
             // );
         }
-        Self::magnitude(*accum)
+        Self::magnitude(accum)
     }
 
     pub fn fmt_num(num: &FN) -> String {
@@ -167,8 +175,8 @@ impl Soln1 {
             let rhs = &inputs[i2];
             let mut accum = lhs.clone();
             Self::add(&mut accum, rhs);
-            let reduced = Self::reduce_full(&mut accum);
-            let mut magnitude = Self::magnitude(reduced.clone());
+            Self::reduce_full(&mut accum);
+            let mut magnitude = Self::magnitude(&mut accum);
             max_magnitude = max_magnitude.max(magnitude);
         }
         max_magnitude
@@ -188,8 +196,9 @@ mod tests {
             (parse_one("[[1,2],[[3,4],5]]"), 143),
             (parse_one("[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]"), 3488),
         ];
-        for (inp, out) in inouts {
-            assert_eq!(Soln1::magnitude(inp), out)
+        for (mut inp, out) in inouts {
+            // Soln1::magnitude(&mut inp);
+            assert_eq!(Soln1::magnitude(&mut inp), out)
         }
     }
 
@@ -234,10 +243,10 @@ mod tests {
         ]);
         let inouts: Vec<(FN, FN)> = Vec::new();
         for (instr, outstr) in pairs {
-            let parse = parse_one(instr);
-            let reduce = Soln1::reduce(&parse);
+            let mut parse = parse_one(instr);
+            Soln1::reduce(&mut parse);
             let parse_out = parse_one(outstr);
-            assert_eq!(reduce, parse_out);
+            assert_eq!(parse, parse_out);
         }
     }
 
