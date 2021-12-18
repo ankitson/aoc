@@ -37,35 +37,40 @@ impl PartialOrd for PEHQ {
 ///
 
 pub fn parse(input: &str) -> PEH {
-    let chars = input.chars().collect_vec();
-    let mut vec: Vec<(usize, usize)> = Vec::new();
-    let node = parse_rec(&chars, 0, &mut vec);
-    println!("parsed: {:?}", node);
+    // let chars = input.chars().collect_vec();
+    // let mut vec: Vec<(usize, usize)> = Vec::new();
+    // let node = parse_rec(&chars, 0, &mut vec);
+    // println!("parsed: {:?}", node);
     todo!()
 }
 
-fn parse_comma(chars: &[char]) -> usize {
+fn parse_comma(chars: &[char], depth: usize, label: String) -> usize {
+    println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
+
     if chars.is_empty() || chars[0] != ',' {
         panic!()
     }
     1
 }
 
-fn parse_open(chars: &[char]) -> usize {
+fn parse_open(chars: &[char], depth: usize, label: String) -> usize {
+    println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
     if chars.is_empty() || chars[0] != '[' {
         panic!()
     }
     1
 }
 
-fn parse_close(chars: &[char]) -> usize {
+fn parse_close(chars: &[char], depth: usize, label: String) -> usize {
+    println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
     if chars.is_empty() || chars[0] != ']' {
         panic!()
     }
     1
 }
 
-fn parse_num(chars: &[char]) -> (usize, usize) {
+fn parse_num(chars: &[char], depth: usize, label: String) -> (usize, usize) {
+    println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
     if chars.is_empty() || !chars[0].is_numeric() {
         panic!()
     }
@@ -75,29 +80,37 @@ fn parse_num(chars: &[char]) -> (usize, usize) {
 /// EXPR = [EXPR,EXPR]
 /// EXPR = LIT
 /// "[1,[2,[3,[4,4]]],1]"
-pub fn parse_rec(chars: &[char], depth: usize, vec: &mut Vec<(usize, usize)>) -> usize {
-    println!("{}parse: {:?}", ".".repeat(depth), chars);
+pub fn parse_rec(chars: &[char], depth: usize, vec: &mut Vec<(usize, usize)>, label: String) -> usize {
+    println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
     if chars.is_empty() {
         return 0;
     }
 
     if chars[0].is_numeric() {
-        let (n, np) = parse_num(&chars[0..1]);
+        let (n, np) = parse_num(&chars[0..1], depth, "lit".to_string());
         vec.push((n, depth));
         1
     } else {
         let mut np = 0;
-        np += parse_open(chars);
-        let npleft = parse_rec(&chars[np..], depth + 1, vec);
+        np += parse_open(chars, depth, "open".to_string());
+        let npleft = parse_rec(&chars[np..], depth + 1, vec, "left".to_string());
         np += npleft;
-        np += parse_comma(&chars[np..]);
-        let npright = parse_rec(&chars[np..], depth + 1, vec);
+        np += parse_comma(&chars[np..], depth + 1, "comma".to_string());
+        let npright = parse_rec(&chars[np..], depth + 1, vec, "right".to_string());
         np += npright;
-        np += parse_close(&chars[np..]);
+        np += parse_close(&chars[np..], depth, "close".to_string());
 
         np
     }
 }
+
+// pub fn parse_many(chars: &[char], depth: usize, vec: &mut Vec<(usize, usize)>, label: String) -> usize {
+//     let mut vec = Vec::new();
+//     let mut np = 0;
+//     while np < chars.len() {
+//         parse_rec(&chars[np..], depth, vec, "many".to_string());
+//     }
+// }
 
 #[cfg(test)]
 mod tests {
@@ -113,7 +126,7 @@ mod tests {
         let strs = ["6", "[1,2]", "[1,[2,[3,[4,4]]],1]"];
         for str in strs {
             let mut chars = str.chars().collect_vec();
-            parse_rec(&chars, 0, &mut vec);
+            parse_rec(&chars, 0, &mut vec, "root".to_string());
             println!("str: {} parsed: {:?}", str, &vec);
             vec.clear();
         }
