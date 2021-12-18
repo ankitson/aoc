@@ -44,6 +44,37 @@ pub fn parse(input: &str) -> PEH {
     todo!()
 }
 
+fn parse_comma(chars: &[char]) -> usize {
+    if chars.is_empty() || chars[0] != ',' {
+        panic!()
+    }
+    1
+}
+
+fn parse_open(chars: &[char]) -> usize {
+    if chars.is_empty() || chars[0] != '[' {
+        panic!()
+    }
+    1
+}
+
+fn parse_close(chars: &[char]) -> usize {
+    if chars.is_empty() || chars[0] != ']' {
+        panic!()
+    }
+    1
+}
+
+fn parse_num(chars: &[char]) -> (usize, usize) {
+    if chars.is_empty() || !chars[0].is_numeric() {
+        panic!()
+    }
+    (chars[0].to_digit(10).unwrap().try_into().unwrap(), 1)
+}
+
+/// EXPR = [EXPR,EXPR]
+/// EXPR = LIT
+/// "[1,[2,[3,[4,4]]],1]"
 pub fn parse_rec(chars: &[char], depth: usize, vec: &mut Vec<(usize, usize)>) -> usize {
     println!("{}parse: {:?}", ".".repeat(depth), chars);
     if chars.is_empty() {
@@ -51,44 +82,21 @@ pub fn parse_rec(chars: &[char], depth: usize, vec: &mut Vec<(usize, usize)>) ->
     }
 
     if chars[0].is_numeric() {
-        vec.push((chars[0].to_digit(10).unwrap().try_into().unwrap(), depth));
-        return 1;
-        // parse_rec(&chars[1..], depth, vec);
-    }
-
-    if chars[0] == '[' {
-        let np = parse_rec(&chars[1..], depth + 1, vec);
-        parse_rec(&chars[np + 1..], depth + 1, vec)
-    } else if chars[0] == ']' {
-        parse_rec(&chars[1..], depth - 1, vec)
+        let (n, np) = parse_num(&chars[0..1]);
+        vec.push((n, depth));
+        1
     } else {
-        parse_rec(&chars[1..], depth, vec)
+        let mut np = 0;
+        np += parse_open(chars);
+        let npleft = parse_rec(&chars[np..], depth + 1, vec);
+        np += npleft;
+        np += parse_comma(&chars[np..]);
+        let npright = parse_rec(&chars[np..], depth + 1, vec);
+        np += npright;
+        np += parse_close(&chars[np..]);
+
+        np
     }
-
-    // let mut depth = 0;
-    // let mut q: BinaryHeap<PEHQ> = BinaryHeap::new();
-    // let mut cur: Vec<usize> = Vec::new();
-    // let mut i = 0;
-    // while i < chars. {
-    //     let ch = chars.next().unwrap();
-    //     if ch == '[' {
-    //         depth += 1;
-    //         continue;
-    //     } else if ch == ']' {
-    //         if cur.len() == 2 {
-    //             let node = PEH { }
-    //         }
-    //         depth -= 1;
-    //         // let
-    //     } else if ch == ',' {
-    //         let next = parse(input)
-    //         continue;
-    //     } else {
-    //         let digit = ch.to_digit(10).unwrap();
-
-    //     }
-    // }
-    // todo!(
 }
 
 #[cfg(test)]
