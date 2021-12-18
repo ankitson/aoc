@@ -12,21 +12,10 @@ impl Soln1 {
                 fishnum.remove(i);
                 fishnum.insert(i, (num.unstable_div_floor(2), depth + 1));
                 fishnum.insert(i + 1, (num.unstable_div_ceil(2), depth + 1));
-
-                // let (mut a, mut b) = fishnum.split_at_mut(i);
-
-                // next.extend_from_slice(&fishnum[0..i]);
-                // next.push((num.unstable_div_floor(2), depth + 1));
-                // next.push((num.unstable_div_ceil(2), depth + 1));
-                // if i + 1 < fishnum.len() {
-                //     next.extend_from_slice(&fishnum[i + 1..]);
-                // }
                 return true;
-                // return Some(fishnum);
             }
         }
         false
-        // None
     }
 
     pub fn explode(fishnum: &mut FN) -> bool {
@@ -44,28 +33,18 @@ impl Soln1 {
                 }
                 fishnum.remove(i);
                 fishnum[i] = (0, depthl - 1);
-                // fishnum.remove(i);
                 return true;
-                // return Some(fishnum);
             }
         }
         false
-        // None
     }
 
     pub fn reduce(fishnum: &mut FN) -> bool {
         Self::explode(fishnum) || Self::split(fishnum)
-        // if Self::explode(fishnum) || Self::split(fishnum) {
-        // true
-        // } else if Self::split(fishnum) {
-        // true
-        // } else {
-        // false
-        // }
     }
 
     pub fn reduce_full(mut fishnum: &mut FN) {
-        let mut changed = Self::reduce(&mut fishnum);
+        let mut changed = Self::reduce(fishnum);
         while changed {
             // println!("Reduce {} = {}", Self::fmt_num(&fishnum), Self::fmt_num(&reduced));
             changed = Self::reduce(fishnum);
@@ -84,13 +63,7 @@ impl Soln1 {
                 //pair of adjacent elems at equal depth represents a leaf fishnum
                 let magn = numl * 3 + numr * 2;
                 fishnum.remove(i);
-                fishnum.remove(i);
-                fishnum.insert(i, (magn, depthl - 1));
-                // let (l, mut r) = fishnum.split_at(i);
-
-                // next.extend_from_slice(l);
-                // next.push((magn, depthl - 1));
-                // next.extend_from_slice(&r[2..]);
+                fishnum[i] = (magn, depthl - 1);
                 return true;
             }
         }
@@ -98,7 +71,6 @@ impl Soln1 {
     }
 
     pub fn magnitude(fishnum: &mut FN) -> usize {
-        // let mut fncopy = fishnum;
         while fishnum.len() > 1 {
             Self::magnitude_step(fishnum);
         }
@@ -116,9 +88,7 @@ impl Soln1 {
         let mut parsed = parse(input);
         let (mut accum, rest) = parsed.split_first_mut().unwrap();
         for num in rest {
-            // let lhs = accum.clone();
             Self::add(accum, num);
-            let prered = accum.clone();
             Self::reduce_full(accum);
             // println!(
             //     "Step: {} + {} = {}",

@@ -1,4 +1,5 @@
 use criterion::{criterion_group, criterion_main, Criterion};
+use day18::shared;
 use day18::soln1;
 
 pub fn part1(c: &mut Criterion) {
@@ -17,9 +18,17 @@ pub fn part2(c: &mut Criterion) {
     group.finish();
 }
 
+pub fn parse(c: &mut Criterion) {
+    let contents: &str = include_str!("../inputs/day18.txt");
+
+    let mut group = c.benchmark_group("day18.parse.realinput");
+    group.bench_function("parse", |b| b.iter(|| shared::parse(contents)));
+    group.finish();
+}
+
 criterion_group!(
     name = benches;
     config = Criterion::default();
-    targets = part1, part2
+    targets = part1, part2, parse
 );
 criterion_main!(benches);
