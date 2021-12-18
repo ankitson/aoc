@@ -124,25 +124,15 @@ impl Soln1 {
         for num in &parsed[1..] {
             let lhs = accum.clone();
             Self::add(&mut accum, num);
-
             let prered = accum.clone();
             accum = Self::reduce_full(accum);
-            // println!("Step: Reduce({}) = {}", Self::fmt_num(&prered), Self::fmt_num(&accum));
-            println!(
-                "Step: {} + {} = {}",
-                Self::fmt_num(&lhs),
-                Self::fmt_num(num),
-                Self::fmt_num(&accum)
-            );
+            // println!(
+            //     "Step: {} + {} = {}",
+            //     Self::fmt_num(&lhs),
+            //     Self::fmt_num(num),
+            //     Self::fmt_num(&accum)
+            // );
         }
-
-        // let mut sum = Self::sum_many(parsed);
-        // println!("Sum: {:?}", sum);
-        // let mut reduced = Self::reduce_full(sum);
-        // println!("Reduced: {:?}", reduced);
-        // let mut magnstep = Self::magnitude_step(&reduced);
-        // println!("Magnitude step: {:?}", magnstep);
-        // 0
         Self::magnitude(accum)
     }
 
@@ -183,7 +173,23 @@ impl Soln1 {
     }
 
     pub fn part2(input: &str) -> usize {
-        todo!()
+        let mut inputs = parse(input);
+        let ninputs = inputs.len();
+
+        let mut max_magnitude = usize::MIN;
+        for (i1, i2) in iproduct![0..ninputs, 0..ninputs] {
+            if i1 == i2 {
+                continue;
+            }
+            let lhs = &inputs[i1];
+            let rhs = &inputs[i2];
+            let mut accum = lhs.clone();
+            Self::add(&mut accum, rhs);
+            let reduced = Self::reduce_full(accum);
+            let mut magnitude = Self::magnitude(reduced);
+            max_magnitude = max_magnitude.max(magnitude);
+        }
+        max_magnitude
     }
 }
 
@@ -288,9 +294,9 @@ mod tests {
 
     #[test]
     fn test_part2() {
-        let sample: &str = include_str!("../inputs/sample.txt");
-        // let part2 = Soln1::part2(sample);
-        // println!("Part 2 = {:?}", part2);
-        // assert_eq!(part2, 112);
+        let sample: &str = include_str!("../inputs/sample2.txt");
+        let part2 = Soln1::part2(sample);
+        println!("Part 2 (sample2) = {:?}", part2);
+        assert_eq!(part2, 3993);
     }
 }

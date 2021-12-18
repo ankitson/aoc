@@ -10,6 +10,6 @@ pub fn main() {
     let contents: &str = include_str!("../inputs/day18.txt");
     let part1 = soln1::Soln1::part1(contents);
     println!("Part 1 =  {:?}", part1);
-    // let part2 = soln1::Soln1::part2(contents);
-    // println!("Part 2 (simulation) =  {:?}", part2);
+    let part2 = soln1::Soln1::part2(contents);
+    println!("Part 2 =  {:?}", part2);
 }
