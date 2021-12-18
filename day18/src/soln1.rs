@@ -1,5 +1,3 @@
-use std::ops::Div;
-
 use crate::shared::parse;
 use itertools::iproduct;
 
@@ -24,7 +22,6 @@ impl Soln1 {
     }
 
     pub fn explode(fishnum: &FN) -> Option<FN> {
-        let mut next: FN = vec![];
         let mut reduced: FN = vec![];
         for i in 0..fishnum.len() - 1 {
             let (numl, depthl) = fishnum[i];
@@ -32,7 +29,7 @@ impl Soln1 {
             if depthl >= 5 && depthr == depthl {
                 // println!("exploding {} {} at depth {}", numl, numr, depthl);
                 //pair of adjacent elems at equal depth represents a leaf fishnum
-                next = fishnum.clone();
+                let mut next = fishnum.clone();
                 if i > 0 {
                     next[i - 1].0 += numl;
                 }
@@ -81,7 +78,6 @@ impl Soln1 {
             let (numr, depthr) = fishnum[i + 1];
             if depthl == depthr {
                 //pair of adjacent elems at equal depth represents a leaf fishnum
-                //next = fishnum.clone();
                 let magn = numl * 3 + numr * 2;
                 let (l, mut r) = fishnum.split_at(i);
                 next.extend_from_slice(l);
@@ -94,28 +90,18 @@ impl Soln1 {
     }
 
     pub fn magnitude(fishnum: FN) -> usize {
-        let mut fncopy = fishnum.clone();
+        let mut fncopy = fishnum;
         while fncopy.len() > 1 {
             fncopy = Self::magnitude_step(&fncopy);
         }
         fncopy[0].0
     }
 
-    pub fn add(l: &mut FN, r: &FN) -> () {
+    pub fn add(l: &mut FN, r: &FN) {
         l.extend(r);
         for (n, d) in l {
             *d += 1;
         }
-
-        //l.iter_mut().map(|(n, d)| *d += 1);
-    }
-
-    pub fn sum_many(input: Vec<FN>) -> FN {
-        let mut accum = input[0].clone();
-        for num in &input[1..] {
-            Self::add(&mut accum, num)
-        }
-        accum
     }
 
     pub fn part1(input: &str) -> usize {
@@ -156,13 +142,9 @@ impl Soln1 {
             }
 
             chars.extend(n.to_string().chars());
-            // chars.push(char::from_digit((n).try_into().unwrap(), 10).unwrap());
-            if i != num.len() - 1 {
-                if num[i + 1].1 >= d {
-                    chars.push(',')
-                }
+            if i != num.len() - 1 && num[i + 1].1 >= d {
+                chars.push(',')
             }
-            //chars.push(num[0].0);
         }
         while br > 0 {
             br -= 1;
@@ -216,7 +198,6 @@ mod tests {
 
     #[test]
     fn test_sum() {
-        //[1,1] + [2,2] = [[1,1],[2,2]]
         let n1 = parse_one("[1,1]");
         let n2 = parse_one("[2,2]");
         let mut accum = n1.clone();
@@ -228,17 +209,6 @@ mod tests {
             Soln1::fmt_num(&n2),
             Soln1::fmt_num(&accum)
         );
-
-        let str = "[1,1]\n[2,2]\n[3,3]";
-        let parsed = parse(&str);
-        let sum = Soln1::sum_many(parsed);
-        // println!("sum of {} = {}",)
-        assert_eq!(sum, vec![(1, 3), (1, 3), (2, 3), (2, 3), (3, 2), (3, 2)]);
-
-        let sample2 = include_str!("../inputs/sample2.txt");
-        let parsed = parse(sample2);
-        let sum = Soln1::sum_many(parsed);
-        println!("sum of sample 2 = {}", Soln1::fmt_num(&sum));
     }
 
     #[test]
