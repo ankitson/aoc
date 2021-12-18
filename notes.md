@@ -104,3 +104,47 @@ let (rem, parsed) = parse_packet(&bv).unwrap();
 println!("rem: {:?}", &rem); 
 ```
 
+
+----
+
+```rust
+pub fn split(fishnum: &mut FN) -> Option<&FN> ...
+
+pub fn explode(fishnum: &mut FN) -> Option<&FN> ...
+
+pub fn reduce(fishnum: &mut FN) -> &FN {
+    if let Some(next) = Self::explode(fishnum) {
+        next
+    } else if let Some(next) = Self::split(fishnum) {
+        next
+    } else {
+        fishnum
+    }
+}
+
+
+error[E0499]: cannot borrow `*fishnum` as mutable more than once at a time
+  --> day18/src/soln1.rs:54:48
+   |
+51 |     pub fn reduce(fishnum: &mut FN) -> &FN {
+   |                            - let's call the lifetime of this reference `'1`
+52 |         if let Some(next) = Self::explode(fishnum) {
+   |                                           ------- first mutable borrow occurs here
+53 |             next
+   |             ---- returning this value requires that `*fishnum` is borrowed for `'1`
+54 |         } else if let Some(next) = Self::split(fishnum) {
+   |                                                ^^^^^^^ second mutable borrow occurs here
+
+error[E0502]: cannot borrow `*fishnum` as immutable because it is also borrowed as mutable
+  --> day18/src/soln1.rs:57:13
+   |
+51 |     pub fn reduce(fishnum: &mut FN) -> &FN {
+   |                            - let's call the lifetime of this reference `'1`
+52 |         if let Some(next) = Self::explode(fishnum) {
+   |                                           ------- mutable borrow occurs here
+53 |             next
+   |             ---- returning this value requires that `*fishnum` is borrowed for `'1`
+...
+57 |             fishnum
+   |             ^^^^^^^ immutable borrow occurs here
+```

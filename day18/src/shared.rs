@@ -56,7 +56,6 @@ fn parse_num(chars: &[char], depth: usize, label: String) -> (usize, usize) {
 
 /// EXPR = [EXPR,EXPR]
 /// EXPR = LIT
-/// "[1,[2,[3,[4,4]]],1]"
 pub fn parse_rec(chars: &[char], depth: usize, vec: &mut Vec<(usize, usize)>, label: String) -> usize {
     // println!("{}parse[{}]: {:?}", ".".repeat(depth), label, chars);
     if chars.is_empty() {
@@ -84,28 +83,19 @@ pub fn parse_rec(chars: &[char], depth: usize, vec: &mut Vec<(usize, usize)>, la
 #[cfg(test)]
 mod tests {
     use super::{parse, parse_one, parse_rec};
-    #[test]
-    fn test_parse_one() {
-        // let mut vec = Vec::new();
-        let inputs: Vec<(&str, Vec<(usize, usize)>)> = vec![
+
+    fn testcases_one() -> Vec<(&'static str, Vec<(usize, usize)>)> {
+        vec![
             ("6", vec![(6, 0)]),
             ("[1,2]", vec![(1, 1), (2, 1)]),
             ("[1,[2,[3,[4,4]]]]", vec![(1, 1), (2, 2), (3, 3), (4, 4), (4, 4)]),
             ("[1,[2,[31,[4,14]]]]", vec![(1, 1), (2, 2), (31, 3), (4, 4), (14, 4)]),
-            // ("[[[[[9,8],1],2],3],4]", vec![]),
-        ];
-        for (str, expected_parse) in inputs {
-            let vec = parse_one(str);
-            assert_eq!(vec, expected_parse);
-        }
+        ]
     }
 
-    #[test]
-    fn test_parse() {
-        let sample1 = include_str!("../inputs/sample3.txt");
-        let vec = parse(sample1);
-        assert_eq!(
-            vec,
+    fn testcases_many() -> Vec<(&'static str, Vec<Vec<(usize, usize)>>)> {
+        vec![(
+            include_str!("../inputs/sample3.txt"),
             vec![
                 vec![(1, 1), (1, 1)],
                 vec![(2, 1), (2, 1)],
@@ -113,7 +103,23 @@ mod tests {
                 vec![(4, 1), (4, 1)],
                 vec![(5, 1), (5, 1)],
                 vec![(6, 1), (6, 1)],
-            ]
-        )
+            ],
+        )]
+    }
+
+    #[test]
+    fn test_parse_one() {
+        for (str, expected_parse) in &testcases_one() {
+            let vec = parse_one(str);
+            assert_eq!(vec, *expected_parse);
+        }
+    }
+
+    #[test]
+    fn test_parse_many() {
+        for (str, expected_parse) in &testcases_many() {
+            let vec = parse(str);
+            assert_eq!(vec, *expected_parse);
+        }
     }
 }
