@@ -10,7 +10,7 @@ impl Soln1 {
         let mut next: FN = vec![];
         for i in 0..fishnum.len() {
             let (num, depth) = fishnum[i];
-            if num > 10 {
+            if num >= 10 {
                 next.extend_from_slice(&fishnum[0..i]);
                 next.push((num.unstable_div_floor(2), depth + 1));
                 next.push((num.unstable_div_ceil(2), depth + 1));
@@ -29,7 +29,8 @@ impl Soln1 {
         for i in 0..fishnum.len() - 1 {
             let (numl, depthl) = fishnum[i];
             let (numr, depthr) = fishnum[i + 1];
-            if depthl >= 4 && depthr == depthl {
+            if depthl >= 5 && depthr == depthl {
+                // println!("exploding {} {} at depth {}", numl, numr, depthl);
                 //pair of adjacent elems at equal depth represents a leaf fishnum
                 next = fishnum.clone();
                 if i > 0 {
@@ -63,6 +64,7 @@ impl Soln1 {
     pub fn reduce_full(mut fishnum: FN) -> FN {
         let mut reduced = Self::reduce(&fishnum);
         while fishnum != reduced {
+            // println!("Reduce {} = {}", Self::fmt_num(&fishnum), Self::fmt_num(&reduced));
             fishnum = reduced;
             reduced = Self::reduce(&fishnum);
         }
@@ -118,14 +120,66 @@ impl Soln1 {
 
     pub fn part1(input: &str) -> usize {
         let mut parsed = parse(input);
-        let mut sum = Self::sum_many(parsed);
-        println!("Sum: {:?}", sum);
-        let mut reduced = Self::reduce_full(sum);
-        println!("Reduced: {:?}", reduced);
+        let mut accum = parsed[0].clone();
+        for num in &parsed[1..] {
+            let lhs = accum.clone();
+            Self::add(&mut accum, num);
+
+            let prered = accum.clone();
+            accum = Self::reduce_full(accum);
+            // println!("Step: Reduce({}) = {}", Self::fmt_num(&prered), Self::fmt_num(&accum));
+            println!(
+                "Step: {} + {} = {}",
+                Self::fmt_num(&lhs),
+                Self::fmt_num(num),
+                Self::fmt_num(&accum)
+            );
+        }
+
+        // let mut sum = Self::sum_many(parsed);
+        // println!("Sum: {:?}", sum);
+        // let mut reduced = Self::reduce_full(sum);
+        // println!("Reduced: {:?}", reduced);
         // let mut magnstep = Self::magnitude_step(&reduced);
         // println!("Magnitude step: {:?}", magnstep);
         // 0
-        Self::magnitude(reduced)
+        Self::magnitude(accum)
+    }
+
+    pub fn fmt_num(num: &FN) -> String {
+        let mut chars = Vec::new();
+        let mut br = 0;
+        for i in 0..num.len() {
+            let (n, d) = num[i];
+            let mut closed = false;
+            while br < d {
+                br += 1;
+                chars.push('[');
+            }
+            while br > d {
+                br -= 1;
+                chars.push(']');
+                closed = true;
+            }
+            if closed {
+                chars.push(',');
+            }
+
+            chars.extend(n.to_string().chars());
+            // chars.push(char::from_digit((n).try_into().unwrap(), 10).unwrap());
+            if i != num.len() - 1 {
+                if num[i + 1].1 >= d {
+                    chars.push(',')
+                }
+            }
+            //chars.push(num[0].0);
+        }
+        while br > 0 {
+            br -= 1;
+            chars.push(']');
+        }
+
+        chars.iter().collect()
     }
 
     pub fn part2(input: &str) -> usize {
@@ -136,6 +190,8 @@ impl Soln1 {
 #[cfg(test)]
 mod tests {
     #![allow(clippy::identity_op)]
+    use itertools::Itertools;
+
     use super::{Soln1, FN};
     use crate::shared::{parse, parse_one};
 
@@ -154,39 +210,86 @@ mod tests {
 
     #[test]
     fn test_sum() {
-        let mut n1 = parse_one("[1,1]");
+        //[1,1] + [2,2] = [[1,1],[2,2]]
+        let n1 = parse_one("[1,1]");
         let n2 = parse_one("[2,2]");
-        Soln1::add(&mut n1, &n2);
-        assert_eq!(n1, vec![(1, 2), (1, 2), (2, 2), (2, 2)]);
+        let mut accum = n1.clone();
+        Soln1::add(&mut accum, &n2);
+        assert_eq!(accum, vec![(1, 2), (1, 2), (2, 2), (2, 2)]);
+        println!(
+            "{} + {} = {}",
+            Soln1::fmt_num(&n1),
+            Soln1::fmt_num(&n2),
+            Soln1::fmt_num(&accum)
+        );
 
-        let str = "[1,1]\n[2,2]\n[3,3]\n[4,4]";
+        let str = "[1,1]\n[2,2]\n[3,3]";
         let parsed = parse(&str);
-        println!("parsed: {:?}", parsed);
         let sum = Soln1::sum_many(parsed);
-        println!("sum: {:?}", sum);
+        // println!("sum of {} = {}",)
+        assert_eq!(sum, vec![(1, 3), (1, 3), (2, 3), (2, 3), (3, 2), (3, 2)]);
+
+        let sample2 = include_str!("../inputs/sample2.txt");
+        let parsed = parse(sample2);
+        let sum = Soln1::sum_many(parsed);
+        println!("sum of sample 2 = {}", Soln1::fmt_num(&sum));
     }
 
     #[test]
     fn test_reduce() {
-        let inouts: Vec<(FN, FN)> = vec![(parse_one("[[[[[9,8],1],2],3],4]"), parse_one("[[[[0,9],2],3],4]"))];
-        for (inp, out) in &inouts {
-            println!("Input: {:?}\nExpected Out: {:?}", inp, out);
-            assert_eq!(&Soln1::reduce(inp), out)
+        let pairs = (vec![
+            ("[[[[[9,8],1],2],3],4]", "[[[[0,9],2],3],4]"),
+            ("[7,[6,[5,[4,[3,2]]]]]", "[7,[6,[5,[7,0]]]]"),
+            ("[[6,[5,[4,[3,2]]]],1]", "[[6,[5,[7,0]]],3]"),
+            (
+                "[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]",
+                "[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]",
+            ),
+            ("[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]", "[[3,[2,[8,0]]],[9,[5,[7,0]]]]"),
+            //split
+            ("[[[[0,7],4],[15,[0,13]]],[1,1]]", "[[[[0,7],4],[[7,8],[0,13]]],[1,1]]"),
+            //explode
+            (
+                "[[[[0,7],4],[[7,8],[0,13]]],[1,1]]",
+                "[[[[0,7],4],[[7,8],[0,[6,7]]]],[1,1]]",
+            ),
+            //explode
+            (
+                "[[[[0,7],4],[[7,8],[0,[6,7]]]],[1,1]]",
+                "[[[[0,7],4],[[7,8],[6,0]]],[8,1]]",
+            ),
+        ]);
+        let inouts: Vec<(FN, FN)> = Vec::new();
+        for (instr, outstr) in pairs {
+            println!("Input: {}", instr);
+            let parse = parse_one(instr);
+            println!("Parse: {:?}", parse);
+            let reduce = Soln1::reduce(&parse);
+            println!("Reduce1: {:?}", reduce);
+
+            println!("Expected: {}", outstr);
+            let parse_out = parse_one(outstr);
+            assert_eq!(reduce, parse_out);
         }
     }
 
     #[test]
     fn test_part1() {
-        let sample2: &str = include_str!("../inputs/sample2.txt");
-        let part1 = Soln1::part1(sample2);
-        println!("Part 1 (sample) = {:?}", part1);
-        // assert_eq!(part1, 45);
+        let sample: &str = include_str!("../inputs/sample.txt");
+        let part1 = Soln1::part1(sample);
+        println!("Part 1 (sample1) = {:?}", part1);
+
+        let sample: &str = include_str!("../inputs/sample2.txt");
+        let part1 = Soln1::part1(sample);
+        println!("Part 1 (sample2) = {:?}", part1);
+
+        assert_eq!(part1, 4140);
     }
 
     #[test]
     fn test_part2() {
         let sample: &str = include_str!("../inputs/sample.txt");
-        let part2 = Soln1::part2(sample);
+        // let part2 = Soln1::part2(sample);
         // println!("Part 2 = {:?}", part2);
         // assert_eq!(part2, 112);
     }

@@ -43,7 +43,15 @@ fn parse_num(chars: &[char], depth: usize, label: String) -> (usize, usize) {
     if chars.is_empty() || !chars[0].is_numeric() {
         panic!()
     }
-    (chars[0].to_digit(10).unwrap().try_into().unwrap(), 1)
+    let mut i = 0;
+    while i < chars.len() && chars[i].is_numeric() {
+        i += 1;
+    }
+    let tempstr: String = chars[0..i].iter().collect();
+    let numval = tempstr.parse::<usize>().unwrap();
+    //(usize::from_str_radix((chars[0..i].iter().collect()), 10).unwrap(), i)
+    //(chars[0].to_digit(10).unwrap().try_into().unwrap(), 1)
+    (numval, i)
 }
 
 /// EXPR = [EXPR,EXPR]
@@ -56,9 +64,9 @@ pub fn parse_rec(chars: &[char], depth: usize, vec: &mut Vec<(usize, usize)>, la
     }
 
     if chars[0].is_numeric() {
-        let (n, np) = parse_num(&chars[0..1], depth, "lit".to_string());
+        let (n, np) = parse_num(&chars, depth, "lit".to_string());
         vec.push((n, depth));
-        1
+        np
     } else {
         let mut np = 0;
         np += parse_open(chars, depth, "open".to_string());
@@ -83,6 +91,7 @@ mod tests {
             ("6", vec![(6, 0)]),
             ("[1,2]", vec![(1, 1), (2, 1)]),
             ("[1,[2,[3,[4,4]]]]", vec![(1, 1), (2, 2), (3, 3), (4, 4), (4, 4)]),
+            ("[1,[2,[31,[4,14]]]]", vec![(1, 1), (2, 2), (31, 3), (4, 4), (14, 4)]),
             // ("[[[[[9,8],1],2],3],4]", vec![]),
         ];
         for (str, expected_parse) in inputs {
@@ -93,7 +102,7 @@ mod tests {
 
     #[test]
     fn test_parse() {
-        let sample1 = include_str!("../inputs/sample.txt");
+        let sample1 = include_str!("../inputs/sample3.txt");
         let vec = parse(sample1);
         assert_eq!(
             vec,
@@ -102,6 +111,8 @@ mod tests {
                 vec![(2, 1), (2, 1)],
                 vec![(3, 1), (3, 1)],
                 vec![(4, 1), (4, 1)],
+                vec![(5, 1), (5, 1)],
+                vec![(6, 1), (6, 1)],
             ]
         )
     }
