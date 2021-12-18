@@ -3,7 +3,6 @@ Generated via `cargo bench -q --bench corebench -- --noplot --output-format benc
 
 ## Main
 ```
-<<<<<<< HEAD
 test day1.part1.realinput/day1/9618 ...                       bench:              31,544 ns/iter (+/- 296)
 test day1.part2.realinput/day1/9618 ...                       bench:              31,368 ns/iter (+/- 136)
 test day2.part1.realinput/day2/7875 ...                       bench:              30,697 ns/iter (+/- 112)
@@ -50,6 +49,8 @@ test day16.part1.realinput/part1 ...                          bench:            
 test day16.part2.realinput/part2 ...                          bench:              67,509 ns/iter (+/- 184)
 test day17.part1.realinput/part1 ...                          bench:         114,434,422 ns/iter (+/- 188458)
 test day17.part2.realinput/part2 ...                          bench:      11,026,866,587 ns/iter (+/- 12683967)
+test day18.part1.realinput/part1 (copy) ...                   bench:           2,757,639 ns/iter (+/- 11480)
+test day18.part2.realinput/part2 (copy) ...                   bench:          50,614,155 ns/iter (+/- 1105099)
 test day18.part1.realinput/part1 (mutable) ...                bench:             451,844 ns/iter (+/- 14153)
 test day18.part2.realinput/part2 (mutable) ...                bench:           9,001,033 ns/iter (+/- 523578)
 ```
