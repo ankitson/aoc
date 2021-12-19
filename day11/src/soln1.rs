@@ -42,7 +42,7 @@ impl Soln1 {
             for i in 0..grid.len() {
                 for j in 0..grid[0].len() {
                     if (grid[i][j] > 9) {
-                        for (nbrx, nbry) in Self::nbrs(i, j, &grid) {
+                        for (nbrx, nbry) in Self::nbrs(i, j, grid) {
                             if flashed[nbrx][nbry] != 1 {
                                 grid[nbrx][nbry] += 1;
                             }

@@ -22,15 +22,15 @@ pub fn parse(input: &str, grid_size: usize) -> (Vec<Vec<usize>>, Vec<Fold>) {
             let mut splits = line.split_ascii_whitespace();
             let last = splits.nth_back(0).unwrap();
             let (axis, num) = last.split_once("=").unwrap();
-            let numN = num.parse::<usize>().unwrap();
+            let num_n = num.parse::<usize>().unwrap();
             let fold = match axis {
                 "y" => Fold {
                     ftype: FoldType::YFold,
-                    at: numN,
+                    at: num_n,
                 },
                 "x" => Fold {
                     ftype: FoldType::XFold,
-                    at: numN,
+                    at: num_n,
                 },
                 _ => panic!("Illegal fold axis"),
             };

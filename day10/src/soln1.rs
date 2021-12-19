@@ -62,7 +62,7 @@ impl Soln1 {
         let mut stack: Vec<char> = Vec::new();
         let mut illegal_idx: Option<usize> = None;
         for (idx, char) in line.chars().enumerate() {
-            if let Some(_) = Self::open_idx(&char) {
+            if Self::open_idx(&char).is_some() {
                 stack.push(char)
             } else {
                 let br_type = Self::close_idx(char).expect("expected close");
@@ -101,7 +101,7 @@ impl Soln1 {
     fn score_completion(completion: Vec<char>) -> i64 {
         let mut score = 0i64;
         for char in completion.iter().rev() {
-            let br_score = Self::score(&char).expect("no score for char");
+            let br_score = Self::score(char).expect("no score for char");
             score = (score * 5) + (i64::from(br_score));
         }
         score
