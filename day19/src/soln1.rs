@@ -67,6 +67,12 @@ fn orientations(coord: Coord) -> Vec<Coord> {
     orients.into_iter().flat_map(flips).dedup().collect_vec()
 }
 
+fn translate(coord: Coord, by: &Coord) -> Coord {
+    let Coord(x, y, z) = coord;
+    let Coord(xo, yo, zo) = by;
+    Coord(x + xo, y + yo, z + zo)
+}
+
 pub fn part1(input: &str) -> usize {
     let scan_coords = parse(input);
     let mut scanner = 1;
@@ -76,37 +82,58 @@ pub fn part1(input: &str) -> usize {
 
     let mut scan0coords: HashSet<&Coord> = HashSet::from_iter(scan_coords.get(&0).unwrap());
 
-    let mut matched_pts: HashMap<usize, (usize, usize, usize, Option<(Axis, Axis)>, Vec<Coord>)> = HashMap::new();
+    let mut matched_pts: HashMap<usize, (usize, usize, usize, Coord, Option<(Axis, Axis)>, Vec<Coord>)> =
+        HashMap::new();
     while scan_coords.contains_key(&scanner) {
         println!("computing matches with scanner {}", &scanner);
         let coords = scan_coords.get(&scanner).unwrap();
         'outer: for (xturns, yturns, zturns) in iproduct![0..4, 0..4, 0..4] {
             for plane_flip in &plane_opts {
                 let mut matches = Vec::new();
-                for coord in coords {
-                    let mut new_coord = rotate(
-                        rotate(rotate(*coord, Axis::X, xturns), Axis::Y, yturns),
-                        Axis::Z,
-                        zturns,
-                    );
-                    if let Some(plane) = plane_flip {
-                        new_coord = flip(new_coord, *plane)
-                    }
-                    //TODO: scanners may not be at origin.
-                    if scan0coords.contains(&new_coord) {
-                        matches.push(*coord);
-                    }
-                    if matches.len() >= 12 {
-                        let match_len = matches.len();
-                        matched_pts.insert(scanner, (xturns, yturns, zturns, *plane_flip, matches));
-                        println!("Scanner {} matched {} points", scanner, match_len);
-                        break 'outer;
+                for translation_src in coords {
+                    for translation_tgt in scan0coords.iter() {
+                        for coord in coords {
+                            let mut new_coord = rotate(
+                                rotate(rotate(*coord, Axis::X, xturns), Axis::Y, yturns),
+                                Axis::Z,
+                                zturns,
+                            );
+                            if let Some(plane) = plane_flip {
+                                new_coord = flip(new_coord, *plane)
+                            }
+                            //translate enough to make src land on tgt
+                            //(sx+dx,sy+dy,sz+dz) = (tx,ty,tz)
+                            //(dx,dy,dz) = (tx-sx,ty-sy,tz-sz)
+                            let Coord(sx, sy, sz) = translation_src;
+                            let Coord(tx, ty, tz) = translation_tgt;
+                            let displace = Coord(tx - sx, ty - sy, tz - sz);
+                            new_coord = translate(new_coord, &displace);
+
+                            if scan0coords.contains(&new_coord) {
+                                matches.push(*coord);
+                            }
+                            if matches.len() >= 12 {
+                                let match_len = matches.len();
+                                matched_pts.insert(scanner, (xturns, yturns, zturns, displace, *plane_flip, matches));
+                                println!(
+                                    "Scanner {} matched {} points using:\n
+                                    displace({:?}
+                                        flip({:?}
+                                            rotate({},{},{})))",
+                                    scanner, match_len, displace, plane_flip, xturns, yturns, zturns
+                                );
+                                break 'outer;
+                            }
+                        }
                     }
                 }
             }
         }
         scanner += 1;
     }
+    //TODO:
+    //- what if scanner 1 & 2 overlap some points that scanner 0 doesnt see?
+    //- compute the normalized coords of beacons to generate a count
     0
 }
 
