@@ -5,6 +5,17 @@ use regex::Regex;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Coord(pub isize, pub isize, pub isize);
+impl Coord {
+    pub fn l0_dist(&self) -> isize {
+        self.0.abs().max(self.1.abs().max(self.2.abs()))
+    }
+
+    pub fn translate(&self, by: &Coord) -> Coord {
+        let Coord(x, y, z) = self;
+        let Coord(xo, yo, zo) = by;
+        Coord(x + xo, y + yo, z + zo)
+    }
+}
 pub type ScanCoords = HashMap<usize, Vec<Coord>>;
 
 pub fn parse(input: &str) -> ScanCoords {
