@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 use itertools::{iproduct, Itertools};
 
@@ -69,7 +69,45 @@ fn orientations(coord: Coord) -> Vec<Coord> {
 
 pub fn part1(input: &str) -> usize {
     let scan_coords = parse(input);
-    todo!()
+    let mut scanner = 1;
+    let planes = vec![(Axis::X, Axis::Y), (Axis::Y, Axis::Z), (Axis::X, Axis::Z)];
+    let mut plane_opts: Vec<Option<(Axis, Axis)>> = planes.iter().map(|p| Some((p.0, p.1))).collect_vec();
+    plane_opts.push(None);
+
+    let mut scan0coords: HashSet<&Coord> = HashSet::from_iter(scan_coords.get(&0).unwrap());
+
+    let mut matched_pts: HashMap<usize, (usize, usize, usize, Option<(Axis, Axis)>, Vec<Coord>)> = HashMap::new();
+    while scan_coords.contains_key(&scanner) {
+        println!("computing matches with scanner {}", &scanner);
+        let coords = scan_coords.get(&scanner).unwrap();
+        'outer: for (xturns, yturns, zturns) in iproduct![0..4, 0..4, 0..4] {
+            for plane_flip in &plane_opts {
+                let mut matches = Vec::new();
+                for coord in coords {
+                    let mut new_coord = rotate(
+                        rotate(rotate(*coord, Axis::X, xturns), Axis::Y, yturns),
+                        Axis::Z,
+                        zturns,
+                    );
+                    if let Some(plane) = plane_flip {
+                        new_coord = flip(new_coord, *plane)
+                    }
+                    //TODO: scanners may not be at origin.
+                    if scan0coords.contains(&new_coord) {
+                        matches.push(*coord);
+                    }
+                    if matches.len() >= 12 {
+                        let match_len = matches.len();
+                        matched_pts.insert(scanner, (xturns, yturns, zturns, *plane_flip, matches));
+                        println!("Scanner {} matched {} points", scanner, match_len);
+                        break 'outer;
+                    }
+                }
+            }
+        }
+        scanner += 1;
+    }
+    0
 }
 
 pub fn part2(input: &str) -> usize {
