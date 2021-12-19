@@ -1,10 +1,10 @@
-use std::{collections::HashMap, iter::Scan};
+use std::collections::HashMap;
 
 use itertools::Itertools;
 use regex::Regex;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct Coord(isize, isize, isize);
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct Coord(pub isize, pub isize, pub isize);
 pub type ScanCoords = HashMap<usize, Vec<Coord>>;
 
 pub fn parse(input: &str) -> ScanCoords {
@@ -22,14 +22,7 @@ pub fn parse(input: &str) -> ScanCoords {
                 coords.clear();
             }
             current_scanner = Some(matches.get(1).unwrap().as_str().parse().unwrap());
-        } else if let Some((x, y, z)) = line
-            .splitn(3, ',')
-            .map(|s| {
-                println!("parsing {} as int", s);
-                s.parse::<isize>().unwrap()
-            })
-            .collect_tuple()
-        {
+        } else if let Some((x, y, z)) = line.splitn(3, ',').map(|s| s.parse::<isize>().unwrap()).collect_tuple() {
             coords.push(Coord(x, y, z));
         }
     }
