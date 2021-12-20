@@ -4,6 +4,7 @@ pub struct Soln1 {}
 impl Soln1 {
    
     pub fn part1(input: &str) -> usize {
+        
         todo!()
     }
 
