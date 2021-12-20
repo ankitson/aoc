@@ -1,5 +1,6 @@
 #![allow(unused_variables)]
 #![allow(unused_mut)]
+#![allow(unused_parens)]
 #![feature(int_roundings)]
 
 mod shared;
