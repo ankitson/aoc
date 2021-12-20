@@ -61,7 +61,7 @@ impl Soln1 {
     fn step_n(ehmap: &Vec<usize>, grid: &Vec<Vec<usize>>, n: usize) -> Vec<Vec<usize>> {
         let mut next = grid.clone();
         for i in 0..n {
-            next = Self::step(&ehmap, &next, if i % 2 == 0 { 0 } else { 1 });
+            next = Self::step(ehmap, &next, ehmap[0] & (i % 2));
         }
         next
     }
