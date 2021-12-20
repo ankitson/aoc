@@ -11,7 +11,7 @@ impl Soln1 {
         if r >= 0 && r < gl && c >=0 && c < gl { 
             let ru: usize = r.try_into().unwrap();
             let cu: usize = c.try_into().unwrap();
-             grid[ru][cu]
+            grid[ru][cu]
         }
         else { default }
     }
@@ -35,10 +35,9 @@ impl Soln1 {
         (0..newgl).for_each(|i| new_grid.push(empty_row.clone())); 
         for i in 0..newgl {
             for j in 0..newgl {
-                let default = 0;
                 let mut mask = vec![(i-1,j-1),(i-1,j),(i-1,j+1),
-                                (i,j-1),(i,j),(i,j+1),
-                                (i+1,j-1),(i+1,j),(i+1,j+1)]
+                                    (i,j-1),(i,j),(i,j+1),
+                                    (i+1,j-1),(i+1,j),(i+1,j+1)]
                                 .into_iter()
                                 .map(|(r,c)| 
                                     Self::virtual_idx(grid, r - 1, c - 1, default)
@@ -80,13 +79,16 @@ impl Soln1 {
         let (ehmap, grid) = parse(input);
         let final_grid = Self::step_n(&ehmap, &grid, 2);
         let set = Self::count_set(&final_grid);
-        let unset: usize = final_grid.iter().map(|r| r.iter().filter(|n| **n == 0).count()).sum();
-        println!("{} set {} unset on grid {}*{} = {} elems", set, unset, &final_grid.len(), &final_grid[0].len(), final_grid.len()*final_grid[0].len());
+        // let unset: usize = final_grid.iter().map(|r| r.iter().filter(|n| **n == 0).count()).sum();
+        // println!("{} set {} unset on grid {}*{} = {} elems", set, unset, &final_grid.len(), &final_grid[0].len(), final_grid.len()*final_grid[0].len());
         set
     }
 
     pub fn part2(input: &str) -> usize {
-        todo!()
+        let (ehmap, grid) = parse(input);
+        let final_grid = Self::step_n(&ehmap, &grid, 50);
+        let set = Self::count_set(&final_grid);
+        set
     }
 }
 
