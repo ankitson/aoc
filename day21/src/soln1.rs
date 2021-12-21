@@ -16,11 +16,11 @@ impl Soln1 {
         let mut poses = parse(input);
         let num_players = poses.len();
         let mut scores = vec![0; num_players];
-        let mut player = 0;
         let mut die = 1;
         let mut nturns = 0;
 
         loop {
+            let player = nturns % num_players;
             poses[player] = Self::next_position(poses[player], die, 10);
             scores[player] += poses[player];
             nturns += 1;
@@ -29,7 +29,6 @@ impl Soln1 {
                 let losing_score = scores[1 - player];
                 return losing_score * nturns * 3;
             }
-            player = (player + 1) % num_players;
         }
     }
 
@@ -42,32 +41,35 @@ impl Soln1 {
         posi.try_into().unwrap()
     }
 
-    fn step_n(starts: Vec<usize>, rolls: usize, scores: Vec<usize>, wins1: &mut u64, wins2: &mut u64) {
-        let turn = (21 - rolls) % 2; //at 21 rolls remaining, its p1s turn.
+    fn step_n(starts: Vec<usize>, rolls: usize, scores: &mut [usize], wins1: &mut u64, wins2: &mut u64) {
+        let turn = (42 - rolls) % 2; //at 21 rolls remaining, its p1s turn.
 
+        if scores[1 - turn] > 21 {
+            if 1 - turn == 0 {
+                *wins1 += 1;
+            } else {
+                *wins2 += 1;
+            }
+            return;
+        }
+
+        let prefix: String = ".".repeat(42 - rolls);
+        println!("{} {}, {}", prefix, scores[0], scores[1]);
         for roll in 1..4 {
             let mut new_starts = starts.clone();
             new_starts[turn] = Self::incr_pos(starts[turn], roll);
-            let mut new_scores = scores.clone();
+            let mut new_scores = &mut scores[..]; //scores.clone();
             new_scores[turn] += new_starts[turn];
-            if new_scores[turn] > 21 {
-                if turn == 0 {
-                    *wins1 += 1;
-                } else {
-                    *wins2 += 1;
-                }
-                return;
-            }
+
             Self::step_n(new_starts, rolls - 1, new_scores, wins1, wins2)
         }
     }
 
     pub fn part2(input: &str) -> (u64, u64) {
         let mut poses = parse(input);
-        let np = poses.len();
         let mut wins1 = 0u64;
         let mut wins2 = 0u64;
-        Self::step_n(poses, 21, vec![0; np], &mut wins1, &mut wins2);
+        Self::step_n(poses, 42, &mut [0; 2], &mut wins1, &mut wins2);
         (wins1, wins2)
     }
 }
