@@ -12,6 +12,7 @@ criterion = { version = "0.3.5", features = ["html_reports"] }
 [dependencies]
 itertools = "0.10.3"
 regex = "^1"
+rayon = "1.5.1"
 
 [[bench]]
 name = "corebench"

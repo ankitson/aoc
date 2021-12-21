@@ -389,6 +389,7 @@ version = "0.1.0"
 dependencies = [
  "criterion",
  "itertools",
+ "rayon",
  "regex",
 ]
 
