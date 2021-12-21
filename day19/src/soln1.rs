@@ -1,5 +1,5 @@
 use crate::shared::{parse, Coord};
-use itertools::{iproduct, Itertools, izip};
+use itertools::{iproduct, izip, Itertools};
 use std::collections::{HashMap, HashSet};
 
 #[derive(PartialEq, Eq, Debug, PartialOrd, Ord, Clone, Copy)]
@@ -17,7 +17,7 @@ enum Op {
     Rotate(Axis, usize),
     Flip(Plane),
     Translate(Coord),
-    Ident
+    Ident,
 }
 impl Op {
     fn rotate(coord: &Coord, around: Axis, turns: usize) -> Coord {
@@ -26,17 +26,17 @@ impl Op {
             Axis::X => match turns % 4 {
                 0 => *coord,
                 1 => Coord(x, -z, y),
-                n => Self::rotate(&Self::rotate(coord, around, n - 1),around, 1)
+                n => Self::rotate(&Self::rotate(coord, around, n - 1), around, 1),
             },
             Axis::Y => match turns % 4 {
                 0 => *coord,
                 1 => Coord(-z, y, x),
-                n => Self::rotate(&Self::rotate(coord, around, n - 1),around, 1)
+                n => Self::rotate(&Self::rotate(coord, around, n - 1), around, 1),
             },
             Axis::Z => match turns % 4 {
                 0 => *coord,
                 1 => Coord(-y, x, z),
-                n => Self::rotate(&Self::rotate(coord, around, n - 1),around, 1)
+                n => Self::rotate(&Self::rotate(coord, around, n - 1), around, 1),
             },
         }
     }
@@ -58,7 +58,7 @@ impl Op {
             Op::Rotate(axis, nturns) => Self::rotate(point, *axis, *nturns),
             Op::Flip(plane) => Self::flip(point, plane),
             Op::Translate(coord) => point.translate(coord),
-            Op::Ident => *point
+            Op::Ident => *point,
         }
     }
 
@@ -66,8 +66,8 @@ impl Op {
         match self {
             Op::Rotate(axis, nturns) => (Op::Rotate(*axis, 4 - nturns)).apply(point),
             Op::Flip(plane) => Op::Flip(*plane).apply(point),
-            Op::Translate(coord) => point.translate(&Coord(-coord.0,-coord.1,-coord.2)),
-            Op::Ident => *point
+            Op::Translate(coord) => point.translate(&Coord(-coord.0, -coord.1, -coord.2)),
+            Op::Ident => *point,
         }
     }
 }
@@ -94,26 +94,28 @@ impl Ops {
     }
 }
 
-
 pub fn part1(input: &str) -> usize {
     let scan_coords = parse(input);
     let num_scanners = scan_coords.len();
 
     let axes = vec![Axis::X, Axis::Y, Axis::Z];
-    let planes = vec![Plane(Axis::X,Axis::Y),Plane(Axis::X,Axis::Z),Plane(Axis::Y,Axis::Z)];
+    let planes = vec![
+        Plane(Axis::X, Axis::Y),
+        Plane(Axis::X, Axis::Z),
+        Plane(Axis::Y, Axis::Z),
+    ];
     let mut x_rotates = (0..4).map(|nt| Op::Rotate(Axis::X, nt)).collect_vec();
     let mut y_rotates = (0..4).map(|nt| Op::Rotate(Axis::Y, nt)).collect_vec();
     let mut z_rotates = (0..4).map(|nt| Op::Rotate(Axis::Z, nt)).collect_vec();
     let mut flips = planes.iter().map(|p| Op::Flip(*p)).collect_vec();
-        flips.push(Op::Ident);
+    flips.push(Op::Ident);
     let flips = flips;
 
-    let mut z_flip = vec![Op::Flip(Plane(Axis::X,Axis::Y)), Op::Ident];
-    let mut y_flip = vec![Op::Flip(Plane(Axis::X,Axis::Z)), Op::Ident];
-    let mut x_flip = vec![Op::Flip(Plane(Axis::Y,Axis::Z)), Op::Ident];
+    let mut z_flip = vec![Op::Flip(Plane(Axis::X, Axis::Y)), Op::Ident];
+    let mut y_flip = vec![Op::Flip(Plane(Axis::X, Axis::Z)), Op::Ident];
+    let mut x_flip = vec![Op::Flip(Plane(Axis::Y, Axis::Z)), Op::Ident];
 
-
-    let mut scposes: HashMap<(usize,usize),(Ops, Coord)> = HashMap::new();
+    let mut scposes: HashMap<(usize, usize), (Ops, Coord)> = HashMap::new();
 
     for (sc1, sc2) in iproduct!(0..num_scanners, 0..num_scanners) {
         if sc1 >= sc2 {
@@ -121,19 +123,37 @@ pub fn part1(input: &str) -> usize {
         }
         let sc1_points = scan_coords.get(&sc1).unwrap();
         let sc2_points = scan_coords.get(&sc2).unwrap();
-        for (rotate_x,rotate_y,rotate_z) in izip![&x_rotates,&y_rotates,&z_rotates] {
-            for (flip1,flip2,flip3) in iproduct![&x_flip,&y_flip,&z_flip] {
+        for (rotate_x, rotate_y, rotate_z) in izip![&x_rotates, &y_rotates, &z_rotates] {
+            for (flip1, flip2, flip3) in iproduct![&x_flip, &y_flip, &z_flip] {
                 for (p1, p2) in iproduct![sc1_points, sc2_points] {
-                    let op_chain = Ops { ops: vec![*rotate_x, *rotate_y, *rotate_z, *flip1, *flip2, *flip3] };
-                    let p2_inv = op_chain.inverse(*p2);
-                    // let translation = Op::Translate(Coord(-p2_inv.0,-p2_inv.1,-p2_inv.2));
+                    //what is the orientation and displacement of scanner 2,
+                    //assuming p1 == p2?
 
-                    let candidate_origin2 = Coord(p1.0-p2_inv.0,p1.1-p2_inv.1,p1.2-p2_inv.2);
+                    // say p1 = (1,2.3)
+                    // and p2 = (-5,8,7)
+                    //
+                    // p1x = 1, p2x = -5
+                    // so sc2x = 1-(-5) = 6
+                    //    sc2y = 2-8 = -6
+                    //    sc2z = 3-7 = -4
+                    // IF sc2 has the same orientation as sc1.
+                    //
+                    // if orientation_sc2 = rotateZ1(rotateY1(rotateX1(orientation_sc1)))
+                    // then first unorient p2, then align
+                    //
+                    let op_chain = Ops {
+                        ops: vec![*rotate_x, *rotate_y, *rotate_z, *flip1, *flip2, *flip3],
+                    };
+                    let p2_inv = op_chain.inverse(*p2);
+
+                    //ops(p2_inv) = p2
+
+                    let candidate_origin2 = Coord(p1.0 - p2_inv.0, p1.1 - p2_inv.1, p1.2 - p2_inv.2);
                     // if candidate_origin2.l0_dist() > 1000 {
-                        // continue;
+                    // continue;
                     // }
                     // if sc1 == 0 && sc2 == 1 && *p1 == Coord(-618,-824,-621) {
-                        // println!("cand origin {:?}", candidate_origin2);
+                    // println!("cand origin {:?}", candidate_origin2);
                     // }
                     // if candidate_origin2 == Coord(68,-1246,-43) {//*p1 == Coord(-618,-824,-621) && *p2 == Coord(686,422,578)) {
                     //     // println!("calibrating {}/{} using points {:?}/{:?}={:?}", sc1, sc2, p1,p2,p2_inv);
@@ -148,10 +168,10 @@ pub fn part1(input: &str) -> usize {
                     // if (sc1 == 1 && sc2 == 4) {
                     //     println!("1 & 4 have {} overlaps", overlaps)
                     // }
-                    if overlaps >= 12 && !scposes.contains_key(&(sc1,sc2)) {
-                        let lower_ref = scposes.keys().find(|(p,c)| *p < sc1 && *c == sc2);
+                    if overlaps >= 12 && !scposes.contains_key(&(sc1, sc2)) {
+                        let lower_ref = scposes.keys().find(|(p, c)| *p < sc1 && *c == sc2);
                         if lower_ref.is_none() {
-                            scposes.insert((sc1,sc2), (op_chain, candidate_origin2));
+                            scposes.insert((sc1, sc2), (op_chain, candidate_origin2));
                         }
                     }
                     // if sc1 == 0 && sc2 == 1 {
@@ -163,18 +183,23 @@ pub fn part1(input: &str) -> usize {
     }
 
     println!("scposes keys: {:?}", scposes.keys());
-    
+
     // let mut abs_poses = HashMap::new();
     let mut parent_chains = HashMap::new();
-    for (k,v) in scposes.iter() {
-        let (sc1,sc2) = k;
+    for (k, v) in scposes.iter() {
+        let (sc1, sc2) = k;
         if *sc2 == 0 {
             continue;
         }
         let mut parent_chain = vec![sc1];
         while **parent_chain.last().unwrap() != 0 {
             let parent = **parent_chain.last().unwrap();
-            let grand_parent = scposes.keys().filter(|(p,c)| *c == parent).map(|(p,c)| p).min().unwrap();
+            let grand_parent = scposes
+                .keys()
+                .filter(|(p, c)| *c == parent)
+                .map(|(p, c)| p)
+                .min()
+                .unwrap();
             parent_chain.push(grand_parent);
         }
         parent_chains.insert(sc2, parent_chain);
@@ -182,11 +207,9 @@ pub fn part1(input: &str) -> usize {
     for i in (1..num_scanners).rev() {
         if let Some(parent_chain) = parent_chains.get(&i) {
             let mut current_parent = parent_chains.get(&i).unwrap();
-            
         }
     }
     println!("built parent chains: {:?}", parent_chains);
-
 
     0
 }
@@ -201,15 +224,15 @@ fn compute_overlaps(pts1: &Vec<Coord>, pts2: &Vec<Coord>, ops: &Ops, origin2: Co
     // println!("P2 origin w.r.t P1 with {:?} is at {:?}", ops, p21_wrt_0);
     for p2 in pts2 {
         let p2_inv = ops.inverse(*p2);
-        let p2_wrt_p1 = Coord(p2_inv.0+origin2.0, p2_inv.1+origin2.1, p2_inv.2+origin2.2);
+        let p2_wrt_p1 = Coord(p2_inv.0 + origin2.0, p2_inv.1 + origin2.1, p2_inv.2 + origin2.2);
         // if (origin2 == Coord(68,-1246,-43)) {
-            // println!("candidate origin2 hitter at ops: {:?}", ops);
-            // println!("p2 = {:?} inv(p2) = {:?} translate(inv(p2)) = {:?}", p2, p2_inv, p2_wrt_p1)    
+        // println!("candidate origin2 hitter at ops: {:?}", ops);
+        // println!("p2 = {:?} inv(p2) = {:?} translate(inv(p2)) = {:?}", p2, p2_inv, p2_wrt_p1)
         // }
         if pts1_set.contains(&p2_wrt_p1) {
             noverlaps += 1;
             // if noverlaps > 1 && *p2 == Coord(686,422,575) {
-                // println!("p2 wrt p1 = {:?}", p2_wrt_p1);
+            // println!("p2 wrt p1 = {:?}", p2_wrt_p1);
             // }
         }
     }
@@ -252,9 +275,9 @@ mod tests {
 
         //[1,2,3] -> [1,2,-3] -> [-2,1,-3]
         let flip_rotate = Ops {
-            ops: vec![Flip(Plane(X,Y)),Rotate(Z,1)]
+            ops: vec![Flip(Plane(X, Y)), Rotate(Z, 1)],
         };
-        assert_eq!(flip_rotate.apply(test_points[0]), Coord(-2,1,-3))
+        assert_eq!(flip_rotate.apply(test_points[0]), Coord(-2, 1, -3))
     }
 
     #[test]
@@ -268,9 +291,9 @@ mod tests {
         };
         //[1,2,3] -> [1,2,-3] -> [-2,1,-3]
         let flip_rotate = Ops {
-            ops: vec![Flip(Plane(X,Y)),Rotate(Z,1)]
+            ops: vec![Flip(Plane(X, Y)), Rotate(Z, 1)],
         };
-        let test_ops = vec![twice_x,two_flip,flip_rotate];
+        let test_ops = vec![twice_x, two_flip, flip_rotate];
 
         for point in test_points.iter() {
             for op in test_ops.iter() {
@@ -278,7 +301,6 @@ mod tests {
                 assert_eq!(*point, roundtrip);
             }
         }
-
     }
 
     // #[test]
@@ -319,7 +341,7 @@ mod tests {
         // assert_eq!(part1, 0);
     }
 
-    #[test]
+    // #[test]
     fn test_part2() {
         let sample: &str = include_str!("../inputs/sample.txt");
         let part2 = part2(sample);
