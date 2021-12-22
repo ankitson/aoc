@@ -3,6 +3,14 @@ use itertools::Itertools;
 use std::iter::repeat;
 
 type Cubes = Vec<(u8, isize, isize, isize, isize, isize, isize)>;
+#[derive(Clone, Debug)]
+pub struct Node {
+    xmid: isize,
+    ymid: isize,
+    zmid: isize,
+    left: Option<Box<Node>>,
+    right: Option<Box<Node>>, // children: Vec<(Option<Box<Node>>, usize)>, // left: &'a mut Option<Box<Node<'a>>>,                                         // right: &'a Option<Box<Node<'a>>>
+}
 pub struct Soln1 {}
 impl Soln1 {
     fn out_bounds(cc: isize) -> bool {
@@ -20,6 +28,19 @@ impl Soln1 {
         }
         nset
     }
+
+    // fn count_set2(cubes: [[[u8; 2 * 100_000 + 1]; 2 * 100_000 + 1]; 2 * 100_000 + 1]) -> usize {
+    //     let mut nset = 0;
+    //     let max = 2 * 100_000 + 1;
+    //     for x in 0..=max {
+    //         for y in 0..=max {
+    //             for z in 0..=max {
+    //                 nset += (cubes[x][y][z] as usize);
+    //             }
+    //         }
+    //     }
+    //     nset
+    // }
 
     pub fn part1(input: &str) -> usize {
         let cubes = parse(input);
@@ -48,8 +69,64 @@ impl Soln1 {
         Self::count_set(map)
     }
 
+    fn surface_str(cube: (isize, isize, isize, isize, isize, isize), num: usize) -> String {
+        let (xl, xh, yl, yh, zl, zh) = cube;
+        match num {
+            0 => format!(
+                "({} {} {}, {} {} {}, {} {} {}, {} {} {}, {} {} {})",
+                xl, yl, zl, xl, yh, zl, xl, yh, zh, xl, yl, zh, xl, yl, zl
+            ), //X=Low, XZ plane
+            1 => format!(
+                "({} {} {}, {} {} {}, {} {} {}, {} {} {}, {} {} {})",
+                xh, yh, zh, xh, yh, zl, xh, yl, zl, xh, yl, zh, xh, yh, zh
+            ), //X=Hi, XZ plane
+            2 => format!(
+                "({} {} {}, {} {} {}, {} {} {}, {} {} {}, {} {} {})",
+                xl, yl, zl, xh, yl, zl, xh, yl, zh, xl, yl, zh, xl, yl, zl
+            ), //Y=Low, XZ plane
+            3 => format!(
+                "({} {} {}, {} {} {}, {} {} {}, {} {} {}, {} {} {})",
+                xh, yh, zh, xl, yh, zh, xl, yh, zl, xh, yh, zl, xh, yh, zh
+            ), //Y=Hi, XZ plane
+            4 => format!(
+                "({} {} {}, {} {} {}, {} {} {}, {} {} {}, {} {} {})",
+                xl, yl, zl, xh, yl, zl, xh, yh, zl, xl, yh, zl, xl, yl, zl
+            ), //Z=Low, XY plane
+            5 => format!(
+                "({} {} {}, {} {} {}, {} {} {}, {} {} {}, {} {} {})",
+                xh, yh, zh, xl, yh, zh, xl, yl, zh, xh, yl, zh, xh, yh, zh
+            ), //Z=Hi, XY plane
+            _ => panic!(),
+        }
+    }
+
+    fn polyhedra_str(cube: (isize, isize, isize, isize, isize, isize)) -> String {
+        let mut str: String = String::new();
+        str.push_str("POLYHEDRALSURFACE Z (\n");
+        for i in vec![0, 2, 4, 1, 3, 5] {
+            let lin = Self::surface_str(cube, i);
+            str.push_str(&format!("({})", &lin).to_string());
+            if i != 5 {
+                str.push_str(",")
+            }
+            str.push_str("\n");
+        }
+        str.push_str(")");
+        str
+    }
+
     pub fn part2(input: &str) -> usize {
+        let max = 100000;
+        let cubes = parse(input);
+        for cube in cubes {
+            println!("cube: {:?}", cube);
+            println!(
+                "{}",
+                Self::polyhedra_str((cube.1, cube.2, cube.3, cube.4, cube.5, cube.6))
+            );
+        }
         todo!()
+        // Self::count_set2(map)
     }
 }
 
