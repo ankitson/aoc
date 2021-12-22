@@ -17,6 +17,6 @@ pub fn main() {
 fn run(input: &str, tag: &str) {
     let part1 = soln1::Soln1::part1(input);
     println!("Part 1 ({})=  {:?}", tag, part1);
-    let part2 = soln1::Soln1::part2(input);
-    println!("Part 2 ({})=  {:?}", tag, part2);
+    // let part2 = soln1::Soln1::part2(input);
+    // println!("Part 2 ({})=  {:?}", tag, part2);
 }
