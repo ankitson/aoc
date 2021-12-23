@@ -9,6 +9,10 @@ There is no implicit mapping between files and modules - this is built explicitl
  
 `IntoIterator`s built using `into_iter` (by convention) move the value
 
+---
+
+`sort_by_key` moves the key, so is unusable when copy is expensive. use `sort_by` instead which allows borrows
+
 ## Tools & Tricks
 ---
 

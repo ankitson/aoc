@@ -12,7 +12,7 @@ pub fn main() {
     let sample2: &str = include_str!("../inputs/sample2.txt");
     let contents: &str = include_str!("../inputs/day22.txt");
     run(sample2, "sample2");
-    // run(sample, "sample");
+    run(sample, "sample");
     // run(contents, "input");
 }
 

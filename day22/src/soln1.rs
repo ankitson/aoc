@@ -1,16 +1,9 @@
 use crate::shared::parse;
+use crate::shared::Box;
+use crate::shared::Interval as I;
 use itertools::Itertools;
 use std::iter::repeat;
 
-type Cubes = Vec<(u8, isize, isize, isize, isize, isize, isize)>;
-#[derive(Clone, Debug)]
-pub struct Node {
-    xmid: isize,
-    ymid: isize,
-    zmid: isize,
-    left: Option<Box<Node>>,
-    right: Option<Box<Node>>, // children: Vec<(Option<Box<Node>>, usize)>, // left: &'a mut Option<Box<Node<'a>>>,                                         // right: &'a Option<Box<Node<'a>>>
-}
 pub struct Soln1 {}
 impl Soln1 {
     fn out_bounds(cc: isize) -> bool {
@@ -45,7 +38,15 @@ impl Soln1 {
     pub fn part1(input: &str) -> usize {
         let cubes = parse(input);
         let mut map = [[[0u8; 101]; 101]; 101];
-        for (stat, xl, xh, yl, yh, zl, zh) in cubes {
+        for (
+            stat,
+            Box {
+                x_range: I(xl, xh),
+                y_range: I(yl, yh),
+                z_range: I(zl, zh),
+            },
+        ) in cubes
+        {
             if (Self::out_bounds(xl)
                 || Self::out_bounds(xh)
                 || Self::out_bounds(yl)
@@ -69,63 +70,86 @@ impl Soln1 {
         Self::count_set(map)
     }
 
-    fn surface_str(cube: (isize, isize, isize, isize, isize, isize), num: usize) -> String {
-        let (xl, xh, yl, yh, zl, zh) = cube;
-        match num {
-            0 => format!(
-                "({} {} {}, {} {} {}, {} {} {}, {} {} {}, {} {} {})",
-                xl, yl, zl, xl, yh, zl, xl, yh, zh, xl, yl, zh, xl, yl, zl
-            ), //X=Low, XZ plane
-            1 => format!(
-                "({} {} {}, {} {} {}, {} {} {}, {} {} {}, {} {} {})",
-                xh, yh, zh, xh, yh, zl, xh, yl, zl, xh, yl, zh, xh, yh, zh
-            ), //X=Hi, XZ plane
-            2 => format!(
-                "({} {} {}, {} {} {}, {} {} {}, {} {} {}, {} {} {})",
-                xl, yl, zl, xh, yl, zl, xh, yl, zh, xl, yl, zh, xl, yl, zl
-            ), //Y=Low, XZ plane
-            3 => format!(
-                "({} {} {}, {} {} {}, {} {} {}, {} {} {}, {} {} {})",
-                xh, yh, zh, xl, yh, zh, xl, yh, zl, xh, yh, zl, xh, yh, zh
-            ), //Y=Hi, XZ plane
-            4 => format!(
-                "({} {} {}, {} {} {}, {} {} {}, {} {} {}, {} {} {})",
-                xl, yl, zl, xh, yl, zl, xh, yh, zl, xl, yh, zl, xl, yl, zl
-            ), //Z=Low, XY plane
-            5 => format!(
-                "({} {} {}, {} {} {}, {} {} {}, {} {} {}, {} {} {})",
-                xh, yh, zh, xl, yh, zh, xl, yl, zh, xh, yl, zh, xh, yh, zh
-            ), //Z=Hi, XY plane
-            _ => panic!(),
-        }
-    }
-
-    fn polyhedra_str(cube: (isize, isize, isize, isize, isize, isize)) -> String {
-        let mut str: String = String::new();
-        str.push_str("POLYHEDRALSURFACE Z (\n");
-        for i in vec![0, 2, 4, 1, 3, 5] {
-            let lin = Self::surface_str(cube, i);
-            str.push_str(&format!("({})", &lin).to_string());
-            if i != 5 {
-                str.push_str(",")
-            }
-            str.push_str("\n");
-        }
-        str.push_str(")");
-        str
-    }
+    //     -- I. b and a are positive
+    // ---- 1. b is contained in a
+    //  ---- test: st_3dintersection(a,b) == b
+    //  ---- volume =  volume(a)
+    // ---- 2. a is contained in b
+    //  ---- volume = volume(b)
+    // ---- 3. a/b are disjoint
+    //  ---- volume = volume(a) + volume(b)
+    // ---- 3. a/b intersect in a cuboid
+    //  ---- volume = volume(a) + volume(b) - volume(intersect(a,b))
+    // -- II. b is negative, a is positive
+    // ---- 1. b is contained in a
+    //  ---- volume = volume(a) - volume(b)
+    //  ---- 1. a is contained in b
+    //  ---- volume = 0
+    // ---- 2. disjoint from a
+    //  ---- volume = volume(a)
+    // ---- 3. intersects
+    //  ---- volume = volume(a) - volume(intersect(a,b))
+    // -- III. a and b are negative
+    //  ---- volume = 0
 
     pub fn part2(input: &str) -> usize {
         let max = 100000;
-        let cubes = parse(input);
-        for cube in cubes {
-            println!("cube: {:?}", cube);
-            println!(
-                "{}",
-                Self::polyhedra_str((cube.1, cube.2, cube.3, cube.4, cube.5, cube.6))
-            );
+        let mut cubes = parse(input);
+
+        impl PartialOrd for Box {
+            fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+                Some(self.cmp(other))
+            }
         }
-        todo!()
+        impl Ord for Box {
+            fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+                self.x_range
+                    .cmp(&other.x_range)
+                    .then(self.y_range.cmp(&other.y_range))
+                    .then(self.z_range.cmp(&other.z_range))
+            }
+        }
+
+        //WONT WORK without changes because this does not account for 
+        //the order in which cubes appear
+        cubes.sort_by(|t1, t2| t1.1.cmp(&t2.1));
+        let mut prevt = None;
+        let mut volume = 0;
+        for (status, cube) in cubes {
+            if prevt.is_none() {
+                volume += if status == 0 { 0 } else { cube.volume() };
+                prevt = Some((status, cube));
+                continue;
+            }
+            let (pstatus, prev) = prevt.unwrap();
+            if prev.contains(&cube) {
+                if (pstatus == 1 && status == 1) {
+                    //
+                } else if (pstatus == 0 && status == 1) {
+                    volume += cube.volume()
+                } else if (pstatus == 1 && status == 0) {
+                    volume -= cube.volume()
+                } else {
+                    //
+                }
+            } else if cube.contains(&prev) {
+                if (pstatus == 1 && status == 1) {
+                    volume += cube.volume() - prev.volume()
+                } else if (pstatus == 0 && status == 1) {
+                    volume += cube.volume()
+                } else if (pstatus == 1 && status == 0) {
+                    volume -= cube.volume()
+                } else {
+
+            }
+
+            // println!(
+            //     "{}",
+            //     Self::polyhedra_str((cube.1, cube.2, cube.3, cube.4, cube.5, cube.6))
+            // );
+            prevt = Some((status, cube));
+        }
+        0
         // Self::count_set2(map)
     }
 }
