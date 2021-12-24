@@ -66,10 +66,10 @@ mod tests {
     #[test]
     fn test_parse() {
         let sample = include_str!("../inputs/sample.txt");
-        let parsed = parse(sample);
-        assert_eq!(parsed, [[1, 0], [2, 3], [1, 2], [3, 0]]);
+        let parsed = parse::<3>(sample);
+        assert_eq!(parsed, [[4, 1, 0], [4, 2, 3], [4, 1, 2], [4, 3, 0]]);
 
-        let parsed2 = parse2(sample);
-        assert_eq!(parsed2, [[1, 3, 3, 0], [2, 2, 1, 3], [1, 1, 0, 2], [3, 0, 2, 0]]);
+        // let parsed2 = parse(sample);
+        // assert_eq!(parsed2, [[1, 3, 3, 0], [2, 2, 1, 3], [1, 1, 0, 2], [3, 0, 2, 0]]);
     }
 }

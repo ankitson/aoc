@@ -184,7 +184,9 @@ impl<const N: usize> Soln1<N> {
                         if print {
                             println!("ci, ri = {} {} col: {:?}", ci, ri, self.grid[ci]);
                         }
-                        self.grid[ci][*ri] < EMPTY && (0..*ri).into_iter().rev().all(|ur| self.grid[ci][ur] == EMPTY)
+                        self.grid[ci][*ri] < EMPTY
+                            && (0..*ri).into_iter().rev().all(|ur| self.grid[ci][ur] == EMPTY)
+                            && !(0..N).into_iter().all(|r| self.correct_pos(ci, r))
                     }),
                 )
             })
@@ -211,15 +213,26 @@ impl<const N: usize> Soln1<N> {
             let dst_col_idx = self.dst_tunnel_idx(self.grid[ci][0]);
             let wrong_piece_in_tunnel = (1..N).find(|ri| !self.correct_pos(dst_col_idx, *ri));
             if wrong_piece_in_tunnel.is_none() {
-                // println!("looking for dst row index in ")
-                let dst_row_idx = (1..N).rev().find(|ri| self.grid[dst_col_idx][*ri] == EMPTY).unwrap();
-                down_moves.push((
-                    ci,
-                    0usize,
-                    dst_col_idx,
-                    dst_row_idx,
-                    util::abs_diff(dst_col_idx, ci) + util::abs_diff(dst_row_idx, 0),
-                ))
+                // println!("looking for dst row index in ");
+                let dst_row_idx = (1..N)
+                    .rev()
+                    .find(|ri| {
+                        // println!("ci: {} dci: {}", ci, dst_col_idx);
+                        let (lo, hi) = vec![0, *ri].into_iter().minmax().into_option().unwrap();
+                        (lo..hi + 1).all(|r| self.grid[dst_col_idx][r] == EMPTY)
+                        //self.grid[dst_col_idx][*ri] == EMPTY
+                    })
+                    .unwrap();
+                let (lo, hi) = vec![ci, dst_col_idx].into_iter().minmax().into_option().unwrap();
+                if (lo..hi + 1).all(|c| c == ci || self.grid[c][0] == EMPTY) {
+                    down_moves.push((
+                        ci,
+                        0usize,
+                        dst_col_idx,
+                        dst_row_idx,
+                        util::abs_diff(dst_col_idx, ci) + util::abs_diff(dst_row_idx, 0),
+                    ))
+                }
             }
         }
 
@@ -442,9 +455,9 @@ impl<const N: usize> Soln1<N> {
         }
 
         let mut best: Option<usize> = None;
-        // println!("board (d={}):\n{:?}", depth, self);
 
-        if depth < 2 {
+        if depth < 16 {
+            // println!("board (d={}):\n{:?}", depth, self);
             //println!("board:\n{:?}", self);
             // println!("moves:\n{:?}", self.moves2(false).collect_vec());
         }
@@ -558,7 +571,7 @@ mod tests {
 
     use super::Soln1;
     use crate::{
-        shared::parse,
+        shared::{parse, parse2},
         soln1::A,
         soln1::C,
         soln1::D,
@@ -628,6 +641,54 @@ mod tests {
         // let solv = soln.recurs(&mut seen, &mut visiting, 0, 0);
         // assert_eq!(solv, Some(12521));
     }
+
+    #[test]
+    fn test_compare_moves() {
+        let sample: &str = include_str!("../inputs/sample.txt");
+
+        let grid1 = parse::<3>(sample);
+        let mut soln1 = Soln1::new(grid1, 2);
+        let mut soln2 = Soln1::new(grid1, 2);
+        for i in 0..5 {
+            let moves1 = |soln: &Soln1<3>| {
+                let mut moves = vec![];
+                for c in 0..soln.grid.len() {
+                    for r in 0..3 {
+                        if soln.grid[c][r] < EMPTY {
+                            let gen1 = soln1.moves((c, r));
+                            moves.extend(gen1.into_iter().map(|(a, b, d)| (c, r, a, b, d)));
+                        }
+                    }
+                }
+                moves
+            };
+            let moves2 = |soln: &Soln1<3>| soln.moves2(false).collect_vec();
+
+            let mut _moves1 = moves1(&soln1);
+            let mut _moves2 = moves2(&soln2);
+            _moves1.sort();
+            _moves2.sort();
+            assert_eq!(_moves1, _moves2);
+            use rand::prelude::*;
+            let mut rng = rand::thread_rng();
+            let mov_idx = rng.gen_range(0.._moves1.len());
+            // let mov_idx = rand
+            soln1 = soln1.mov(
+                (_moves1[mov_idx].0, _moves1[mov_idx].1),
+                (_moves1[mov_idx].2, _moves1[mov_idx].3),
+            );
+            soln2 = soln2.mov(
+                (_moves2[mov_idx].0, _moves2[mov_idx].1),
+                (_moves2[mov_idx].2, _moves2[mov_idx].3),
+            );
+            assert_eq!(soln1, soln2);
+            println!("board:\n{:?}", soln1);
+        }
+
+        // println!("moves 1:\n{:?}", moves1(&soln1));
+        // println!("moves 2:\n{:?}", moves2(soln2));
+    }
+
     #[test]
     fn test_part1() {
         let sample: &str = include_str!("../inputs/sample.txt");
