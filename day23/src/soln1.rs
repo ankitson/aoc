@@ -75,9 +75,6 @@ impl<const N: usize> Soln1<N> {
         };
         let tunnel = || -> [u8; N] { [EMPTY; N] };
 
-        println!("N: {}", N);
-        println!("hall: {:?}", hall());
-
         let mut grid: Vec<[u8; N]> = vec![];
         repeat(hall).take(side_spaces).for_each(|s| grid.push(s()));
         grid.extend(vec![tunnel(), hall(), tunnel(), hall(), tunnel(), hall(), tunnel()].into_iter());
@@ -87,8 +84,6 @@ impl<const N: usize> Soln1<N> {
 
     pub fn new(cols: [[u8; N]; 4], side_spaces: usize) -> Soln1<N> {
         let mut empty = Soln1::empty(side_spaces);
-        println!("empty grid:\n{:?}", empty.grid);
-        println!("cols:\n{:?}", cols);
         for col in [side_spaces, side_spaces + 2, side_spaces + 4, side_spaces + 6] {
             let colnum = (col - side_spaces) / 2;
 
@@ -558,8 +553,15 @@ impl<const N: usize> Soln1<N> {
         best
     }
 
-    pub fn part2(input: &str) -> usize {
-        todo!()
+    pub fn part2(input: &str) -> Option<usize> {
+        let mut lines = input.lines().collect_vec();
+        lines.insert(3, "  #D#C#B#A#");
+        lines.insert(4, "  #D#B#A#C#");
+        let expanded = lines.join("\n");
+        let parsed = parse::<5>(&expanded);
+        let soln = Soln1::<5>::new(parsed, 2);
+        let mut visiting = HashMap::new();
+        soln.recurs2(0, 0, &mut visiting)
     }
 }
 
