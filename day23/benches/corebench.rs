@@ -1,6 +1,6 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 // use day23::shared;
-// use day23::soln1;
+use day23::soln1;
 
 pub fn part1(c: &mut Criterion) {
     let contents: &str = include_str!("../inputs/day23.txt");

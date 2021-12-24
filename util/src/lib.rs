@@ -27,6 +27,13 @@ mod binary {
     }
 }
 
+pub fn abs_diff(a: usize, b: usize) -> usize {
+    if a > b {
+        a - b
+    } else {
+        b - a
+    }
+}
 pub mod aoc {
     // use reqwest::{cookie, Client, ClientBuilder, Response, Url};
     use cookie_store::{Cookie, CookieStore};

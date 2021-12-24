@@ -3,18 +3,19 @@ use itertools::Itertools;
 use std::{
     collections::{HashMap, HashSet, VecDeque},
     fmt::Write,
-    iter::repeat,
+    iter::{self, repeat},
 };
+use util;
 
 #[derive(Clone, PartialEq, Eq)]
-pub struct Soln1 {
-    pub grid: Vec<[u8; 3]>,
+pub struct Soln1<const N: usize> {
+    pub grid: Vec<[u8; N]>,
     pub side_spaces: usize,
 }
 
-impl std::fmt::Debug for Soln1 {
+impl<const N: usize> std::fmt::Debug for Soln1<N> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut transposed: Vec<Vec<u8>> = vec![vec![0; self.grid.len()]; 3];
+        let mut transposed: Vec<Vec<u8>> = vec![vec![0; self.grid.len()]; N];
         for ri in 0..self.grid.len() {
             let row = self.grid[ri];
             for ci in 0..row.len() {
@@ -38,11 +39,6 @@ impl std::fmt::Debug for Soln1 {
             f.write_char('\n');
         }
         Ok(())
-        // f.finish()
-        // f.debug_struct("Soln1")
-        //     .field("grid", &self.grid)
-        //     .field("side_spaces", &self.side_spaces)
-        //     .finish()
     }
 }
 
@@ -53,10 +49,10 @@ const D: u8 = 3;
 const EMPTY: u8 = 4;
 const INVALID: u8 = 5;
 
-impl Soln1 {
+impl<const N: usize> Soln1<N> {
     pub fn part1(input: &str) -> Option<usize> {
-        let parsed = parse(input);
-        let soln = Soln1::new(parsed, 2);
+        let parsed = parse::<3>(input);
+        let soln = Soln1::<3>::new(parsed, 2);
         // println!("sample grid:\n{:?}", soln);
         // println!("solved?: {}", soln.solved());
         let mut seen = HashMap::new();
@@ -64,29 +60,55 @@ impl Soln1 {
         soln.recurs(&mut seen, &mut visiting, 0, 0)
     }
 
-    pub fn empty(side_spaces: usize) -> Soln1 {
-        let hall = || [EMPTY, INVALID, INVALID];
-        let free = || [EMPTY, EMPTY, EMPTY];
+    pub fn part1_2(input: &str) -> Option<usize> {
+        let parsed = parse::<3>(input);
+        let soln = Soln1::<3>::new(parsed, 2);
+        let mut visiting = HashMap::new();
+        soln.recurs2(0, 0, &mut visiting)
+    }
 
-        let mut grid: Vec<[u8; 3]> = vec![];
+    pub fn empty(side_spaces: usize) -> Soln1<N> {
+        let hall = || -> [u8; N] {
+            let mut arr = [INVALID; N];
+            arr[0] = EMPTY;
+            arr
+        };
+        let tunnel = || -> [u8; N] { [EMPTY; N] };
+
+        println!("N: {}", N);
+        println!("hall: {:?}", hall());
+
+        let mut grid: Vec<[u8; N]> = vec![];
         repeat(hall).take(side_spaces).for_each(|s| grid.push(s()));
-        grid.extend(vec![free(), hall(), free(), hall(), free(), hall(), free()].into_iter());
+        grid.extend(vec![tunnel(), hall(), tunnel(), hall(), tunnel(), hall(), tunnel()].into_iter());
         repeat(hall).take(side_spaces).for_each(|s| grid.push(s()));
         Soln1 { grid, side_spaces }
     }
 
-    pub fn new(cols: [[u8; 2]; 4], side_spaces: usize) -> Soln1 {
+    pub fn new(cols: [[u8; N]; 4], side_spaces: usize) -> Soln1<N> {
         let mut empty = Soln1::empty(side_spaces);
+        println!("empty grid:\n{:?}", empty.grid);
+        println!("cols:\n{:?}", cols);
         for col in [side_spaces, side_spaces + 2, side_spaces + 4, side_spaces + 6] {
             let colnum = (col - side_spaces) / 2;
-            empty.grid[col][0] = EMPTY;
-            empty.grid[col][1] = cols[colnum][0];
-            empty.grid[col][2] = cols[colnum][1];
+
+            empty.grid[col] = cols[colnum];
+            // empty.grid[col][0] = EMPTY;
+            // for (i, setcol) in cols.iter().enumerate() {
+            //     println!(
+            //         "grid len: {} i: {} col: {} setcol: {:?}",
+            //         empty.grid.len(),
+            //         i,
+            //         col,
+            //         setcol
+            //     );
+            //     empty.grid[col] = *setcol;
+            // }
         }
         empty
     }
 
-    pub fn mov(&self, movfrom: (usize, usize), movto: (usize, usize)) -> Soln1 {
+    pub fn mov(&self, movfrom: (usize, usize), movto: (usize, usize)) -> Soln1<N> {
         let mut new_board = Soln1 {
             grid: self.grid.clone(),
             side_spaces: self.side_spaces,
@@ -97,6 +119,135 @@ impl Soln1 {
         new_board.grid[a][b] = EMPTY;
         new_board.grid[c][d] = mover;
         new_board
+    }
+
+    fn occ(&self, ci: usize, ri: usize) -> bool {
+        self.grid[ci][ri] != EMPTY
+    }
+    fn tunnels(&self) -> Vec<usize> {
+        let side_spaces = self.side_spaces;
+        vec![side_spaces, side_spaces + 2, side_spaces + 4, side_spaces + 6]
+    }
+    fn correct_pos(&self, ci: usize, ri: usize) -> bool {
+        let elem = self.grid[ci][ri];
+        if elem == EMPTY {
+            return true;
+        }
+        if elem == INVALID {
+            panic!("ahhhhhhhhh!!!!!!!!")
+        }
+        let tunnel_idx = self
+            .tunnels()
+            .iter()
+            .map(|ti| ((ti - self.side_spaces) / 2))
+            .collect_vec();
+        let is_correct = ci == self.side_spaces + 2 * tunnel_idx[elem as usize];
+        is_correct
+    }
+
+    fn dst_tunnel_idx(&self, elem: u8) -> usize {
+        if elem == EMPTY || elem == INVALID {
+            panic!("panic!!!")
+        }
+        self.tunnels()[elem as usize]
+    }
+
+    //(srcol,srcrow,dstcol,dstrow,length of path)
+    pub fn moves2(&self, print: bool) -> impl Iterator<Item = (usize, usize, usize, usize, usize)> + '_ {
+        let sides = |col_idx| {
+            let mut sides_arr = vec![];
+            if col_idx > 0 {
+                sides_arr.extend(
+                    (0..col_idx)
+                        .rev()
+                        .filter(|ci| !self.tunnels().contains(ci))
+                        .take_while(|ci| !self.occ(*ci, 0)),
+                )
+            }
+            if col_idx < self.grid.len() {
+                sides_arr.extend(
+                    (col_idx + 1..self.grid.len())
+                        .filter(|ci| !self.tunnels().contains(ci))
+                        .take_while(|ci| !self.occ(*ci, 0)),
+                )
+            }
+            sides_arr
+        };
+
+        let tunnels = self.tunnels();
+        let tunnels_with_up_moves = tunnels
+            .into_iter()
+            .map(|ci| {
+                (
+                    ci,
+                    (0..N).into_iter().find(|ri| {
+                        if print {
+                            println!("ci, ri = {} {} col: {:?}", ci, ri, self.grid[ci]);
+                        }
+                        self.grid[ci][*ri] < EMPTY && (0..*ri).into_iter().rev().all(|ur| self.grid[ci][ur] == EMPTY)
+                    }),
+                )
+            })
+            .filter(|(ci, mayberi)| mayberi.is_some())
+            .map(|(ci, mayberi)| (ci, mayberi.unwrap()));
+        let up_moves = tunnels_with_up_moves.flat_map(move |(ci, bad_row)| {
+            sides(ci)
+                .iter()
+                .map(|dest_col| {
+                    (
+                        ci,
+                        bad_row,
+                        *dest_col,
+                        0usize,
+                        (bad_row - 0) + util::abs_diff(ci, *dest_col),
+                    )
+                })
+                .collect_vec()
+        });
+
+        let mut down_moves = vec![];
+        let hallway_pieces = (0..self.grid.len()).filter(|ci| self.grid[*ci][0] < EMPTY);
+        for ci in hallway_pieces {
+            let dst_col_idx = self.dst_tunnel_idx(self.grid[ci][0]);
+            let wrong_piece_in_tunnel = (1..N).find(|ri| !self.correct_pos(dst_col_idx, *ri));
+            if wrong_piece_in_tunnel.is_none() {
+                // println!("looking for dst row index in ")
+                let dst_row_idx = (1..N).rev().find(|ri| self.grid[dst_col_idx][*ri] == EMPTY).unwrap();
+                down_moves.push((
+                    ci,
+                    0usize,
+                    dst_col_idx,
+                    dst_row_idx,
+                    util::abs_diff(dst_col_idx, ci) + util::abs_diff(dst_row_idx, 0),
+                ))
+            }
+        }
+
+        down_moves.extend(up_moves);
+        down_moves.into_iter()
+
+        // let mut iter = iter::empty::<(usize, usize, usize)>();
+        // for col_idx in tunnels {
+        //     if let Some(bad_row) = (0..N).rev().filter(|ri| !self.correct_pos(col_idx, *ri)).next() {
+        //         let left_right = sides(col_idx, 0)
+        //             .into_iter()
+        //             .map(|dest_col| (dest_col, 0usize, bad_row + col_idx - dest_col));
+        //         iter = iter.chain(left_right);
+        //     }
+        // }
+        // self.tunnels()
+        //     .into_iter()
+        //     .map(|col_idx| {
+        //         if let Some(bad_row) = (0..N).rev().filter(|ri| !self.correct_pos(col_idx, *ri)).next() {
+        //             let x = sides(col_idx, 0)
+        //                 .into_iter()
+        //                 .map(|dest_col| (dest_col, 0usize, bad_row + col_idx - dest_col));
+        //             x
+        //         } else {
+        //             iter::empty::<(usize, usize, usize)>().map(|x| x).into_iter()
+        //         }
+        //     })
+        //     .flatten()
     }
 
     pub fn moves(&self, from: (usize, usize)) -> Vec<(usize, usize, usize)> {
@@ -258,11 +409,6 @@ impl Soln1 {
         moves
     }
 
-    // pub fn moves(&self, from: (usize, usize)) {
-    //     // let mut moves = vec![];
-    //     // let (v)
-    // }
-
     fn cost_one(char: u8) -> usize {
         match char {
             A => 1,
@@ -289,10 +435,49 @@ impl Soln1 {
         valid
     }
 
+    fn recurs2(&self, cost: usize, depth: usize, visiting: &mut HashMap<Vec<[u8; N]>, usize>) -> Option<usize> {
+        if self.solved() {
+            // println!("solved with cost: {}", cost);
+            return Some(cost);
+        }
+
+        let mut best: Option<usize> = None;
+        // println!("board (d={}):\n{:?}", depth, self);
+
+        if depth < 2 {
+            //println!("board:\n{:?}", self);
+            // println!("moves:\n{:?}", self.moves2(false).collect_vec());
+        }
+        for mov in self.moves2(false) {
+            // println!("considering move {:?}", mov);
+            let (src_col, src_row, dst_col, dst_row, path_len) = mov;
+            let applied = Soln1::mov(self, (src_col, src_row), (dst_col, dst_row));
+            // println!("next:\n{:?}", applied);
+            let cost_after = Self::cost_one(applied.grid[dst_col][dst_row]) * path_len + cost;
+            if !visiting.contains_key(&applied.grid) || *visiting.get(&applied.grid).unwrap() > cost_after {
+                visiting.insert(applied.grid.clone(), cost_after);
+
+                let can_solve = applied.recurs2(cost_after, depth + 1, visiting);
+
+                // println!("got soln: {:?}", can_solve);
+                // memo.insert(applied.grid.clone(), can_solve);
+                if let Some(solve_cost) = can_solve {
+                    let new_cost = solve_cost;
+                    if best.is_none() {
+                        best = Some(new_cost);
+                    } else {
+                        best = Some(best.unwrap().min(new_cost))
+                    }
+                }
+            }
+        }
+        best
+    }
+
     fn recurs(
         &self,
-        memo: &mut HashMap<Vec<[u8; 3]>, Option<usize>>,
-        visiting: &mut HashMap<Vec<[u8; 3]>, usize>,
+        memo: &mut HashMap<Vec<[u8; N]>, Option<usize>>,
+        visiting: &mut HashMap<Vec<[u8; N]>, usize>,
         depth: usize,
         cost: usize,
     ) -> Option<usize> {
@@ -369,6 +554,8 @@ impl Soln1 {
 mod tests {
     use std::collections::{HashMap, HashSet};
 
+    use itertools::Itertools;
+
     use super::Soln1;
     use crate::{
         shared::parse,
@@ -379,87 +566,33 @@ mod tests {
     };
 
     #[test]
-    fn test_one_moves() {
-        let sample: &str = include_str!("../inputs/sample.txt");
-        let parsed = parse(sample);
-        let soln = Soln1::new(parsed, 2);
-        println!("board:\n{:?}", soln);
-
-        let mut one_move_boards = vec![];
-        for c in 0..soln.grid.len() {
-            for r in 0..3 {
-                if soln.grid[c][r] < EMPTY {
-                    let moves = Soln1::one_moves(&soln, (c, r));
-                    for (dc, dr) in moves {
-                        let after_move = soln.mov((c, r), (dc, dr));
-                        println!("after move:\n{:?}", after_move);
-                        one_move_boards.push(after_move);
-                    }
-                }
-            }
-        }
-
-        println!("2 moves:");
-        for soln in one_move_boards {
-            println!("board:\n{:?}", soln);
-            for c in 0..soln.grid.len() {
-                for r in 0..3 {
-                    if soln.grid[c][r] < EMPTY {
-                        let moves = Soln1::one_moves(&soln, (c, r));
-                        for (dc, dr) in moves {
-                            let after_move = soln.mov((c, r), (dc, dr));
-                            println!("after move:\n{:?}", after_move);
-                            // one_move_boards.push(after_move);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    #[test]
     fn test_moves() {
         let sample: &str = include_str!("../inputs/sample.txt");
-        let parsed = parse(sample);
-        let mut soln = Soln1::new(parsed, 2);
+        let parsed = parse::<3>(sample);
+        let mut soln = Soln1::<3>::new(parsed, 2);
         println!("board:\n{:?}", soln);
-
-        for c in 0..soln.grid.len() {
-            for r in 0..3 {
-                if soln.grid[c][r] < EMPTY {
-                    let moves = soln.moves((c, r));
-                    for (dc, dr, dist) in moves {
-                        let after_move = soln.mov((c, r), (dc, dr));
-                        println!("after {}dist move:\n{:?}", dist, after_move);
-                    }
-                }
-            }
-        }
 
         soln.grid[8][1] = EMPTY;
         soln.grid[10][0] = D;
         println!("board:\n{:?}", soln);
 
-        for c in 0..soln.grid.len() {
-            for r in 0..3 {
-                if soln.grid[c][r] < EMPTY {
-                    let moves = soln.moves((c, r));
-                    for (dc, dr, dist) in moves {
-                        let after_move = soln.mov((c, r), (dc, dr));
-                        println!("after {}dist move:\n{:?}", dist, after_move);
-                    }
-                }
-            }
+        let moves = soln.moves2(false).collect_vec();
+
+        println!("moves: {:?}", moves);
+        for (sc, sr, dc, dr, dist) in moves {
+            let after_move = soln.mov((sc, sr), (dc, dr));
+            println!("after {}dist move:\n{:?}", dist, after_move);
         }
     }
     #[test]
     fn test_paths() {
         let sample: &str = include_str!("../inputs/sample.txt");
-        let parsed = parse(sample);
-        let soln = Soln1::empty(2);
+        let parsed = parse::<3>(sample);
+        let soln = Soln1::<3>::empty(2);
         println!("empty:\n{:?}", soln);
         println!("solved?: {}", soln.solved());
 
-        let mut solved = Soln1::empty(0);
+        let mut solved = Soln1::<3>::empty(0);
         solved.grid[0][2] = A;
         solved.grid[0][1] = A;
         solved.grid[2][2] = B;
@@ -486,28 +619,18 @@ mod tests {
             [2, 5, 5], //HALL
         ];
         println!("test grid:\n{:?}", soln);
-        // eprintln!("moves from here:");
-        // for r in 0..soln.grid.len() {
-        //     for c in 0..3 {
-        //         if soln.grid[r][c] < EMPTY {
 
-        //             eprintln!("moves from {:?}", (r, c));
-        //             let moves = soln.moves((r, c));
-        //             eprintln!("{:?}", moves);
-        //         }
-        //     }
-        // }
-
-        let soln = Soln1::new(parsed, 2);
-        println!("sample grid:\n{:?}", soln);
-        println!("solved?: {}", soln.solved());
-        let mut seen = HashMap::new();
-        let mut visiting = HashMap::new();
-        let solv = soln.recurs(&mut seen, &mut visiting, 0, 0);
-        assert_eq!(solv, Some(12521));
+        // let soln = Soln1::new(parsed, 2);
+        // println!("sample grid:\n{:?}", soln);
+        // println!("solved?: {}", soln.solved());
+        // let mut seen = HashMap::new();
+        // let mut visiting = HashMap::new();
+        // let solv = soln.recurs(&mut seen, &mut visiting, 0, 0);
+        // assert_eq!(solv, Some(12521));
     }
     #[test]
     fn test_part1() {
         let sample: &str = include_str!("../inputs/sample.txt");
+        println!("sample: {:?}", Soln1::<3>::part1_2(sample));
     }
 }
