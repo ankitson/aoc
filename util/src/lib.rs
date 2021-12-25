@@ -38,6 +38,23 @@ pub fn abs_diff(a: usize, b: usize) -> usize {
     }
 }
 
+pub fn combo(draw_from: Vec<isize>, target_length: usize, into: &mut Vec<Vec<isize>>) {
+    combo_help(&draw_from, target_length, vec![], into);
+}
+
+fn combo_help(draw_from: &Vec<isize>, target_length: usize, current: Vec<isize>, into: &mut Vec<Vec<isize>>) {
+    if current.len() == target_length {
+        into.push(current);
+        return;
+    }
+
+    for num in draw_from {
+        let mut next = current.clone();
+        next.push(*num);
+        combo_help(draw_from, target_length, next, into);
+    }
+}
+
 pub mod aoc {
     // use reqwest::{cookie, Client, ClientBuilder, Response, Url};
     use cookie_store::{Cookie, CookieStore};

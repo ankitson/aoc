@@ -1,3 +1,4 @@
+use itertools::Itertools;
 use std::{cell::Cell, collections::HashMap};
 
 use crate::alu::adt::Instr::*;
@@ -72,6 +73,30 @@ impl ALU {
             } // _ => panic!("not impl"),
         }
     }
+
+    pub fn eval(&mut self, instrs: Instrs, inputs: Vec<isize>) {
+        let mut input_num = 0;
+        for instr in instrs.0 {
+            match instr {
+                Inp { .. } => {
+                    if input_num >= inputs.len() {
+                        panic!("Not enough inputs!");
+                    }
+                    self.eval_one(instr, Some(inputs[input_num]));
+                    input_num += 1;
+                }
+                _ => self.eval_one(instr, None),
+            }
+        }
+    }
+
+    pub fn state(&self) -> Vec<isize> {
+        let registers = vec![W, X, Y, Z];
+        registers
+            .into_iter()
+            .map(|reg| self.vals.get(&reg).unwrap().get())
+            .collect_vec()
+    }
 }
 
 #[rustfmt::skip]
@@ -84,13 +109,6 @@ mod tests {
         for (reg, expect_val) in expected {
             assert_eq!(alu.vals.get(&reg).unwrap().get(), expect_val);
         }
-    }
-
-    fn assert_state(alu: &ALU, state: Vec<isize>) {
-        assert_eq!( alu.vals.get(&W).unwrap().get(), state[0] );
-        assert_eq!( alu.vals.get(&X).unwrap().get(), state[1] );
-        assert_eq!( alu.vals.get(&Y).unwrap().get(), state[2] );
-        assert_eq!( alu.vals.get(&Z).unwrap().get(), state[3] );
     }
 
     #[test]
@@ -113,6 +131,6 @@ mod tests {
         eval_one( &mut alu, Add { dst: Y, operand: Literal(1), }, None, vec![(Y, 1)] );
         eval_one( &mut alu, Eql { dst: Z, operand: RegOp(Y), }, None, vec![(Z,1), (Y, 1)] );
 
-        assert_state(&alu, vec![0,2,1,1]);
+        assert_eq!(alu.state(), vec![0,2,1,1]);
     }
 }
