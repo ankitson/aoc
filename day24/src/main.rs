@@ -3,6 +3,7 @@
 #![allow(unused_parens)]
 #![feature(int_roundings)]
 
+mod alu;
 mod shared;
 mod soln1;
 
