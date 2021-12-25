@@ -12,6 +12,7 @@ criterion = { version = "0.3.5", features = ["html_reports"] }
 [dependencies]
 itertools = "0.10.3"
 rand = "0.8.4"
+regex = "1.5.4"
 util = {path = "../util"}
 
 [[bench]]
