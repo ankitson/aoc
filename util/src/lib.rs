@@ -1,4 +1,7 @@
 #![allow(unused_parens)]
+#![allow(unused_variables)]
+#![allow(dead_code)]
+#![allow(unused_imports)]
 mod binary {
     fn fmt_bits(num: u8) -> String {
         let bytes = num.to_be_bytes();
@@ -34,6 +37,7 @@ pub fn abs_diff(a: usize, b: usize) -> usize {
         b - a
     }
 }
+
 pub mod aoc {
     // use reqwest::{cookie, Client, ClientBuilder, Response, Url};
     use cookie_store::{Cookie, CookieStore};

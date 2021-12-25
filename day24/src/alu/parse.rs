@@ -39,7 +39,7 @@ impl FromStr for Operand {
     fn from_str(input: &str) -> Result<Operand, Self::Err> {
         Register::from_str(input)
             .map(Operand::RegOp)
-            .or_else(|_| input.parse::<usize>().map(Operand::Literal))
+            .or_else(|_| input.parse::<isize>().map(Operand::Literal))
             .map_err(|e| ParseErr {
                 input: input.to_string(),
                 at: 0,
@@ -106,6 +106,27 @@ impl FromStr for Instr {
     }
 }
 
+impl FromStr for Instrs {
+    type Err = Vec<ParseErr>;
+
+    fn from_str(input: &str) -> Result<Self, Self::Err> {
+        let lines = input.lines();
+        let mut instrs = vec![];
+        let mut errs = vec![];
+        for (i, line) in lines.enumerate() {
+            match Instr::from_str(line) {
+                Ok(instr) => instrs.push(instr),
+                Err(e) => errs.push(e),
+            }
+        }
+        if !errs.is_empty() {
+            Err(errs)
+        } else {
+            Ok(Instrs(instrs))
+        }
+    }
+}
+
 #[rustfmt::skip]
 #[cfg(test)]
 mod tests {
@@ -123,46 +144,45 @@ mod tests {
         result
     }
 
-    fn parse_many(input: &str, trace: bool) -> Result<Instrs, ParseErr> {
-        let lines = input.lines();
-        let mut instrs = vec![];
-        for (i,line) in lines.enumerate() {
-            match parse_one(line, trace) {
-                Ok(instr) => instrs.push(instr),
-                Err(e) => return Err(e)
-            }
-        }
-        Ok(instrs)
+    fn parse_many(input: &str, trace: bool) -> Result<Instrs, Vec<ParseErr>> {
+        let instrs = Instrs::from_str(input);
+        if trace { println!("Parsed Instrs:\n{:#?}", instrs) }
+        instrs
     }
 
     #[test]
     fn parse_input() {
         let input = include_str!("../../inputs/day24.txt");
-        parse_many(input, true);
+        let instrs = parse_many(input, false).unwrap();
+        assert_eq!(instrs.0.len(), 252);
+        assert_eq!(instrs.0[0], Inp {dst: W });
+        assert_eq!(instrs.0[95], Add {dst: X, operand: Literal(-2) });
+        assert_eq!(*instrs.0.last().unwrap(), Add {dst: Z, operand: RegOp(Y)});
     }
     
     #[test]
     fn parse_single() {
+        let trace = false;
         assert_eq!(
-            parse_one("inp x", true), Ok(Inp { dst: X })
+            parse_one("inp x", trace), Ok(Inp { dst: X })
         );
         assert_eq!(
-            parse_one("add w w", true), Ok(Add { dst: W, operand: RegOp(W) })
+            parse_one("add w w", trace), Ok(Add { dst: W, operand: RegOp(W) })
         );
         assert_eq!(
-            parse_one("add w 2", true), Ok(Add { dst: W, operand: Literal(2) })
+            parse_one("add w 2", trace), Ok(Add { dst: W, operand: Literal(2) })
         );
         assert_eq!(
-            parse_one("mul x w", true), Ok(Mul { dst: X, operand: RegOp(W) })
+            parse_one("mul x w", trace), Ok(Mul { dst: X, operand: RegOp(W) })
         );
         assert_eq!(
-            parse_one("div y z", true), Ok(Div { dst: Y, operand: RegOp(Z) })
+            parse_one("div y z", trace), Ok(Div { dst: Y, operand: RegOp(Z) })
         );
         assert_eq!(
-            parse_one("mod z 9", true), Ok(Mod { dst: Z, operand: Literal(9) })
+            parse_one("mod z 9", trace), Ok(Mod { dst: Z, operand: Literal(9) })
         );
         assert_eq!(
-            parse_one("eql z w", true), Ok(Eql { dst: Z, operand: RegOp(W) })
+            parse_one("eql z w", trace), Ok(Eql { dst: Z, operand: RegOp(W) })
         );
     }
 }

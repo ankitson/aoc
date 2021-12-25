@@ -1,14 +1,14 @@
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 #[rustfmt::skip]
 pub enum Register { W, X, Y, Z, }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Operand {
     RegOp(Register),
-    Literal(usize),
+    Literal(isize),
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Instr {
     Inp { dst: Register },
     Add { dst: Register, operand: Operand },
@@ -18,4 +18,5 @@ pub enum Instr {
     Eql { dst: Register, operand: Operand },
 }
 
-pub type Instrs = Vec<Instr>;
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub struct Instrs(pub Vec<Instr>);

@@ -16,6 +16,8 @@ Names like `col_idx` are confusing because it could mean either the "index of th
 ## Tools & Tricks
 ---
 
+- use `{:#?}` to pretty print Debugs
+
 - [cargo expand](https://github.com/dtolnay/cargo-expand) can be used to view code after macro expansion
 
 ## Puzzles
