@@ -21,6 +21,9 @@ pub fn main() {
     write_cpp(&prog);
     let mut alu = ALU::default();
     run_with_file(&mut alu, &prog, "/home/ankit/code/aoc-2021/day24/inputs/inp1.txt");
+
+    let instrs = Instrs::from_str(prog).unwrap();
+    // println!("{:?}", instrs.lifetimes());
 }
 
 fn bruteforce(input: &str) {
