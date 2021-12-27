@@ -20,8 +20,9 @@ pub fn main() {
     let input: &str = include_str!("../inputs/day24.txt");
     write_cpp(input);
 
-    let prog_input1 = "/home/ankit/code/aoc-2021/day24/inputs/inp1.txt";
-    println!("{}", prog(prog_input1));
+    let prog_input1 = "/home/ankit/code/aoc-2021/day24/inputs/inp2.txt";
+    let (w, z) = prog(prog_input1);
+    println!("w={} z={}", w, z);
     let mut alu = ALU::default();
     run_with_file(&mut alu, input, prog_input1);
 
@@ -30,7 +31,7 @@ pub fn main() {
 }
 
 #[rustfmt::skip]
-fn prog(input_path: &str) -> i64 {
+fn prog(input_path: &str) -> (i64,i64) {
     let inp_str = std::fs::read_to_string(input_path).unwrap();
     let inputs = inp_str.lines().map(|c| c.parse::<i64>().unwrap()).collect_vec();
 
@@ -41,25 +42,16 @@ fn prog(input_path: &str) -> i64 {
     let mut x = 0i64;
     let mut y = 0i64;
     let mut z = 0i64;
+
     for i in 0..14 {
         w = inputs[i];
-        x = z % 26;
+        x = (z % 26) + xadds[i];
         z /= zdivs[i];
-        x += xadds[i];
-
-        let mut flag = 0;
         if x != w {
-            y = 26;
-            flag = 1;
-        } else {
-            y = 1;
-            flag = 0;
-        }
-        z *= y;
-        y = (w + yadds[i]) * flag;
-        z += y;
+            z = (w + yadds[i]) + (26*z);
+        } 
     }
-    z
+    (w,z)
 }
 
 fn bruteforce(input: &str) {
