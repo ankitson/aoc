@@ -17,13 +17,49 @@ use util::combo;
 
 pub fn main() {
     println!("Hello Day 24!");
-    let prog: &str = include_str!("../inputs/day24.txt");
-    write_cpp(&prog);
-    let mut alu = ALU::default();
-    run_with_file(&mut alu, &prog, "/home/ankit/code/aoc-2021/day24/inputs/inp1.txt");
+    let input: &str = include_str!("../inputs/day24.txt");
+    write_cpp(input);
 
-    let instrs = Instrs::from_str(prog).unwrap();
+    let prog_input1 = "/home/ankit/code/aoc-2021/day24/inputs/inp1.txt";
+    println!("{}", prog(prog_input1));
+    let mut alu = ALU::default();
+    run_with_file(&mut alu, input, prog_input1);
+
+    // let instrs = Instrs::from_str(prog).unwrap();
     // println!("{:?}", instrs.lifetimes());
+}
+
+#[rustfmt::skip]
+fn prog(input_path: &str) -> i64 {
+    let inp_str = std::fs::read_to_string(input_path).unwrap();
+    let inputs = inp_str.lines().map(|c| c.parse::<i64>().unwrap()).collect_vec();
+
+    let xadds = [10, 13, 15, -12, 14, -2, 13, -12, 15, 11, -3, -13, -12, -13];
+    let yadds = [10,  5, 12,  12,  6,  4, 15,   3,  7, 11,  2,  12,   4,  11];
+    let zdivs = [ 1,  1,  1,  26,  1, 26,  1,  26,  1,  1, 26,  26,  26,  26];
+    let mut w = 0i64;
+    let mut x = 0i64;
+    let mut y = 0i64;
+    let mut z = 0i64;
+    for i in 0..14 {
+        w = inputs[i];
+        x = z % 26;
+        z /= zdivs[i];
+        x += xadds[i];
+
+        let mut flag = 0;
+        if x != w {
+            y = 26;
+            flag = 1;
+        } else {
+            y = 1;
+            flag = 0;
+        }
+        z *= y;
+        y = (w + yadds[i]) * flag;
+        z += y;
+    }
+    z
 }
 
 fn bruteforce(input: &str) {
