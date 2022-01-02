@@ -10,8 +10,8 @@ impl Soln1 {
             let (num, depth) = fishnum[i];
             if num >= 10 {
                 fishnum.remove(i);
-                fishnum.insert(i, (num.unstable_div_floor(2), depth + 1));
-                fishnum.insert(i + 1, (num.unstable_div_ceil(2), depth + 1));
+                fishnum.insert(i, (num.div_floor(2), depth + 1));
+                fishnum.insert(i + 1, (num.div_ceil(2), depth + 1));
                 return true;
             }
         }
