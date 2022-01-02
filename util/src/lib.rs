@@ -38,6 +38,13 @@ pub fn abs_diff(a: usize, b: usize) -> usize {
     }
 }
 
+// pub fn vec_into(v: Vec<T>) -> Vec<U>
+// where
+//     T: TryInto<U>,
+// {
+//     v.into_iter().map(|x| x.try_into::<U>().unwrap()).collect::<Vec<U>>()
+// }
+
 pub fn combo(draw_from: Vec<isize>, target_length: usize, into: &mut Vec<Vec<isize>>) {
     combo_help(&draw_from, target_length, vec![], into);
 }
