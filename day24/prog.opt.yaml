@@ -1,0 +1,1975 @@
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                   Line: 187, Column: 16 }
+Function:        _ZNSirsERl
+Args:
+  - Callee:          _ZNSi10_M_extractIlEERSiRT_
+  - String:          ' will not be inlined into '
+  - Caller:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                   Line: 187, Column: 16 }
+Function:        _ZNSirsERl
+Args:
+  - Callee:          _ZNSi10_M_extractIlEERSiRT_
+  - String:          ' will not be inlined into '
+  - Caller:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                   Line: 158, Column: 15 }
+Function:        _ZNSt9basic_iosIcSt11char_traitsIcEE8setstateESt12_Ios_Iostate
+Args:
+  - Callee:          _ZNSt9basic_iosIcSt11char_traitsIcEE5clearESt12_Ios_Iostate
+  - String:          ' will not be inlined into '
+  - Caller:          _ZNSt9basic_iosIcSt11char_traitsIcEE8setstateESt12_Ios_Iostate
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                       Line: 158, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                   Line: 158, Column: 15 }
+Function:        _ZNSt9basic_iosIcSt11char_traitsIcEE8setstateESt12_Ios_Iostate
+Args:
+  - Callee:          _ZNSt9basic_iosIcSt11char_traitsIcEE5clearESt12_Ios_Iostate
+  - String:          ' will not be inlined into '
+  - Caller:          _ZNSt9basic_iosIcSt11char_traitsIcEE8setstateESt12_Ios_Iostate
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                       Line: 158, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                   Line: 158, Column: 27 }
+Function:        _ZNSt9basic_iosIcSt11char_traitsIcEE8setstateESt12_Ios_Iostate
+Args:
+  - String:          ''''
+  - Callee:          _ZNKSt9basic_iosIcSt11char_traitsIcEE7rdstateEv
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                       Line: 138, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          _ZNSt9basic_iosIcSt11char_traitsIcEE8setstateESt12_Ios_Iostate
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                       Line: 158, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '-30'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          setstate
+  - String:          ':'
+  - Line:            '1'
+  - String:          ':'
+  - Column:          '27'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                   Line: 158, Column: 37 }
+Function:        _ZNSt9basic_iosIcSt11char_traitsIcEE8setstateESt12_Ios_Iostate
+Args:
+  - String:          ''''
+  - Callee:          _ZStorSt12_Ios_IostateS_
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/ios_base.h', 
+                       Line: 170, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          _ZNSt9basic_iosIcSt11char_traitsIcEE8setstateESt12_Ios_Iostate
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                       Line: 158, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '-35'
+  - String:          ', threshold='
+  - Threshold:       '487'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          setstate
+  - String:          ':'
+  - Line:            '1'
+  - String:          ':'
+  - Column:          '37'
+  - String:          ';'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/char_traits.h', 
+                   Line: 371, Column: 9 }
+Function:        _ZNSt11char_traitsIcE6lengthEPKc
+Args:
+  - Callee:          strlen
+  - String:          ' will not be inlined into '
+  - Caller:          _ZNSt11char_traitsIcE6lengthEPKc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/char_traits.h', 
+                       Line: 366, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/char_traits.h', 
+                   Line: 371, Column: 9 }
+Function:        _ZNSt11char_traitsIcE6lengthEPKc
+Args:
+  - Callee:          strlen
+  - String:          ' will not be inlined into '
+  - Caller:          _ZNSt11char_traitsIcE6lengthEPKc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/char_traits.h', 
+                       Line: 366, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 611, Column: 2 }
+Function:        _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+Args:
+  - Callee:          _ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l
+  - String:          ' will not be inlined into '
+  - Caller:          _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 607, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 611, Column: 2 }
+Function:        _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+Args:
+  - Callee:          _ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l
+  - String:          ' will not be inlined into '
+  - Caller:          _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 607, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 609, Column: 8 }
+Function:        _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+Args:
+  - String:          ''''
+  - Callee:          _ZNSt9basic_iosIcSt11char_traitsIcEE8setstateESt12_Ios_Iostate
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                       Line: 158, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 607, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '10'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          'operator<<<std::char_traits<char> >'
+  - String:          ':'
+  - Line:            '3'
+  - String:          ':'
+  - Column:          '8'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 612, Column: 29 }
+Function:        _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+Args:
+  - String:          ''''
+  - Callee:          _ZNSt11char_traitsIcE6lengthEPKc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/char_traits.h', 
+                       Line: 366, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 607, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          'operator<<<std::char_traits<char> >'
+  - String:          ':'
+  - Line:            '6'
+  - String:          ':'
+  - Column:          '29'
+  - String:          ';'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 167, Column: 16 }
+Function:        _ZNSolsEl
+Args:
+  - Callee:          _ZNSo9_M_insertIlEERSoT_
+  - String:          ' will not be inlined into '
+  - Caller:          _ZNSolsEl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 167, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 167, Column: 16 }
+Function:        _ZNSolsEl
+Args:
+  - Callee:          _ZNSo9_M_insertIlEERSoT_
+  - String:          ' will not be inlined into '
+  - Caller:          _ZNSolsEl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 167, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                   Line: 50, Column: 2 }
+Function:        _ZSt13__check_facetISt5ctypeIcEERKT_PS3_
+Args:
+  - Callee:          _ZSt16__throw_bad_castv
+  - String:          ' will not be inlined into '
+  - Caller:          _ZSt13__check_facetISt5ctypeIcEERKT_PS3_
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                       Line: 48, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                   Line: 50, Column: 2 }
+Function:        _ZSt13__check_facetISt5ctypeIcEERKT_PS3_
+Args:
+  - Callee:          _ZSt16__throw_bad_castv
+  - String:          ' will not be inlined into '
+  - Caller:          _ZSt13__check_facetISt5ctypeIcEERKT_PS3_
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                       Line: 48, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 879, Column: 8 }
+Function:        _ZNKSt5ctypeIcE5widenEc
+Args:
+  - Callee:          _ZNKSt5ctypeIcE13_M_widen_initEv
+  - String:          ' will not be inlined into '
+  - Caller:          _ZNKSt5ctypeIcE5widenEc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                       Line: 876, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 879, Column: 8 }
+Function:        _ZNKSt5ctypeIcE5widenEc
+Args:
+  - Callee:          _ZNKSt5ctypeIcE13_M_widen_initEv
+  - String:          ' will not be inlined into '
+  - Caller:          _ZNKSt5ctypeIcE5widenEc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                       Line: 876, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 880, Column: 15 }
+Function:        _ZNKSt5ctypeIcE5widenEc
+Args:
+  - String:          'load of type '
+  - Type:            'i8 (%"class.std::ctype"*, i8)**'
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                       Line: 879, Column: 8 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 880, Column: 15 }
+Function:        _ZNKSt5ctypeIcE5widenEc
+Args:
+  - String:          'load of type '
+  - Type:            'i8 (%"class.std::ctype"*, i8)*'
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                       Line: 879, Column: 8 }
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                   Line: 450, Column: 16 }
+Function:        _ZNKSt9basic_iosIcSt11char_traitsIcEE5widenEc
+Args:
+  - String:          ''''
+  - Callee:          _ZSt13__check_facetISt5ctypeIcEERKT_PS3_
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                       Line: 48, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          _ZNKSt9basic_iosIcSt11char_traitsIcEE5widenEc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                       Line: 450, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '5'
+  - String:          ', threshold='
+  - Threshold:       '325'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          widen
+  - String:          ':'
+  - Line:            '1'
+  - String:          ':'
+  - Column:          '16'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                   Line: 450, Column: 40 }
+Function:        _ZNKSt9basic_iosIcSt11char_traitsIcEE5widenEc
+Args:
+  - String:          ''''
+  - Callee:          _ZNKSt5ctypeIcE5widenEc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                       Line: 876, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          _ZNKSt9basic_iosIcSt11char_traitsIcEE5widenEc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                       Line: 450, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '45'
+  - String:          ', threshold='
+  - Threshold:       '250'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          widen
+  - String:          ':'
+  - Line:            '1'
+  - String:          ':'
+  - Column:          '40'
+  - String:          ';'
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 880, Column: 15 }
+Function:        _ZNKSt9basic_iosIcSt11char_traitsIcEE5widenEc
+Args:
+  - String:          'load of type '
+  - Type:            'i8 (%"class.std::ctype"*, i8)**'
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                       Line: 879, Column: 8 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 880, Column: 15 }
+Function:        _ZNKSt9basic_iosIcSt11char_traitsIcEE5widenEc
+Args:
+  - String:          'load of type '
+  - Type:            'i8 (%"class.std::ctype"*, i8)*'
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                       Line: 879, Column: 8 }
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 704, Column: 19 }
+Function:        _ZSt5flushIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+Args:
+  - Callee:          _ZNSo5flushEv
+  - String:          ' will not be inlined into '
+  - Caller:          _ZSt5flushIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 704, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 704, Column: 19 }
+Function:        _ZSt5flushIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+Args:
+  - Callee:          _ZNSo5flushEv
+  - String:          ' will not be inlined into '
+  - Caller:          _ZSt5flushIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 704, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 682, Column: 25 }
+Function:        _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+Args:
+  - Callee:          _ZNSo3putEc
+  - String:          ' will not be inlined into '
+  - Caller:          _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 682, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 682, Column: 25 }
+Function:        _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+Args:
+  - Callee:          _ZNSo3putEc
+  - String:          ' will not be inlined into '
+  - Caller:          _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 682, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 682, Column: 34 }
+Function:        _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+Args:
+  - String:          ''''
+  - Callee:          _ZNKSt9basic_iosIcSt11char_traitsIcEE5widenEc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                       Line: 450, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 682, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '85'
+  - String:          ', threshold='
+  - Threshold:       '250'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          'endl<char, std::char_traits<char> >'
+  - String:          ':'
+  - Line:            '1'
+  - String:          ':'
+  - Column:          '34'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 682, Column: 14 }
+Function:        _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+Args:
+  - String:          ''''
+  - Callee:          _ZSt5flushIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 704, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 682, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '487'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          'endl<char, std::char_traits<char> >'
+  - String:          ':'
+  - Line:            '1'
+  - String:          ':'
+  - Column:          '14'
+  - String:          ';'
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 880, Column: 15 }
+Function:        _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+Args:
+  - String:          'load of type '
+  - Type:            'i8 (%"class.std::ctype"*, i8)**'
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                       Line: 879, Column: 8 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 880, Column: 15 }
+Function:        _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+Args:
+  - String:          'load of type '
+  - Type:            'i8 (%"class.std::ctype"*, i8)*'
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                       Line: 879, Column: 8 }
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 13, Column: 6 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '7'
+  - String:          ':'
+  - Column:          '6'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 31, Column: 6 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '25'
+  - String:          ':'
+  - Column:          '6'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 49, Column: 6 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '43'
+  - String:          ':'
+  - Column:          '6'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 67, Column: 6 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '61'
+  - String:          ':'
+  - Column:          '6'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 85, Column: 6 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '79'
+  - String:          ':'
+  - Column:          '6'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 103, Column: 6 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '97'
+  - String:          ':'
+  - Column:          '6'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 121, Column: 6 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '115'
+  - String:          ':'
+  - Column:          '6'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 139, Column: 6 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '133'
+  - String:          ':'
+  - Column:          '6'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 157, Column: 6 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '151'
+  - String:          ':'
+  - Column:          '6'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 175, Column: 6 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '169'
+  - String:          ':'
+  - Column:          '6'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 193, Column: 6 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '187'
+  - String:          ':'
+  - Column:          '6'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 211, Column: 6 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '205'
+  - String:          ':'
+  - Column:          '6'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 229, Column: 6 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '223'
+  - String:          ':'
+  - Column:          '6'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 247, Column: 6 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSirsERl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '241'
+  - String:          ':'
+  - Column:          '6'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 267, Column: 8 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 607, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '40'
+  - String:          ', threshold='
+  - Threshold:       '487'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '261'
+  - String:          ':'
+  - Column:          '8'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 267, Column: 22 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSolsEPFRSoS_E
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 109, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '-180'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '261'
+  - String:          ':'
+  - Column:          '22'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 268, Column: 8 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 607, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '40'
+  - String:          ', threshold='
+  - Threshold:       '487'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '262'
+  - String:          ':'
+  - Column:          '8'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 268, Column: 19 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSolsEl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 167, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '262'
+  - String:          ':'
+  - Column:          '19'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 268, Column: 24 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 607, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '40'
+  - String:          ', threshold='
+  - Threshold:       '487'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '262'
+  - String:          ':'
+  - Column:          '24'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 268, Column: 31 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 607, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '40'
+  - String:          ', threshold='
+  - Threshold:       '487'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '262'
+  - String:          ':'
+  - Column:          '31'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 268, Column: 38 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSolsEl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 167, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '262'
+  - String:          ':'
+  - Column:          '38'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 268, Column: 43 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 607, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '40'
+  - String:          ', threshold='
+  - Threshold:       '487'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '262'
+  - String:          ':'
+  - Column:          '43'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 268, Column: 50 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSolsEl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 167, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '262'
+  - String:          ':'
+  - Column:          '50'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 268, Column: 55 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 607, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '40'
+  - String:          ', threshold='
+  - Threshold:       '487'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '262'
+  - String:          ':'
+  - Column:          '55'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 268, Column: 62 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSolsEl
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 167, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '0'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '262'
+  - String:          ':'
+  - Column:          '62'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 268, Column: 67 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZNSolsEPFRSoS_E
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 109, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '-180'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          main
+  - String:          ':'
+  - Line:            '262'
+  - String:          ':'
+  - Column:          '67'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 113, Column: 9 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 682, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '175'
+  - String:          ', threshold='
+  - Threshold:       '325'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          'operator<<'
+  - String:          ':'
+  - Line:            '5'
+  - String:          ':'
+  - Column:          '9'
+  - String:          ' @ '
+  - String:          main
+  - String:          ':'
+  - Line:            '261'
+  - String:          ':'
+  - Column:          '22'
+  - String:          ';'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 113, Column: 9 }
+Function:        main
+Args:
+  - String:          ''''
+  - Callee:          _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 682, Column: 0 }
+  - String:          ''' inlined into '''
+  - Caller:          main
+    DebugLoc:        { File: prog.cpp, Line: 6, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '175'
+  - String:          ', threshold='
+  - Threshold:       '325'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          'operator<<'
+  - String:          ':'
+  - Line:            '5'
+  - String:          ':'
+  - Column:          '9'
+  - String:          ' @ '
+  - String:          main
+  - String:          ':'
+  - Line:            '262'
+  - String:          ':'
+  - Column:          '67'
+  - String:          ';'
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 19, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     store
+    DebugLoc:        { File: prog.cpp, Line: 7, Column: 8 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 37, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     load
+    DebugLoc:        { File: prog.cpp, Line: 19, Column: 11 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 55, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     load
+    DebugLoc:        { File: prog.cpp, Line: 37, Column: 11 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 73, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     load
+    DebugLoc:        { File: prog.cpp, Line: 55, Column: 11 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 91, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     load
+    DebugLoc:        { File: prog.cpp, Line: 73, Column: 11 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 109, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     load
+    DebugLoc:        { File: prog.cpp, Line: 91, Column: 11 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 127, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     load
+    DebugLoc:        { File: prog.cpp, Line: 109, Column: 11 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 145, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     load
+    DebugLoc:        { File: prog.cpp, Line: 127, Column: 11 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 163, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     load
+    DebugLoc:        { File: prog.cpp, Line: 145, Column: 11 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 181, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     load
+    DebugLoc:        { File: prog.cpp, Line: 163, Column: 11 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 199, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     load
+    DebugLoc:        { File: prog.cpp, Line: 181, Column: 11 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 217, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     load
+    DebugLoc:        { File: prog.cpp, Line: 199, Column: 11 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 235, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     load
+    DebugLoc:        { File: prog.cpp, Line: 217, Column: 11 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 253, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     load
+    DebugLoc:        { File: prog.cpp, Line: 235, Column: 11 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream', 
+                       Line: 187, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 682, Column: 29 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            'i8*'
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 611, Column: 2 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 682, Column: 29 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 611, Column: 2 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                   Line: 450, Column: 30 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            '%"class.std::ctype"*'
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 611, Column: 2 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 877, Column: 6 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i8
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 611, Column: 2 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 878, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i8
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 611, Column: 2 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 880, Column: 15 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            'i8 (%"class.std::ctype"*, i8)**'
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                       Line: 879, Column: 8 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 880, Column: 15 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            'i8 (%"class.std::ctype"*, i8)*'
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                       Line: 879, Column: 8 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: prog.cpp, Line: 268, Column: 22 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' in favor of '
+  - OtherAccess:     load
+    DebugLoc:        { File: prog.cpp, Line: 253, Column: 11 }
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 611, Column: 2 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 682, Column: 29 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            'i8*'
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 167, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                   Line: 682, Column: 29 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i64
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 167, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h', 
+                   Line: 450, Column: 30 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            '%"class.std::ctype"*'
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 167, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 877, Column: 6 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i8
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 167, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 878, Column: 11 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            i8
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream', 
+                       Line: 167, Column: 16 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 880, Column: 15 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            'i8 (%"class.std::ctype"*, i8)**'
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                       Line: 879, Column: 8 }
+...
+--- !Missed
+Pass:            gvn
+Name:            LoadClobbered
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                   Line: 880, Column: 15 }
+Function:        main
+Args:
+  - String:          'load of type '
+  - Type:            'i8 (%"class.std::ctype"*, i8)*'
+  - String:          ' not eliminated'
+  - String:          ' because it is clobbered by '
+  - ClobberedBy:     call
+    DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_facets.h', 
+                       Line: 879, Column: 8 }
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/iostream', 
+                   Line: 74, Column: 25 }
+Function:        __cxx_global_var_init
+Args:
+  - Callee:          _ZNSt8ios_base4InitC1Ev
+  - String:          ' will not be inlined into '
+  - Caller:          __cxx_global_var_init
+    DebugLoc:        { File: prog.cpp, Line: 0, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: prog.cpp, Line: 0, Column: 0 }
+Function:        __cxx_global_var_init
+Args:
+  - Callee:          __cxa_atexit
+  - String:          ' will not be inlined into '
+  - Caller:          __cxx_global_var_init
+    DebugLoc:        { File: prog.cpp, Line: 0, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: '/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/iostream', 
+                   Line: 74, Column: 25 }
+Function:        __cxx_global_var_init
+Args:
+  - Callee:          _ZNSt8ios_base4InitC1Ev
+  - String:          ' will not be inlined into '
+  - Caller:          __cxx_global_var_init
+    DebugLoc:        { File: prog.cpp, Line: 0, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Missed
+Pass:            inline
+Name:            NoDefinition
+DebugLoc:        { File: prog.cpp, Line: 0, Column: 0 }
+Function:        __cxx_global_var_init
+Args:
+  - Callee:          __cxa_atexit
+  - String:          ' will not be inlined into '
+  - Caller:          __cxx_global_var_init
+    DebugLoc:        { File: prog.cpp, Line: 0, Column: 0 }
+  - String:          ' because its definition is unavailable'
+...
+--- !Passed
+Pass:            inline
+Name:            Inlined
+DebugLoc:        { File: prog.cpp, Line: 0, Column: 0 }
+Function:        _GLOBAL__sub_I_prog.cpp
+Args:
+  - String:          ''''
+  - Callee:          __cxx_global_var_init
+  - String:          ''' inlined into '''
+  - Caller:          _GLOBAL__sub_I_prog.cpp
+    DebugLoc:        { File: prog.cpp, Line: 0, Column: 0 }
+  - String:          ''''
+  - String:          ' with '
+  - String:          '(cost='
+  - Cost:            '-14950'
+  - String:          ', threshold='
+  - Threshold:       '375'
+  - String:          ')'
+  - String:          ' at callsite '
+  - String:          _GLOBAL__sub_I_prog.cpp
+  - String:          ':'
+  - Line:            '0'
+  - String:          ':'
+  - Column:          '0'
+  - String:          ';'
+...
+--- !Missed
+Pass:            slp-vectorizer
+Name:            NotPossible
+DebugLoc:        { File: prog.cpp, Line: 42, Column: 8 }
+Function:        main
+Args:
+  - String:          'Cannot SLP vectorize list: vectorization was impossible'
+  - String:          ' with available vectorization factors'
+...
+--- !Missed
+Pass:            slp-vectorizer
+Name:            NotPossible
+DebugLoc:        { File: prog.cpp, Line: 42, Column: 8 }
+Function:        main
+Args:
+  - String:          'Cannot SLP vectorize list: vectorization was impossible'
+  - String:          ' with available vectorization factors'
+...
+--- !Missed
+Pass:            slp-vectorizer
+Name:            NotPossible
+DebugLoc:        { File: prog.cpp, Line: 42, Column: 8 }
+Function:        main
+Args:
+  - String:          'Cannot SLP vectorize list: vectorization was impossible'
+  - String:          ' with available vectorization factors'
+...
+--- !Missed
+Pass:            slp-vectorizer
+Name:            NotPossible
+DebugLoc:        { File: prog.cpp, Line: 42, Column: 8 }
+Function:        main
+Args:
+  - String:          'Cannot SLP vectorize list: vectorization was impossible'
+  - String:          ' with available vectorization factors'
+...
+--- !Missed
+Pass:            slp-vectorizer
+Name:            NotPossible
+DebugLoc:        { File: prog.cpp, Line: 235, Column: 8 }
+Function:        main
+Args:
+  - String:          'Cannot SLP vectorize list: vectorization was impossible'
+  - String:          ' with available vectorization factors'
+...
+--- !Missed
+Pass:            slp-vectorizer
+Name:            NotPossible
+DebugLoc:        { File: prog.cpp, Line: 19, Column: 8 }
+Function:        main
+Args:
+  - String:          'Cannot SLP vectorize list: vectorization was impossible'
+  - String:          ' with available vectorization factors'
+...
