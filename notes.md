@@ -13,12 +13,95 @@ There is no implicit mapping between files and modules - this is built explicitl
 
 `sort_by_key` moves the key, so is unusable when copy is expensive. use `sort_by` instead which allows borrows
 
+---
+
+Names like `col_idx` are confusing because it could mean either the "index of the column" or the "index inside the column" which are opposite dimensions.
+
 ## Tools & Tricks
 ---
+
+- use `{:#?}` to pretty print Debugs
 
 - [cargo expand](https://github.com/dtolnay/cargo-expand) can be used to view code after macro expansion
 
 ## Puzzles
+
+
+___
+```rust
+        fn tunnels(&self) -> Vec<usize> { ... }
+        ...
+        self.tunnels()
+            .into_iter()
+            .map(|col_idx| {
+                if let Some(bad_row) = (0..N).rev().filter(|ri| !self.correct_pos(col_idx, *ri)).next() {
+                    let x = sides(col_idx, 0)
+                        .into_iter()
+                        .map(|dest_col| (dest_col, 0usize, bad_row + col_idx - dest_col));
+                    x
+                } else {
+                    iter::empty::<(usize, usize, usize)>().map(|x| x).into_iter()
+                }
+            })
+            .flatten()
+```
+
+fails with:
+```rust
+error[E0308]: `if` and `else` have incompatible types
+   --> day23/src/soln1.rs:142:21
+    |
+136 | /                 if let Some(bad_row) = (0..N).rev().filter(|ri| !self.correct_pos(col_idx, *ri)).next() {
+137 | |                     let x = sides(col_idx, 0)
+138 | |                         .into_iter()
+139 | |                         .map(|dest_col| (dest_col, 0usize, bad_row + col_idx - dest_col));
+140 | |                     x
+    | |                     - expected because of this
+141 | |                 } else {
+142 | |                     iter::empty::<(usize, usize, usize)>().map(|x| x).into_iter()
+    | |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `std::vec::IntoIter`, found struct `std::iter::Empty`
+143 | |                 }
+    | |_________________- `if` and `else` have incompatible types
+```
+
+----
+
+```rust
+pub fn parse(input: &str) -> ([&[u8]; 4]) {
+    let mut lines = input.lines().skip(2);
+
+    let row1 = lines.next().unwrap();
+    let row2 = lines.next().unwrap();
+    let mut cols: [[u8; 2]; 4] = [[0u8; 2]; 4];
+    let mut col = [0; 2];
+
+    let mut col_idx = 0;
+    for i in 0..row1.len() {
+        let chtop = row1.chars().nth(i).unwrap();
+        let chbot = row2.chars().nth(i).unwrap_or(' ');
+        if (chtop == 'A' || chtop == 'B' || chtop == 'C' || chtop == 'D') {
+            col[0] = ((chtop as u8) - ('A' as u8));
+            col[1] = ((chbot as u8) - ('A' as u8));
+            cols[col_idx] = col;
+            col_idx += 1;
+        }
+    }
+    cols
+}
+``` 
+
+does not compile:
+
+```rust
+3  | pub fn parse(input: &str) -> ([&[u8]; 4]) {
+   |                               ---------- expected `[&[u8]; 4]` because of return type
+...
+22 |     cols
+   |     ^^^^ expected `&[u8]`, found array `[u8; 2]`
+   |
+   = note: expected array `[&[u8]; 4]`
+              found array `[[u8; 2]; 4]`
+```              
 
 ----
 ```rust
