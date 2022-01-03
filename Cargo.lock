@@ -398,6 +398,7 @@ version = "0.1.0"
 dependencies = [
  "criterion",
  "itertools",
+ "sorted-vec",
 ]
 
 [[package]]
@@ -1107,6 +1108,12 @@ name = "siphasher"
 version = "0.3.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "533494a8f9b724d33625ab53c6c4800f7cc445895924a8ef649222dcb76e938b"
+
+[[package]]
+name = "sorted-vec"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4210e1a17d165a0c1d4a233af1e3b36fb21b1359042767a4d2c73554f5f8c2aa"
 
 [[package]]
 name = "spin"

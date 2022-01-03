@@ -2,6 +2,7 @@ use crate::shared::parse;
 use crate::shared::Box;
 use crate::shared::Interval as I;
 use itertools::Itertools;
+use sorted_vec::SortedVec;
 use std::iter::repeat;
 
 pub struct Soln1 {}
@@ -21,19 +22,6 @@ impl Soln1 {
         }
         nset
     }
-
-    // fn count_set2(cubes: [[[u8; 2 * 100_000 + 1]; 2 * 100_000 + 1]; 2 * 100_000 + 1]) -> usize {
-    //     let mut nset = 0;
-    //     let max = 2 * 100_000 + 1;
-    //     for x in 0..=max {
-    //         for y in 0..=max {
-    //             for z in 0..=max {
-    //                 nset += (cubes[x][y][z] as usize);
-    //             }
-    //         }
-    //     }
-    //     nset
-    // }
 
     pub fn part1(input: &str) -> usize {
         let cubes = parse(input);
@@ -70,7 +58,7 @@ impl Soln1 {
         Self::count_set(map)
     }
 
-    //     -- I. b and a are positive
+    // --  I. b and a are positive
     // ---- 1. b is contained in a
     //  ---- test: st_3dintersection(a,b) == b
     //  ---- volume =  volume(a)
@@ -89,68 +77,32 @@ impl Soln1 {
     //  ---- volume = volume(a)
     // ---- 3. intersects
     //  ---- volume = volume(a) - volume(intersect(a,b))
-    // -- III. a and b are negative
+    // --III. a and b are negative
     //  ---- volume = 0
 
+    /**
+     * Ideal 1D interval
+     *
+     * store 1 point at each transition
+     *
+     *      ON         OFF     ON       OFF    ON
+     * 0-----------10------12-------15------20-----24
+     *
+     * 2D version
+     *
+     * ---------XXXXXXX-------XXXXX
+     * ---------XXXXXXX-------XXXXX
+     * ------XXXXXXX--------XXXX---
+     * ------XXXXXXX--------XXXX---
+     * ------XXXXX----------XX-----
+     *
+     * ------T--T-T-T--T----T-T-T--   Xes
+     */
+
     pub fn part2(input: &str) -> usize {
-        let max = 100000;
         let mut cubes = parse(input);
 
-        impl PartialOrd for Box {
-            fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-                Some(self.cmp(other))
-            }
-        }
-        impl Ord for Box {
-            fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-                self.x_range
-                    .cmp(&other.x_range)
-                    .then(self.y_range.cmp(&other.y_range))
-                    .then(self.z_range.cmp(&other.z_range))
-            }
-        }
-
-        //WONT WORK without changes because this does not account for 
-        //the order in which cubes appear
-        cubes.sort_by(|t1, t2| t1.1.cmp(&t2.1));
-        let mut prevt = None;
-        let mut volume = 0;
-        for (status, cube) in cubes {
-            if prevt.is_none() {
-                volume += if status == 0 { 0 } else { cube.volume() };
-                prevt = Some((status, cube));
-                continue;
-            }
-            let (pstatus, prev) = prevt.unwrap();
-            if prev.contains(&cube) {
-                if (pstatus == 1 && status == 1) {
-                    //
-                } else if (pstatus == 0 && status == 1) {
-                    volume += cube.volume()
-                } else if (pstatus == 1 && status == 0) {
-                    volume -= cube.volume()
-                } else {
-                    //
-                }
-            } else if cube.contains(&prev) {
-                if (pstatus == 1 && status == 1) {
-                    volume += cube.volume() - prev.volume()
-                } else if (pstatus == 0 && status == 1) {
-                    volume += cube.volume()
-                } else if (pstatus == 1 && status == 0) {
-                    volume -= cube.volume()
-                } else {
-
-            }
-
-            // println!(
-            //     "{}",
-            //     Self::polyhedra_str((cube.1, cube.2, cube.3, cube.4, cube.5, cube.6))
-            // );
-            prevt = Some((status, cube));
-        }
         0
-        // Self::count_set2(map)
     }
 }
 
