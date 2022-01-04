@@ -100,9 +100,25 @@ impl Soln1 {
      */
 
     pub fn part2(input: &str) -> usize {
-        let mut cubes = parse(input);
+        let mut boxes = parse(input);
+        let mut current = vec![];
 
-        0
+        let mut on_volume = 0;
+        for (state, cube) in boxes {
+            on_volume += if state == 1 { cube.volume() } else { 0 };
+            for (ostate, ocube) in &current {
+                match (ostate, state) {
+                    (0, 0) => (),
+                    (0, 1) => (),
+                    (1, 0) => on_volume -= cube.intersect(ocube).map(|b| b.volume()).unwrap_or(0),
+                    (1, 1) => on_volume -= cube.intersect(ocube).map(|b| b.volume()).unwrap_or(0),
+                    _ => unreachable!(),
+                }
+            }
+            current.push((state, cube));
+        }
+
+        on_volume
     }
 }
 
@@ -115,5 +131,6 @@ mod tests {
     #[test]
     fn test_part1() {
         let sample: &str = include_str!("../inputs/sample.txt");
+        assert_eq!(Soln1::part1(sample), 590784);
     }
 }
