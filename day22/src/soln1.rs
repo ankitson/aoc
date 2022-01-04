@@ -11,12 +11,16 @@ impl Soln1 {
         cc < -50 || cc > 50
     }
 
-    fn count_set(cubes: [[[u8; 101]; 101]; 101]) -> usize {
+    fn count_set(cubes: [[[i8; 101]; 101]; 101]) -> usize {
         let mut nset = 0;
         for x in 0..=100 {
             for y in 0..=100 {
                 for z in 0..=100 {
-                    nset += (cubes[x][y][z] as usize);
+                    nset += if cubes[x][y][z] == 1 {
+                        cubes[x][y][z] as usize
+                    } else {
+                        0
+                    }
                 }
             }
         }
@@ -25,7 +29,7 @@ impl Soln1 {
 
     pub fn part1(input: &str) -> usize {
         let cubes = parse(input);
-        let mut map = [[[0u8; 101]; 101]; 101];
+        let mut map = [[[0i8; 101]; 101]; 101];
         for (
             stat,
             Box {
@@ -85,7 +89,6 @@ impl Soln1 {
      *
      * store 1 point at each transition
      *
-     *      ON         OFF     ON       OFF    ON
      * 0-----------10------12-------15------20-----24
      *
      * 2D version
@@ -97,28 +100,55 @@ impl Soln1 {
      * ------XXXXX----------XX-----
      *
      * ------T--T-T-T--T----T-T-T--   Xes
-     */
+     **/
 
+    /**
+     * |A u B| = |A| + |B| - |A v B|
+     *
+     *
+     */
     pub fn part2(input: &str) -> usize {
         let mut boxes = parse(input);
-        let mut current = vec![];
+        let mut current: Vec<(i8, Box)> = vec![];
 
-        let mut on_volume = 0;
-        for (state, cube) in boxes {
-            on_volume += if state == 1 { cube.volume() } else { 0 };
+        let mut pcount = 0;
+        for (state, cube) in &boxes {
+            let mut to_add = if *state == 1 { vec![(1, cube.clone())] } else { vec![] };
             for (ostate, ocube) in &current {
-                match (ostate, state) {
-                    (0, 0) => (),
-                    (0, 1) => (),
-                    (1, 0) => on_volume -= cube.intersect(ocube).map(|b| b.volume()).unwrap_or(0),
-                    (1, 1) => on_volume -= cube.intersect(ocube).map(|b| b.volume()).unwrap_or(0),
-                    _ => unreachable!(),
+                if let Some(intersect) = (ocube).intersect(cube) {
+                    if pcount < 50 {
+                        println!("{},{:?} intsct {},{:?} = {:?}", state, cube, ostate, ocube, intersect);
+                        pcount += 1;
+                    }
+                    let fstate = if (*state == 1 && *ostate == 1) {
+                        -1
+                    } else if *state == -1 && *ostate == -1 {
+                        1
+                    } else {
+                        *state
+                    };
+                    to_add.push((fstate, intersect))
                 }
             }
-            current.push((state, cube));
+            current.extend(to_add)
         }
 
-        on_volume
+        println!("Final cubes:");
+        for (state, cube) in &current {
+            println!(
+                "{} {:?} volume = {}",
+                *state,
+                *cube,
+                *state as isize * cube.volume() as isize
+            );
+        }
+
+        let mut on_volume: isize = 0;
+        for (state, cube) in current {
+            // println!("on vol: {} incoming: {} {:?}", on_volume, state, cube);
+            on_volume += (state as isize) * (isize::try_from(cube.volume()).unwrap())
+        }
+        on_volume as usize
     }
 }
 
@@ -130,7 +160,19 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let sample: &str = include_str!("../inputs/sample.txt");
-        assert_eq!(Soln1::part1(sample), 590784);
+        let sample: &str = include_str!("../inputs/day22.txt");
+        assert_eq!(Soln1::part1(sample), 588200);
+    }
+
+    #[test]
+    fn test_part2() {
+        let sample: &str = include_str!("../inputs/sample3.txt");
+        assert_eq!(Soln1::part2(sample), 2758514936282235);
+    }
+
+    #[test]
+    fn test_simple() {
+        let sample2 = include_str!("../inputs/sample2.txt");
+        assert_eq!(Soln1::part2(sample2), 5 * 5 * 5);
     }
 }
