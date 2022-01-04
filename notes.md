@@ -11,6 +11,10 @@ There is no implicit mapping between files and modules - this is built explicitl
 
 ---
 
+`sort_by_key` moves the key, so is unusable when copy is expensive. use `sort_by` instead which allows borrows
+
+---
+
 Names like `col_idx` are confusing because it could mean either the "index of the column" or the "index inside the column" which are opposite dimensions.
 
 ## Tools & Tricks
