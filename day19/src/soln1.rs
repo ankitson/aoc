@@ -124,14 +124,34 @@ fn get_overlaps(seer_points: &Vec<Coord>, ref_points: &Vec<Coord>, ref_origin: &
     (0, Coord(0, 0, 0))
 }
 
-fn part1_attempt2(input: &str) -> usize {
-    let located_scanners = locate_scanners(input);
-    println!("Located all scanners");
-    todo!();
+pub fn part1_attempt2(input: &str) -> HashSet<Coord> {
+    let scan_coords = parse(input);
+    let located_scanners = locate_scanners(&scan_coords);
+    println!("Located all scanners!");
+
+    let full_normalize = |coord: &Coord, pos: &ScannerPos| -> Coord {
+        let scanner_origin = pos.0;
+        let scanner_rotations = &pos.1;
+        let unrotate = scanner_rotations.inverse(*coord);
+        let translate = unrotate.add(&scanner_origin);
+        translate
+    };
+
+    let mut distinct_coords = HashSet::new();
+    for (scanner_idx, scanner_pts) in scan_coords {
+        let normalized_coords =
+            scanner_pts.iter().map(|c| full_normalize(c, located_scanners.get(&scanner_idx).unwrap()));
+        for coord in normalized_coords {
+            distinct_coords.insert(coord);
+        }
+    }
+
+    println!("Distinct coords: {:#?}", distinct_coords.iter().sorted());
+
+    distinct_coords
 }
 
-fn locate_scanners(input: &str) -> HashMap<usize, ScannerPos> {
-    let scan_coords = parse(input);
+fn locate_scanners(scan_coords: &HashMap<usize, Vec<Coord>>) -> HashMap<usize, ScannerPos> {
     let num_scanners = scan_coords.len();
 
     let mut located_scanners: HashMap<usize, ScannerPos> =
@@ -342,7 +362,16 @@ fn compute_overlaps(pts1: &Vec<Coord>, pts2: &Vec<Coord>, ops: &Ops, origin2: Co
 }
 
 pub fn part2(input: &str) -> usize {
-    todo!()
+    let scan_coords = parse(input);
+    let located_scanners = locate_scanners(&scan_coords);
+
+    let mut max_dist = 0;
+    for ScannerPos(origin1, _) in located_scanners.values() {
+        for ScannerPos(origin2, _) in located_scanners.values() {
+            max_dist = max_dist.max(origin1.l1_dist(origin2));
+        }
+    }
+    max_dist
 }
 
 #[cfg(test)]
@@ -430,7 +459,8 @@ mod tests {
     #[test]
     fn test_scanner_locator() {
         let sample = include_str!("../inputs/sample.txt");
-        let locations = locate_scanners(sample);
+        let scan_coords = parse(sample);
+        let locations = locate_scanners(&scan_coords);
         assert_eq!(locations.get(&0).unwrap().0, Coord(0, 0, 0));
         assert_eq!(locations.get(&1).unwrap().0, Coord(68, -1246, -43));
         assert_eq!(locations.get(&2).unwrap().0, Coord(1105, -1205, 1229));
@@ -438,21 +468,17 @@ mod tests {
         assert_eq!(locations.get(&4).unwrap().0, Coord(-20, -1133, 1061));
     }
 
-    // #[test]
-    fn test_part1() {
+    #[test]
+    fn test_part1_sample() {
         let sample: &str = include_str!("../inputs/sample.txt");
-        // let part1 = part1(sample);
-        // println!("Part 1 (sample1) = {:?}", part1);
-        // assert_eq!(part1, 79);
-
         let part1 = part1_attempt2(sample);
+        assert_eq!(part1.len(), 79);
     }
 
-    // #[test]
+    #[test]
     fn test_part2() {
         let sample: &str = include_str!("../inputs/sample.txt");
         let part2 = part2(sample);
-        println!("Part 2 (sample2) = {:?}", part2);
-        // assert_eq!(part2, 0);
+        assert_eq!(part2, 3621);
     }
 }

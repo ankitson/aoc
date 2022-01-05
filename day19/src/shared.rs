@@ -10,6 +10,13 @@ impl Coord {
         self.0.abs().max(self.1.abs().max(self.2.abs()))
     }
 
+    pub fn l1_dist(&self, other: &Coord) -> usize {
+        let xdist = (self.0 - other.0).abs() as usize;
+        let ydist = (self.1 - other.1).abs() as usize;
+        let zdist = (self.2 - other.2).abs() as usize;
+        xdist + ydist + zdist
+    }
+
     pub fn add(&self, by: &Coord) -> Coord {
         let Coord(x, y, z) = self;
         let Coord(xo, yo, zo) = by;
