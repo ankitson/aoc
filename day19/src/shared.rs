@@ -10,10 +10,14 @@ impl Coord {
         self.0.abs().max(self.1.abs().max(self.2.abs()))
     }
 
-    pub fn translate(&self, by: &Coord) -> Coord {
+    pub fn add(&self, by: &Coord) -> Coord {
         let Coord(x, y, z) = self;
         let Coord(xo, yo, zo) = by;
         Coord(x + xo, y + yo, z + zo)
+    }
+
+    pub fn neg(&self) -> Coord {
+        Coord(-self.0, -self.1, -self.2)
     }
 }
 pub type ScanCoords = HashMap<usize, Vec<Coord>>;

@@ -57,7 +57,7 @@ impl Op {
         match self {
             Op::Rotate(axis, nturns) => Self::rotate(point, *axis, *nturns),
             Op::Flip(plane) => Self::flip(point, plane),
-            Op::Translate(coord) => point.translate(coord),
+            Op::Translate(coord) => point.add(coord),
             Op::Ident => *point,
         }
     }
@@ -66,13 +66,13 @@ impl Op {
         match self {
             Op::Rotate(axis, nturns) => (Op::Rotate(*axis, 4 - nturns)).apply(point),
             Op::Flip(plane) => Op::Flip(*plane).apply(point),
-            Op::Translate(coord) => point.translate(&Coord(-coord.0, -coord.1, -coord.2)),
+            Op::Translate(coord) => point.add(&Coord(-coord.0, -coord.1, -coord.2)),
             Op::Ident => *point,
         }
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Ops {
     ops: Vec<Op>,
 }
@@ -94,16 +94,124 @@ impl Ops {
     }
 }
 
+#[derive(Debug, Clone)]
+struct Facing(Axis, usize);
+// Facing axis and direction (+1 or -1)
+#[derive(Debug, Clone)]
+// Position in space, rotation along 3 axes, and the label of the axis this scanner faces (all relative to scanner 0)
+struct ScannerPos(Coord, Ops);
+
+fn get_overlaps(seer_points: &Vec<Coord>, ref_points: &Vec<Coord>, ref_origin: &Coord) -> (usize, Coord) {
+    let ref_points_absolute = ref_points.iter().map(|c| c.add(ref_origin)).collect_vec();
+    for point in seer_points {
+        for ref_point in &ref_points_absolute {
+            //point + diff = (p.x + d.x, ...) = (p.x + r.x - p.x, ...) = (r.x, ...)
+            let diff = Coord(ref_point.0 - point.0, ref_point.1 - point.1, ref_point.2 - point.2);
+            let candidate_origin = diff;
+
+            let mapped_seers = seer_points.iter().map(|c| c.add(&candidate_origin)).collect_vec();
+            let mut intersect_count = 0;
+            for ref_point_again in &ref_points_absolute {
+                if mapped_seers.iter().contains(ref_point_again) {
+                    intersect_count += 1;
+                }
+            }
+            if intersect_count >= 12 {
+                return (intersect_count, candidate_origin);
+            }
+        }
+    }
+    (0, Coord(0, 0, 0))
+}
+
+fn part1_attempt2(input: &str) -> usize {
+    let located_scanners = locate_scanners(input);
+    println!("Located all scanners");
+    todo!();
+}
+
+fn locate_scanners(input: &str) -> HashMap<usize, ScannerPos> {
+    let scan_coords = parse(input);
+    let num_scanners = scan_coords.len();
+
+    let mut located_scanners: HashMap<usize, ScannerPos> =
+        HashMap::from_iter([(0, ScannerPos(Coord(0, 0, 0), Ops { ops: [Op::Ident; 3].to_vec() }))]);
+
+    let mut x_rotates = (0..4).map(|nt| Op::Rotate(Axis::X, nt)).collect_vec();
+    let mut y_rotates = (0..4).map(|nt| Op::Rotate(Axis::Y, nt)).collect_vec();
+    let mut z_rotates = (0..4).map(|nt| Op::Rotate(Axis::Z, nt)).collect_vec();
+    let axes = vec![Axis::X, Axis::Y, Axis::Z];
+
+    let normalize_coords = |scanner_idx: usize, ops: &Ops| -> Vec<Coord> {
+        let seen = scan_coords.get(&scanner_idx).unwrap();
+        seen.iter().map(|coord| ops.inverse(*coord)).collect_vec()
+    };
+
+    let mut num_located = located_scanners.len();
+    while num_located != num_scanners {
+        let unlocated = (0..num_scanners).filter(|idx| !located_scanners.contains_key(idx));
+        'unlocated: for unlocated_scanner in unlocated {
+            for (rotate_x, rotate_y, rotate_z) in iproduct![&x_rotates, &y_rotates, &z_rotates] {
+                let rotates = Ops { ops: vec![*rotate_x, *rotate_y, *rotate_z] };
+                let normalized_seen = normalize_coords(unlocated_scanner, &rotates);
+                for (sc_idx, sc_pos) in &located_scanners {
+                    let normalized_ref = normalize_coords(*sc_idx, &sc_pos.1);
+                    let (num_overlaps, seer_pos) = get_overlaps(&normalized_seen, &normalized_ref, &sc_pos.0);
+                    if num_overlaps >= 12 {
+                        let scanner_pos = ScannerPos(seer_pos, rotates.clone());
+                        println!(
+                            "Located scanner #{} at {:?} . {} overlaps with scanner #{}",
+                            unlocated_scanner, scanner_pos, num_overlaps, sc_idx
+                        );
+                        num_located += 1;
+                        located_scanners.insert(unlocated_scanner, scanner_pos);
+                        break 'unlocated;
+                    } else {
+                        // println!(
+                        // "Failed to locate scanner #{} . {} overlaps with scanner #{}",
+                        // unlocated_scanner, num_overlaps, sc_idx
+                        // );
+                    }
+                }
+            }
+            println!("Failed to locate scanner #{} this round", unlocated_scanner);
+        }
+    }
+    located_scanners
+}
+
+// fn compute_overlaps_attempt2(pts1: &Vec<Coord>, pts2: &Vec<Coord>, rotates: &Ops, origin2: Coord) -> usize {
+//     let pts1_set: HashSet<Coord> = HashSet::from_iter(pts1.iter().cloned());
+//     let mut noverlaps = 0;
+
+//     // let p21 = Coord(0,0,0);
+//     // let p21_inv = ops.inverse(p21);
+//     // let p21_wrt_0 = Coord(p21_inv.0 + origin2.0, p21_inv.1 + origin2.1, p21_inv.2 + origin2.2);
+//     // println!("P2 origin w.r.t P1 with {:?} is at {:?}", ops, p21_wrt_0);
+//     for p2 in pts2 {
+//         let p2_inv = ops.inverse(*p2);
+//         let p2_wrt_p1 = Coord(p2_inv.0 + origin2.0, p2_inv.1 + origin2.1, p2_inv.2 + origin2.2);
+//         // if (origin2 == Coord(68,-1246,-43)) {
+//         // println!("candidate origin2 hitter at ops: {:?}", ops);
+//         // println!("p2 = {:?} inv(p2) = {:?} translate(inv(p2)) = {:?}", p2, p2_inv, p2_wrt_p1)
+//         // }
+//         if pts1_set.contains(&p2_wrt_p1) {
+//             noverlaps += 1;
+//             // if noverlaps > 1 && *p2 == Coord(686,422,575) {
+//             // println!("p2 wrt p1 = {:?}", p2_wrt_p1);
+//             // }
+//         }
+//     }
+//     noverlaps
+// }
+
 pub fn part1(input: &str) -> usize {
     let scan_coords = parse(input);
     let num_scanners = scan_coords.len();
 
     let axes = vec![Axis::X, Axis::Y, Axis::Z];
-    let planes = vec![
-        Plane(Axis::X, Axis::Y),
-        Plane(Axis::X, Axis::Z),
-        Plane(Axis::Y, Axis::Z),
-    ];
+    let planes = vec![Plane(Axis::X, Axis::Y), Plane(Axis::X, Axis::Z), Plane(Axis::Y, Axis::Z)];
+
     let mut x_rotates = (0..4).map(|nt| Op::Rotate(Axis::X, nt)).collect_vec();
     let mut y_rotates = (0..4).map(|nt| Op::Rotate(Axis::Y, nt)).collect_vec();
     let mut z_rotates = (0..4).map(|nt| Op::Rotate(Axis::Z, nt)).collect_vec();
@@ -117,13 +225,13 @@ pub fn part1(input: &str) -> usize {
 
     let mut scposes: HashMap<(usize, usize), (Ops, Coord)> = HashMap::new();
 
-    for (sc1, sc2) in iproduct!(0..num_scanners, 0..num_scanners) {
+    'outer: for (sc1, sc2) in iproduct!(0..num_scanners, 0..num_scanners) {
         if sc1 >= sc2 {
             continue;
         }
         let sc1_points = scan_coords.get(&sc1).unwrap();
         let sc2_points = scan_coords.get(&sc2).unwrap();
-        for (rotate_x, rotate_y, rotate_z) in izip![&x_rotates, &y_rotates, &z_rotates] {
+        for (rotate_x, rotate_y, rotate_z) in iproduct![&x_rotates, &y_rotates, &z_rotates] {
             for (flip1, flip2, flip3) in iproduct![&x_flip, &y_flip, &z_flip] {
                 for (p1, p2) in iproduct![sc1_points, sc2_points] {
                     //what is the orientation and displacement of scanner 2,
@@ -141,9 +249,7 @@ pub fn part1(input: &str) -> usize {
                     // if orientation_sc2 = rotateZ1(rotateY1(rotateX1(orientation_sc1)))
                     // then first unorient p2, then align
                     //
-                    let op_chain = Ops {
-                        ops: vec![*rotate_x, *rotate_y, *rotate_z, *flip1, *flip2, *flip3],
-                    };
+                    let op_chain = Ops { ops: vec![*rotate_x, *rotate_y, *rotate_z, *flip1, *flip2, *flip3] };
                     let p2_inv = op_chain.inverse(*p2);
 
                     //ops(p2_inv) = p2
@@ -173,6 +279,7 @@ pub fn part1(input: &str) -> usize {
                         if lower_ref.is_none() {
                             scposes.insert((sc1, sc2), (op_chain, candidate_origin2));
                         }
+                        break 'outer;
                     }
                     // if sc1 == 0 && sc2 == 1 {
                     //     println!("scanner {}/{} = {} overlaps assuming orient {:?}, pos {:?}", sc1, sc2, overlaps, op_chain, candidate_origin2);
@@ -194,12 +301,7 @@ pub fn part1(input: &str) -> usize {
         let mut parent_chain = vec![sc1];
         while **parent_chain.last().unwrap() != 0 {
             let parent = **parent_chain.last().unwrap();
-            let grand_parent = scposes
-                .keys()
-                .filter(|(p, c)| *c == parent)
-                .map(|(p, c)| p)
-                .min()
-                .unwrap();
+            let grand_parent = scposes.keys().filter(|(p, c)| *c == parent).map(|(p, c)| p).min().unwrap();
             parent_chain.push(grand_parent);
         }
         parent_chains.insert(sc2, parent_chain);
@@ -250,49 +352,41 @@ mod tests {
         soln1::{part1, part2},
     };
 
-    use super::{Axis, Axis::X, Axis::Y, Axis::Z, Op, Op::Flip, Op::Rotate, Ops, Plane};
+    use super::*;
+    use Axis::*;
+    use Op::*;
+
+    // {
+    // locate_scanners, part1_attempt2, Axis, Axis::X, Axis::Y, Axis::Z, Op, Op::Flip, Op::Rotate, Ops, Plane, ScannerPos
+    // };
 
     #[test]
     fn test_op_apply() {
         //1,2,3 -> 1,-3,2 -> 1,-2,-3
         let test_points = vec![Coord(1, 2, 3)];
-        let twice_x = Ops {
-            ops: vec![Rotate(X, 1), Rotate(X, 1)],
-        };
-        let x2 = Ops {
-            ops: vec![Rotate(X, 2)],
-        };
+        let twice_x = Ops { ops: vec![Rotate(X, 1), Rotate(X, 1)] };
+        let x2 = Ops { ops: vec![Rotate(X, 2)] };
         for point in &test_points {
             assert_eq!(twice_x.apply(*point), x2.apply(*point))
         }
 
-        let two_flip = Ops {
-            ops: vec![Flip(Plane(X, Y)), Flip(Plane(X, Y))],
-        };
+        let two_flip = Ops { ops: vec![Flip(Plane(X, Y)), Flip(Plane(X, Y))] };
         for point in test_points.iter() {
             assert_eq!(two_flip.apply(*point), *point)
         }
 
         //[1,2,3] -> [1,2,-3] -> [-2,1,-3]
-        let flip_rotate = Ops {
-            ops: vec![Flip(Plane(X, Y)), Rotate(Z, 1)],
-        };
+        let flip_rotate = Ops { ops: vec![Flip(Plane(X, Y)), Rotate(Z, 1)] };
         assert_eq!(flip_rotate.apply(test_points[0]), Coord(-2, 1, -3))
     }
 
     #[test]
     fn test_op_inverse() {
         let test_points = vec![Coord(1, 2, 3)];
-        let twice_x = Ops {
-            ops: vec![Rotate(X, 1), Rotate(X, 1)],
-        };
-        let two_flip = Ops {
-            ops: vec![Flip(Plane(X, Y)), Flip(Plane(X, Y))],
-        };
+        let twice_x = Ops { ops: vec![Rotate(X, 1), Rotate(X, 1)] };
+        let two_flip = Ops { ops: vec![Flip(Plane(X, Y)), Flip(Plane(X, Y))] };
         //[1,2,3] -> [1,2,-3] -> [-2,1,-3]
-        let flip_rotate = Ops {
-            ops: vec![Flip(Plane(X, Y)), Rotate(Z, 1)],
-        };
+        let flip_rotate = Ops { ops: vec![Flip(Plane(X, Y)), Rotate(Z, 1)] };
         let test_ops = vec![twice_x, two_flip, flip_rotate];
 
         for point in test_points.iter() {
@@ -334,11 +428,24 @@ mod tests {
     }
 
     #[test]
+    fn test_scanner_locator() {
+        let sample = include_str!("../inputs/sample.txt");
+        let locations = locate_scanners(sample);
+        assert_eq!(locations.get(&0).unwrap().0, Coord(0, 0, 0));
+        assert_eq!(locations.get(&1).unwrap().0, Coord(68, -1246, -43));
+        assert_eq!(locations.get(&2).unwrap().0, Coord(1105, -1205, 1229));
+        assert_eq!(locations.get(&3).unwrap().0, Coord(-92, -2380, -20));
+        assert_eq!(locations.get(&4).unwrap().0, Coord(-20, -1133, 1061));
+    }
+
+    // #[test]
     fn test_part1() {
         let sample: &str = include_str!("../inputs/sample.txt");
-        let part1 = part1(sample);
-        println!("Part 1 (sample1) = {:?}", part1);
-        // assert_eq!(part1, 0);
+        // let part1 = part1(sample);
+        // println!("Part 1 (sample1) = {:?}", part1);
+        // assert_eq!(part1, 79);
+
+        let part1 = part1_attempt2(sample);
     }
 
     // #[test]
