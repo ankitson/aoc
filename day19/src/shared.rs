@@ -6,10 +6,6 @@ use regex::Regex;
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Coord(pub isize, pub isize, pub isize);
 impl Coord {
-    pub fn l0_dist(&self) -> isize {
-        self.0.abs().max(self.1.abs().max(self.2.abs()))
-    }
-
     pub fn l1_dist(&self, other: &Coord) -> usize {
         let xdist = (self.0 - other.0).abs() as usize;
         let ydist = (self.1 - other.1).abs() as usize;
@@ -17,12 +13,14 @@ impl Coord {
         xdist + ydist + zdist
     }
 
+    #[must_use]
     pub fn add(&self, by: &Coord) -> Coord {
         let Coord(x, y, z) = self;
         let Coord(xo, yo, zo) = by;
         Coord(x + xo, y + yo, z + zo)
     }
 
+    #[must_use]
     pub fn neg(&self) -> Coord {
         Coord(-self.0, -self.1, -self.2)
     }
@@ -39,8 +37,8 @@ pub fn parse(input: &str) -> ScanCoords {
             continue;
         }
         if let Some(matches) = scanner_num_regex.captures(line) {
-            if current_scanner.is_some() {
-                scan_coords.insert(current_scanner.unwrap(), coords.to_vec());
+            if let Some(scanner_idx) = current_scanner {
+                scan_coords.insert(scanner_idx, coords.to_vec());
                 coords.clear();
             }
             current_scanner = Some(matches.get(1).unwrap().as_str().parse().unwrap());
