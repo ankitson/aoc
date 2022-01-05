@@ -24,6 +24,8 @@ Names like `col_idx` are confusing because it could mean either the "index of th
 
 - [cargo expand](https://github.com/dtolnay/cargo-expand) can be used to view code after macro expansion
 
+- [cargo watch](https://lib.rs/crates/cargo-watch). `cargo watch` (same as `cargo watch -x check` to check without full compilation (faster), or `cargo watch -x build` to do a full compile.
+
 ## Puzzles
 
 
