@@ -43,9 +43,7 @@ impl<'a> Soln1<'a> {
     pub fn part1(input: &str) -> usize {
         let rows = parse(input);
 
-        let mut soln = Soln1 {
-            rows: &mut rows.clone(),
-        };
+        let mut soln = Soln1 { rows: &mut rows.clone() };
         let mut num_steps = 1;
         let mut last_rows = rows;
         soln.right();
@@ -123,13 +121,7 @@ mod tests {
                     if line.starts_with("Initial") {
                         0
                     } else {
-                        re.captures(line)
-                            .unwrap()
-                            .get(1)
-                            .unwrap()
-                            .as_str()
-                            .parse::<usize>()
-                            .unwrap()
+                        re.captures(line).unwrap().get(1).unwrap().as_str().parse::<usize>().unwrap()
                     }
                 };
                 let mut str = String::new();
@@ -152,9 +144,7 @@ mod tests {
 
         for i in 0..=60 {
             if sample_steps.contains_key(&i) {
-                let mut part1 = Soln1 {
-                    rows: &mut parse(sample_steps.get(&0).unwrap()),
-                };
+                let mut part1 = Soln1 { rows: &mut parse(sample_steps.get(&0).unwrap()) };
                 part1.stepn(i);
                 let mine = format!("{:?}", part1);
                 let expected = sample_steps.get(&i).unwrap().trim();

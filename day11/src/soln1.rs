@@ -19,12 +19,11 @@ impl Soln1 {
         let mut i = 0;
         loop {
             let step_flashes = Self::step(&mut grid);
-            if (step_flashes == nrows * ncols) {
+            if step_flashes == nrows * ncols {
                 return Some(i + 1);
             }
             i += 1;
         }
-        unreachable!()
     }
 
     fn step(grid: &mut Vec<Vec<u32>>) -> u64 {

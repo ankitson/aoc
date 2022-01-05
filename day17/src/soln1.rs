@@ -61,7 +61,7 @@ impl Soln1 {
     /// r1 = (-b + sqrt(b2-4ac))/2a = ((2v+1) + sqrt((2v+1)^2  - 4a))/2
     ///
 
-    pub fn partial_sum(mut n: isize, mut i: usize, pos_only: bool) -> isize {
+    pub fn partial_sum(n: isize, mut i: usize, pos_only: bool) -> isize {
         let mut s = 0;
         while i > 0 {
             s += n;

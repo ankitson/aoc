@@ -61,9 +61,8 @@ impl Soln1 {
         let mut to_visit = BinaryHeap::new();
         to_visit.push(State { cost: 0, coord: (0, 0) });
 
-        let mut costs = iter::repeat(iter::repeat(usize::MAX as usize).take(vsize).collect_vec())
-            .take(vsize)
-            .collect_vec();
+        let mut costs =
+            iter::repeat(iter::repeat(usize::MAX as usize).take(vsize).collect_vec()).take(vsize).collect_vec();
         costs[0][0] = 0;
 
         while let Some(State { cost, coord }) = to_visit.pop() {
@@ -76,10 +75,8 @@ impl Soln1 {
             }
 
             for (nbrx, nbry) in Self::nbrs(coord.0, coord.1, vsize, vsize) {
-                let nbr_state = State {
-                    cost: cost + Self::lookup_grid(grid, nbrx, nbry, 5) as usize,
-                    coord: (nbrx, nbry),
-                };
+                let nbr_state =
+                    State { cost: cost + Self::lookup_grid(grid, nbrx, nbry, 5) as usize, coord: (nbrx, nbry) };
 
                 if nbr_state.cost < costs[nbrx][nbry] {
                     to_visit.push(nbr_state);
@@ -130,7 +127,7 @@ impl Soln1 {
                     }
                     None => {
                         let cost_to_here = costs.get(&(vx, vy)).cloned().unwrap();
-                        let mut new_cost: usize = cost_to_here + (grid[nx][ny] as usize);
+                        let new_cost: usize = cost_to_here + (grid[nx][ny] as usize);
                         costs.insert((nx, ny), new_cost);
                     }
                 }

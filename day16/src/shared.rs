@@ -2,10 +2,8 @@ use bitvec::prelude::*;
 use itertools::Itertools;
 
 pub fn parse_bv(input: &str) -> BitVec<Msb0, u8> {
-    let bytes: Vec<u8> = (0..input.len())
-        .step_by(2)
-        .map(|i| u8::from_str_radix(&input[i..i + 2], 16).unwrap())
-        .collect_vec();
+    let bytes: Vec<u8> =
+        (0..input.len()).step_by(2).map(|i| u8::from_str_radix(&input[i..i + 2], 16).unwrap()).collect_vec();
     BitVec::from_vec(bytes)
 }
 
@@ -131,10 +129,7 @@ mod tests {
         //1101 0010 1111 1110 0010 1000
         //VVVT TTMH HHHM HHHH MHHH HZZZ
         assert_eq!(parse_bv(literal1).as_raw_slice(), &[0xD2, 0xFE, 0x28]);
-        assert_eq!(
-            parse_bv(ops[0]).as_raw_slice(),
-            &[0x38, 0x00, 0x6F, 0x45, 0x29, 0x12, 0x00]
-        );
+        assert_eq!(parse_bv(ops[0]).as_raw_slice(), &[0x38, 0x00, 0x6F, 0x45, 0x29, 0x12, 0x00]);
     }
 
     #[test]

@@ -101,7 +101,7 @@ impl Soln1 {
         let (init_level, mut curr_str) = found.unwrap_or((0, chunk.to_string()));
         for new_level in init_level + 1..=n {
             curr_str = Self::apply(&curr_str, rules);
-            let mut expansions = self.dp.get_mut(&new_level).unwrap();
+            let expansions = self.dp.get_mut(&new_level).unwrap();
             expansions.insert(chunk.to_string(), curr_str.to_string());
         }
         self.dp.get(&n).unwrap().get(chunk).unwrap().to_string()

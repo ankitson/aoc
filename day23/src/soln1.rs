@@ -34,9 +34,9 @@ impl<const N: usize> std::fmt::Debug for Soln1<N> {
                 _ => panic!("ahhhh panicc"),
             };
             for char in row {
-                f.write_char(colchar(char));
+                f.write_char(colchar(char)).expect("panik!!")
             }
-            f.write_char('\n');
+            f.write_char('\n').expect("AHHH");
         }
         Ok(())
     }
@@ -104,10 +104,7 @@ impl<const N: usize> Soln1<N> {
     }
 
     pub fn mov(&self, movfrom: (usize, usize), movto: (usize, usize)) -> Soln1<N> {
-        let mut new_board = Soln1 {
-            grid: self.grid.clone(),
-            side_spaces: self.side_spaces,
-        };
+        let mut new_board = Soln1 { grid: self.grid.clone(), side_spaces: self.side_spaces };
         let (a, b) = movfrom;
         let (c, d) = movto;
         let mover = new_board.grid[a][b];
@@ -131,11 +128,7 @@ impl<const N: usize> Soln1<N> {
         if elem == INVALID {
             panic!("ahhhhhhhhh!!!!!!!!")
         }
-        let tunnel_idx = self
-            .tunnels()
-            .iter()
-            .map(|ti| ((ti - self.side_spaces) / 2))
-            .collect_vec();
+        let tunnel_idx = self.tunnels().iter().map(|ti| ((ti - self.side_spaces) / 2)).collect_vec();
         let is_correct = ci == self.side_spaces + 2 * tunnel_idx[elem as usize];
         is_correct
     }
@@ -153,10 +146,7 @@ impl<const N: usize> Soln1<N> {
             let mut sides_arr = vec![];
             if col_idx > 0 {
                 sides_arr.extend(
-                    (0..col_idx)
-                        .rev()
-                        .filter(|ci| !self.tunnels().contains(ci))
-                        .take_while(|ci| !self.occ(*ci, 0)),
+                    (0..col_idx).rev().filter(|ci| !self.tunnels().contains(ci)).take_while(|ci| !self.occ(*ci, 0)),
                 )
             }
             if col_idx < self.grid.len() {
@@ -190,15 +180,7 @@ impl<const N: usize> Soln1<N> {
         let up_moves = tunnels_with_up_moves.flat_map(move |(ci, bad_row)| {
             sides(ci)
                 .iter()
-                .map(|dest_col| {
-                    (
-                        ci,
-                        bad_row,
-                        *dest_col,
-                        0usize,
-                        (bad_row - 0) + util::abs_diff(ci, *dest_col),
-                    )
-                })
+                .map(|dest_col| (ci, bad_row, *dest_col, 0usize, (bad_row - 0) + util::abs_diff(ci, *dest_col)))
                 .collect_vec()
         });
 
@@ -262,20 +244,10 @@ impl<const N: usize> Soln1<N> {
         // let mut moves = vec![]; //(dest,dist)
         let (vc, vr) = from;
         let ch = self.grid[vc][vr];
-        let col_headers = vec![
-            self.side_spaces,
-            self.side_spaces + 2,
-            self.side_spaces + 4,
-            self.side_spaces + 6,
-        ];
+        let col_headers = vec![self.side_spaces, self.side_spaces + 2, self.side_spaces + 4, self.side_spaces + 6];
 
         let nudge_horiz = |(ci, ri): (usize, usize)| {
-            let col_headers = vec![
-                self.side_spaces,
-                self.side_spaces + 2,
-                self.side_spaces + 4,
-                self.side_spaces + 6,
-            ];
+            let col_headers = vec![self.side_spaces, self.side_spaces + 2, self.side_spaces + 4, self.side_spaces + 6];
             let mut nudges: Vec<(usize, usize, usize)> = vec![];
             if ri == 0 {
                 let mut dist = 0;
@@ -328,15 +300,9 @@ impl<const N: usize> Soln1<N> {
         if (vr == 1 || vr == 2) && right_col((vc, 1)) && right_col((vc, 2)) {
             vec![]
         } else if (vr == 2 && self.grid[vc][1] == EMPTY && self.grid[vc][0] == EMPTY) {
-            nudge_horiz((vc, 0))
-                .into_iter()
-                .map(|(a, b, c)| (a, b, c + vr))
-                .collect_vec()
+            nudge_horiz((vc, 0)).into_iter().map(|(a, b, c)| (a, b, c + vr)).collect_vec()
         } else if (vr == 1 && self.grid[vc][0] == EMPTY) {
-            nudge_horiz((vc, 0))
-                .into_iter()
-                .map(|(a, b, c)| (a, b, c + vr))
-                .collect_vec()
+            nudge_horiz((vc, 0)).into_iter().map(|(a, b, c)| (a, b, c + vr)).collect_vec()
         } else if vr == 0 {
             let correct_col = {
                 if ch == A {
@@ -352,16 +318,10 @@ impl<const N: usize> Soln1<N> {
                 }
             };
             let (lo, hi) = vec![vc, correct_col].into_iter().minmax().into_option().unwrap();
-            let path_clear = (lo + 1..hi)
-                .filter(|col| *col < self.grid.len())
-                .all(|col| self.grid[col][vr] == EMPTY);
+            let path_clear = (lo + 1..hi).filter(|col| *col < self.grid.len()).all(|col| self.grid[col][vr] == EMPTY);
             if path_clear {
                 let dist = hi - lo;
-                nudge_down((correct_col, vr))
-                    .into_iter()
-                    .map(|(a, b, c)| (a, b, c + dist))
-                    .into_iter()
-                    .collect_vec()
+                nudge_down((correct_col, vr)).into_iter().map(|(a, b, c)| (a, b, c + dist)).into_iter().collect_vec()
             } else {
                 vec![]
             }
@@ -375,14 +335,7 @@ impl<const N: usize> Soln1<N> {
         let mut moves = vec![];
         let (vc, vr) = from;
         let this = self.grid[vc][vr];
-        if vec![
-            self.side_spaces,
-            self.side_spaces + 2,
-            self.side_spaces + 4,
-            self.side_spaces + 6,
-        ]
-        .contains(&vc)
-        {
+        if vec![self.side_spaces, self.side_spaces + 2, self.side_spaces + 4, self.side_spaces + 6].contains(&vc) {
             let ch: u8 = ((vc - self.side_spaces) / 2).try_into().unwrap();
             if (self.grid[vc][vr] == ch && (vr == 2 || vr == 1 && self.grid[vc][2] == ch)) {
                 return vec![];
@@ -429,12 +382,7 @@ impl<const N: usize> Soln1<N> {
 
     fn solved(&self) -> bool {
         let mut valid = true;
-        for col in [
-            self.side_spaces,
-            self.side_spaces + 2,
-            self.side_spaces + 4,
-            self.side_spaces + 6,
-        ] {
+        for col in [self.side_spaces, self.side_spaces + 2, self.side_spaces + 4, self.side_spaces + 6] {
             let ch: u8 = ((col - self.side_spaces) / 2).try_into().unwrap();
             valid &= self.grid[col][0] == EMPTY;
             valid &= self.grid[col][1] == ch;
@@ -675,14 +623,8 @@ mod tests {
             let mut rng = rand::thread_rng();
             let mov_idx = rng.gen_range(0.._moves1.len());
             // let mov_idx = rand
-            soln1 = soln1.mov(
-                (_moves1[mov_idx].0, _moves1[mov_idx].1),
-                (_moves1[mov_idx].2, _moves1[mov_idx].3),
-            );
-            soln2 = soln2.mov(
-                (_moves2[mov_idx].0, _moves2[mov_idx].1),
-                (_moves2[mov_idx].2, _moves2[mov_idx].3),
-            );
+            soln1 = soln1.mov((_moves1[mov_idx].0, _moves1[mov_idx].1), (_moves1[mov_idx].2, _moves1[mov_idx].3));
+            soln2 = soln2.mov((_moves2[mov_idx].0, _moves2[mov_idx].1), (_moves2[mov_idx].2, _moves2[mov_idx].3));
             assert_eq!(soln1, soln2);
             println!("board:\n{:?}", soln1);
         }
