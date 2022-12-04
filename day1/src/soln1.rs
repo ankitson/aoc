@@ -31,7 +31,33 @@ impl Soln1 {
         max        
     }
 
-    pub fn part2(input: Vec<i32>) -> i32 {
-        0
+    pub fn part2(inputstr: &str) -> i32 {
+       let input: Vec<&str> = inputstr.split('\n').collect();
+       let mut max: Vec<i32> = vec![0,0,0] ;
+		let mut current = 0;
+        for i in 0..input.len() {
+            let cals = input[i].parse::<i32>();
+            println!("cals: {:?}", cals);
+            match cals {
+                Ok(i) => current += i,
+                Err(_) => { 
+					if (current > max[0]) {
+						max[0] = current;
+					}
+					if (max[0] > max[1]) {
+						let tmp = max[1];
+						max[1] = max[0];
+						max[0] = tmp;
+					}
+					if (max[1] > max[2]) {
+						let tmp = max[2];
+						max[2] = max[1];
+						max[1] = tmp;
+					}
+                    current = 0; 
+                } 
+            }
+        }
+        max.iter().sum()
     }
 }
