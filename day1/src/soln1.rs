@@ -11,23 +11,27 @@ impl Soln1 {
         output.to_string()
     }
 
-    fn count_window(input: Vec<i32>, window_size: usize) -> i32 {
-        let mut count = 0;
-        for i in 0..input.len() - window_size {
-            count += if input[i + window_size] > input[i] {
-                1
-            } else {
-                0
-            };
+   pub fn part1(inputstr: &str) -> i32 {
+       let input: Vec<&str> = inputstr.split('\n').collect();
+       let mut max = 0;
+        let mut current = 0;
+        for i in 0..input.len() {
+            let cals = input[i].parse::<i32>();
+            println!("cals: {:?}", cals);
+            match cals {
+                Ok(i) => current += i,
+                Err(_) => { 
+                    if (current >= max) { 
+                        max = current; 
+                    } 
+                    current = 0; 
+                } 
+            }
         }
-        count
+        max        
     }
 
-    pub fn part1_core(input: Vec<i32>) -> i32 {
-        Self::count_window(input, 1)
-    }
-
-    pub fn part2_core(input: Vec<i32>) -> i32 {
-        Self::count_window(input, 2)
+    pub fn part2(input: Vec<i32>) -> i32 {
+        0
     }
 }
