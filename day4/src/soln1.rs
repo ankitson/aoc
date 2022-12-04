@@ -66,7 +66,15 @@ impl Soln1 {
         count
     }
 
-    pub fn part2(input: &str) -> (u32, u32) {
-        unimplemented!()
+    pub fn part2(input: &str) -> u32 {
+        let tups = Self::parse_input(input);
+        let mut count = 0;
+        for (mut r1, mut r2) in &tups {
+            if r1.0 > r2.0 { 
+                mem::swap(&mut r1, &mut r2);
+            }
+            if (r2.0 <= r1.1) { count += 1}
+        }
+        count
     }
 }
