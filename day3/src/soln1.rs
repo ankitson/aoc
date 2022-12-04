@@ -1,3 +1,7 @@
+use std::collections::HashSet;
+
+use itertools::Itertools;
+
 pub struct Soln1 {}
 impl Soln1 {
     pub fn parse(input: &str) -> (impl Iterator<Item = u32> + '_, u16) {
@@ -33,15 +37,36 @@ impl Soln1 {
         (most_common, least_common)
     }
 
-    pub fn part1(nums: &[u32], bit_width: u16) -> (u16, u16) {
-        let mut gamma: u16 = 0; //most common
-        for bi in 0..bit_width {
-            let mcb = Self::most_least_common(nums, bi.into()).0.unwrap();
-            gamma |= mcb << bi;
+    pub fn part1(input: &str) -> i32 {
+        let lines = input.split('\n').collect_vec();
+        let mut total = 0;
+        for line in lines {
+            let size = line.len() / 2;
+            let cm = Self::common_characters(&line[0..size], &line[size..line.len()]);
+            fn score(ch: &char) -> i32 {
+                if (ch.is_ascii_uppercase()) {
+                    ((*ch as i32) - ('A' as i32)) + 27
+                } else {
+                    ((*ch as i32) - ('a' as i32)) + 1
+                }
+            }
+            let score: i32 = cm.iter().map(|x| score(x)).sum();
+            total += score;
         }
-        let mask = (1 << bit_width) - 1; //0b111111111111;
-        let epsilon = (!gamma) & mask;
-        (gamma, epsilon)
+        total
+    }
+
+    //ChatGPT
+    fn common_characters(s1: &str, s2: &str) -> Vec<char> {
+        let mut common = vec![];
+        let set1: HashSet<char> = s1.chars().collect();
+        let set2: HashSet<char> = s2.chars().collect();
+
+        for c in set1.intersection(&set2) {
+            common.push(*c);
+        }
+
+        common
     }
 
     pub fn part2(nums: &Vec<u32>, bit_width: u16) -> (u16, u16) {
