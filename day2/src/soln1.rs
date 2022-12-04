@@ -1,66 +1,54 @@
-
-#[derive(Debug)]
-pub enum Instruction {
-    Forward(u32),
-    Down(u32),
-    Up(u32),
-    Empty,
-}
-
 pub struct Soln1 {}
 impl Soln1 {
-    pub fn parse(input: &str) -> impl Iterator<Item = Instruction> + '_ {
-        input.split('\n').map(|line| {
-            if line.is_empty() {
-                return Instruction::Empty;
-            }
-            let mut parts = line.split_ascii_whitespace();
-            let dir = parts.next().expect("illegal line");
-            let amount = parts
-                .next()
-                .expect("illegal line")
-                .parse::<u32>()
-                .expect("illegal line");
-
-            match dir {
-                "forward" => Instruction::Forward(amount),
-                "down" => Instruction::Down(amount),
-                "up" => Instruction::Up(amount),
-                _ => panic!("illegal instruction"),
-            }
-        })
+  pub fn parse(input: &str) -> Vec<(char, char)> {
+    let mut pairs = Vec::new();
+  
+    for line in input.lines() {
+  
+      if line.is_empty() {
+        continue;
+      }
+      let mut chars = line.chars();
+      let key = chars.next().unwrap();
+			chars.next();
+      let value = chars.next().unwrap();
+      pairs.push((key, value));
     }
+  
+    pairs
+  }
 
-    pub fn unparse(output: (u32, u32)) -> String {
-        (output.0 * output.1).to_string()
+  pub fn part1(input: &str) -> u32 {
+    let inputs = Self::parse(input);
+		let mut score = 0;
+    for (opponent,mine) in inputs {
+			println!("opponent: {} mine: {}", opponent, mine);
+      let score1 = match mine {'X' => 1, 'Y' => 2, 'Z' => 3, _ => panic!("no") };
+      let score2 = match Self::winner(opponent, mine, false) { -1 => 0, 1 => 6, 0 => 3, _ => panic!("no") };
+			score += score1 + score2;
     }
+		score
+  }
 
-    pub fn part1_core(input: impl Iterator<Item = Instruction>) -> (u32, u32) {
-        let mut x: u32 = 0;
-        let mut y: u32 = 0;
-        input.for_each(|instr| match instr {
-            Instruction::Forward(amt) => x += amt,
-            Instruction::Down(amt) => y += amt,
-            Instruction::Up(amt) => y -= amt,
-            Instruction::Empty => (),
-        });
+  fn winner(p1: char, p2: char, invert: bool) -> i32 {
+		let mapped_p1 = (p1 as i32) - { if (!invert) { ('A' as i32) } else { 'X' as i32 } };
+    let mapped_p2 = (p2 as i32) - { if (!invert) { 'X' as i32 } else { 'A' as i32 } };
+		println!("opp: {} mine: {}", mapped_p1, mapped_p2);
+		if (mapped_p1 > mapped_p2) { return -1 * Self::winner(p2,p1, !invert); }
+		let score = match (mapped_p1, mapped_p2) {
+			(0,0) => 0, (1,1) => 0, (2,2) => 0,
+			(0,1) => 1, (0,2) => -1,
+			(1,2) => 1,
+			//(1,0) => 1, (2,0) => -1, (2,1) => 1,
+			_     => panic!("no")
+		};
+		fn rev(i: i32) -> String {
+			match i { 0 => "rock".to_string(), 1 => "paper".to_string(), 2 => "scissor".to_string(), _ => panic!("no") }
+		}
 
-        (x, y)
-    }
 
-    pub fn part2_core(input: impl Iterator<Item = Instruction>) -> (u32, u32) {
-        let mut x: u32 = 0;
-        let mut y: u32 = 0;
-        let mut aim: u32 = 0;
-        input.for_each(|instr| match instr {
-            Instruction::Down(amt) => aim += amt,
-            Instruction::Up(amt) => aim -= amt,
-            Instruction::Forward(amt) => {
-                x += amt;
-                y += aim * amt;
-            }
-            Instruction::Empty => (),
-        });
-        (x, y)
-    }
+		println!("p1 = {} p2 = {} mp1 = {} mp2 = {} {:?} {:?} {}", p1, p2, mapped_p1, mapped_p2, rev(mapped_p1), rev(mapped_p2), score);
+			
+		score
+  }
 }
