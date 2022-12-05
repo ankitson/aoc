@@ -1,7 +1,7 @@
 mod soln1;
 
 pub fn main() {
-    println!("Hello Day 3!");
+    println!("Hello Day 4!");
     let input: &str = include_str!("../inputs/sample4.txt");
     let part1 = soln1::Soln1::part1(input);
     println!("Part 1 / Sample = {:?}", part1); //2

@@ -27,6 +27,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "anes"
+version = "0.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4b46cbb362ab8752921c97e041f5e366ee6297bd428a31275b9fcf1e380f7299"
+
+[[package]]
 name = "atty"
 version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -122,6 +128,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "cast"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "37b2a672a2cb129a2e41c10b1224bb368f9f37a2b16b612598138befd7b37eb5"
+
+[[package]]
 name = "cc"
 version = "1.0.72"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -140,14 +152,62 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fff857943da45f546682664a79488be82e69e43c1a7a2307679ab9afb3a66d2e"
 
 [[package]]
+name = "ciborium"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b0c137568cc60b904a7724001b35ce2630fd00d5d84805fbb608ab89509d788f"
+dependencies = [
+ "ciborium-io",
+ "ciborium-ll",
+ "serde",
+]
+
+[[package]]
+name = "ciborium-io"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "346de753af073cc87b52b2083a506b38ac176a44cfb05497b622e27be899b369"
+
+[[package]]
+name = "ciborium-ll"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "213030a2b5a4e0c0892b6652260cf6ccac84827b83a85a534e178e3906c4cf1b"
+dependencies = [
+ "ciborium-io",
+ "half",
+]
+
+[[package]]
 name = "clap"
 version = "2.34.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a0610544180c38b88101fecf2dd634b174a62eef6946f84dfc6a7127512b381c"
 dependencies = [
  "bitflags",
- "textwrap",
+ "textwrap 0.11.0",
  "unicode-width",
+]
+
+[[package]]
+name = "clap"
+version = "3.2.23"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "71655c45cb9845d3270c9d6df84ebe72b4dad3c2ba3f7023ad47c144e4e473a5"
+dependencies = [
+ "bitflags",
+ "clap_lex",
+ "indexmap",
+ "textwrap 0.16.0",
+]
+
+[[package]]
+name = "clap_lex"
+version = "0.2.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2850f2f5a82cbf437dd5af4d49848fbdfc27c157c3d010345776f952765261c5"
+dependencies = [
+ "os_str_bytes",
 ]
 
 [[package]]
@@ -200,9 +260,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1604dafd25fba2fe2d5895a9da139f8dc9b319a5fe5354ca137cbbce4e178d10"
 dependencies = [
  "atty",
- "cast",
- "clap",
- "criterion-plot",
+ "cast 0.2.7",
+ "clap 2.34.0",
+ "criterion-plot 0.4.4",
  "csv",
  "itertools",
  "lazy_static",
@@ -220,12 +280,48 @@ dependencies = [
 ]
 
 [[package]]
+name = "criterion"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e7c76e09c1aae2bc52b3d2f29e13c6572553b30c4aa1b8a49fd70de6412654cb"
+dependencies = [
+ "anes",
+ "atty",
+ "cast 0.3.0",
+ "ciborium",
+ "clap 3.2.23",
+ "criterion-plot 0.5.0",
+ "itertools",
+ "lazy_static",
+ "num-traits",
+ "oorandom",
+ "plotters",
+ "rayon",
+ "regex",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "tinytemplate",
+ "walkdir",
+]
+
+[[package]]
 name = "criterion-plot"
 version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d00996de9f2f7559f7f4dc286073197f83e92256a59ed395f9aac01fe717da57"
 dependencies = [
- "cast",
+ "cast 0.2.7",
+ "itertools",
+]
+
+[[package]]
+name = "criterion-plot"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6b50826342786a51a89e2da3a28f1c32b06e387201bc2d19791f622c673706b1"
+dependencies = [
+ "cast 0.3.0",
  "itertools",
 ]
 
@@ -299,14 +395,14 @@ dependencies = [
 name = "day1"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.4.0",
 ]
 
 [[package]]
 name = "day10"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
  "lazy_static",
  "phf",
@@ -316,7 +412,7 @@ dependencies = [
 name = "day11"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
 ]
 
@@ -324,7 +420,7 @@ dependencies = [
 name = "day12"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
 ]
 
@@ -332,7 +428,7 @@ dependencies = [
 name = "day13"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
 ]
 
@@ -340,7 +436,7 @@ dependencies = [
 name = "day14"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
 ]
 
@@ -348,7 +444,7 @@ dependencies = [
 name = "day15"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
 ]
 
@@ -357,7 +453,7 @@ name = "day16"
 version = "0.1.0"
 dependencies = [
  "bitvec",
- "criterion",
+ "criterion 0.3.5",
  "itertools",
 ]
 
@@ -365,7 +461,7 @@ dependencies = [
 name = "day17"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
 ]
 
@@ -373,7 +469,7 @@ dependencies = [
 name = "day18"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
 ]
 
@@ -381,7 +477,7 @@ dependencies = [
 name = "day19"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
  "regex",
 ]
@@ -390,14 +486,14 @@ dependencies = [
 name = "day2"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.4.0",
 ]
 
 [[package]]
 name = "day20"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
 ]
 
@@ -405,7 +501,7 @@ dependencies = [
 name = "day22"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
  "sorted-vec",
 ]
@@ -414,7 +510,7 @@ dependencies = [
 name = "day23"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
  "rand",
  "util",
@@ -424,7 +520,7 @@ dependencies = [
 name = "day24"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
  "util",
 ]
@@ -433,7 +529,7 @@ dependencies = [
 name = "day25"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
  "rand",
  "regex",
@@ -444,7 +540,7 @@ dependencies = [
 name = "day3"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.4.0",
  "itertools",
 ]
 
@@ -452,7 +548,7 @@ dependencies = [
 name = "day4"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.4.0",
  "itertools",
 ]
 
@@ -460,7 +556,7 @@ dependencies = [
 name = "day5"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "dhat",
 ]
 
@@ -468,21 +564,21 @@ dependencies = [
 name = "day6"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
 ]
 
 [[package]]
 name = "day7"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
 ]
 
 [[package]]
 name = "day8"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
 ]
 
@@ -490,7 +586,7 @@ dependencies = [
 name = "day9"
 version = "0.1.0"
 dependencies = [
- "criterion",
+ "criterion 0.3.5",
  "itertools",
 ]
 
@@ -737,6 +833,12 @@ name = "oorandom"
 version = "11.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0ab1bc2a289d34bd04a330323ac98a1b4bc82c9d9fcb1e66b63caa84da26b575"
+
+[[package]]
+name = "os_str_bytes"
+version = "6.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9b7820b9daea5457c9f21c69448905d723fbd21136ccf521748f23fd49e723ee"
 
 [[package]]
 name = "percent-encoding"
@@ -1215,6 +1317,12 @@ checksum = "d326610f408c7a4eb6f51c37c330e496b08506c9457c9d34287ecc38809fb060"
 dependencies = [
  "unicode-width",
 ]
+
+[[package]]
+name = "textwrap"
+version = "0.16.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "222a222a5bfe1bba4a77b45ec488a741b3cb8872e5e499451fd7d0129c9c7c3d"
 
 [[package]]
 name = "thousands"

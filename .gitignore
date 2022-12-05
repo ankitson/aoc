@@ -1,3 +1,4 @@
 /target
 .vscode/
 cargo-timing*
+raw_bench.txt
