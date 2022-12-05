@@ -19,6 +19,12 @@ test day3.part2.realinput/part2 ... bench:      277409 ns/iter (+/- 1006)
 
 test day4.part1.realinput/part1 ... bench:       80619 ns/iter (+/- 400)
 test day4.part2.realinput/part2 ... bench:       79519 ns/iter (+/- 264)
+
+test day5.part1.realinput/part1 ... bench:       96571 ns/iter (+/- 335)
+
+test day5.part2.realinput/part2 ... bench:       91998 ns/iter (+/- 1402)
+
+
 ```
 
 # 2021
