@@ -15,15 +15,20 @@ pub fn main() {
     println!("Hello Day 5!");
     let input: &str = include_str!("../inputs/sample5.txt");
     let part1 = soln1::Soln1::part1(input);
-    println!("Part 1 / Sample = {:?}", part1); //2
+    println!("Part 1 / Sample = {:?}", part1); //CMZ
+
+
+    let input: &str = include_str!("../inputs/sample5.txt");
+    let part2 = soln1::Soln1::part2(input);
+    println!("Part 2 / Sample = {:?}", part2); //MCD
 
     let input: &str = include_str!("../inputs/day5.txt");
     let part1 = soln1::Soln1::part1(input);
-    println!("Part 1 / Input 1 = {:?}", part1); //580
-
+    println!("Part 1 / Input 1 = {:?}", part1); //FZCMJCRHZ
+    
     let input: &str = include_str!("../inputs/day5.txt");
     let part2 = soln1::Soln1::part2(input);
-    println!("Part 2 / Input 1 = {:?}", part2); //895
+    println!("Part 2 / Input 1 = {:?}", part2); //JSDHQMZGF
 }
 
 #[cfg(test)]
@@ -34,6 +39,6 @@ mod tests {
     fn test_part1() {
         let sample: &str = include_str!("../inputs/sample5.txt");
         let soln = soln1::Soln1::part1(sample);
-        assert_eq!(soln, 5);
+        assert_eq!(soln, "CMZ");
     }
 }
