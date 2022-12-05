@@ -16,17 +16,17 @@ pub fn parse(input: &str) -> (Vec<Vec<char>>, Vec<(usize,usize,usize)>) {
             continue;
         }
         else {
-        let mut colidx = 0;
-        for char in line.chars() {
-            if char.is_alphabetic() {
-                let col = colidx / 4;
-                while stacks.len() < col + 1 {
-                    stacks.push(vec![])
-                }
-                stacks[col].push(char);
-            }   
-            colidx += 1
-        } 
+            let mut colidx = 0;
+            for char in line.chars() {
+                if char.is_alphabetic() {
+                    let col = colidx / 4;
+                    while stacks.len() < col + 1 {
+                        stacks.push(vec![])
+                    }
+                    stacks[col].push(char);
+                }   
+                colidx += 1
+            } 
         }
     }
     (stacks, moves)

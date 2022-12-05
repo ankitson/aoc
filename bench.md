@@ -20,9 +20,10 @@ test day3.part2.realinput/part2 ... bench:      277409 ns/iter (+/- 1006)
 test day4.part1.realinput/part1 ... bench:       80619 ns/iter (+/- 400)
 test day4.part2.realinput/part2 ... bench:       79519 ns/iter (+/- 264)
 
-test day5.part1.realinput/part1 ... bench:       96571 ns/iter (+/- 335)
-
-test day5.part2.realinput/part2 ... bench:       91998 ns/iter (+/- 1402)
+test day5.part1.realinput/part1 ... bench:       92041 ns/iter (+/- 1902)
+test day5.part1.realinput/part1_core ... bench:       16717 ns/iter (+/- 167)
+test day5.part2.realinput/part2 ... bench:       94712 ns/iter (+/- 384)
+test day5.part2.realinput/part2_core ... bench:       17817 ns/iter (+/- 112)
 
 
 ```

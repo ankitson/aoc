@@ -5,7 +5,11 @@ use crate::shared;
 pub struct Soln1 {}
 impl Soln1 {
     pub fn part1(input: &str) -> String {
-        let (mut stacks,moves) = shared::parse(input);
+        Self::part1_core(shared::parse(input))
+    }
+
+    pub fn part1_core(input: (Vec<Vec<char>>, Vec<(usize, usize, usize)>)) -> String {
+        let (mut stacks,moves) = input;
         // println!("{:?} {:?}", stacks, moves);
         for (count, from, to) in &moves {
             let fromstack = stacks[*from].clone();
@@ -28,12 +32,15 @@ impl Soln1 {
     }
 
     pub fn part2(input: &str) -> String {
-        let (mut stacks,moves) = shared::parse(input);
+        Self::part2_core(shared::parse(input))
+    }
+
+    pub fn part2_core(input: (Vec<Vec<char>>, Vec<(usize, usize, usize)>)) -> String {
+        let (mut stacks,moves) = input;
         // println!("{:?} {:?}", stacks, moves);
         for (count, from, to) in &moves {
             let fromstack = stacks[*from].clone();
             stacks[*to].reverse();
-            
             let rev = fromstack.iter().take(*count).rev();
             stacks[*to].extend(rev);
             stacks[*to].reverse();
