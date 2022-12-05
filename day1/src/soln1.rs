@@ -17,7 +17,6 @@ impl Soln1 {
         let mut current = 0;
         for i in 0..input.len() {
             let cals = input[i].parse::<i32>();
-            println!("cals: {:?}", cals);
             match cals {
                 Ok(i) => current += i,
                 Err(_) => { 
@@ -37,7 +36,6 @@ impl Soln1 {
 		let mut current = 0;
         for i in 0..input.len() {
             let cals = input[i].parse::<i32>();
-            println!("cals: {:?}", cals);
             match cals {
                 Ok(i) => current += i,
                 Err(_) => { 
