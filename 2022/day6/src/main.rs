@@ -50,5 +50,12 @@ mod tests {
         assert_eq!(soln1::Soln1::part2("nppdvjthqldpwncqszvftbrmjlhg"), 23);
         assert_eq!(soln1::Soln1::part2("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"), 29);
         assert_eq!(soln1::Soln1::part2("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"), 26);
+
+        //BUGGY
+        // assert_eq!(soln1::Soln1::part2_set("mjqjpqmgbljsphdztnvjfqwrcgsmlb"), 19);
+        // assert_eq!(soln1::Soln1::part2_set("bvwbjplbgvbhsrlpgdmjqwftvncz"), 23);
+        // assert_eq!(soln1::Soln1::part2_set("nppdvjthqldpwncqszvftbrmjlhg"), 23);
+        // assert_eq!(soln1::Soln1::part2_set("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"), 29);
+        // assert_eq!(soln1::Soln1::part2_set("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"), 26);
     }
 }

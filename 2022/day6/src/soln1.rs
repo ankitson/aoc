@@ -40,20 +40,15 @@ impl Soln1 {
     }
 
     pub fn part2_core(input: &str) -> i32 {
-        println!("input: {:?}", input);
         let mut seen: VecDeque<char> = VecDeque::from([]);
-        let mut seen_set: HashSet<char> = HashSet::with_capacity(14);
         for i in 0..input.len() {
             let char = input.chars().nth(i).unwrap();
             if seen.len() < 14 {
                 seen.push_back(char);
-                seen_set.insert(char);
                 continue;
             }
-            println!("ch = {} seen = {:?}, seen_set = {}", char, seen, seen_set.len());
-            let oldest = seen.pop_front().unwrap();
+            seen.pop_front().unwrap();
             seen.push_back(char);
-            println!("replacing {} / {}", oldest, char);
             let mut dup = false;
             for i in 0..seen.len() {
                 for j in i+1..seen.len() {
@@ -65,15 +60,30 @@ impl Soln1 {
             if !dup {
                 return (i+1).try_into().unwrap();
             }
-            // if seen_set.len() == 14 {
-                // return (i+1).try_into().unwrap();
-            // }
-            
-            
-            
+        }
+        panic!("AHHH");
+    }
 
-            // let removed = seen_set.remove(&oldest);
-            // seen_set.insert(char);
+    pub fn part2_set(input: &str) -> i32 {
+        let mut seen: VecDeque<char> = VecDeque::from([]);
+        let mut seen_set: HashSet<char> = HashSet::with_capacity(14);
+        for i in 0..input.len() {
+            let char = input.chars().nth(i).unwrap();
+            if seen.len() < 14 {
+                seen.push_back(char);
+                seen_set.insert(char);
+                continue;
+            }
+            if seen_set.len() == 14 {
+                return (i+1).try_into().unwrap();
+            }
+            println!("ch = {} setlen = {}", i, seen_set.len());
+            let oldest = seen.pop_front().unwrap();
+            seen.push_back(char);
+            //BUG: this will always remove oldest from the set, even if it reoccurs later in the seen vector
+            //so the set ends up being smaller than it should.
+            let removed = seen_set.remove(&oldest);  
+            seen_set.insert(char);
 
         }
         panic!("AHHH");
