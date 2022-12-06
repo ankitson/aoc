@@ -1,4 +1,4 @@
-use std::collections::VecDeque;
+use std::collections::{VecDeque, HashSet};
 
 use itertools::Itertools;
 
@@ -35,32 +35,47 @@ impl Soln1 {
         panic!("AHHH"); 
     }
 
-    pub fn part2(input: &str) -> String {
-        unimplemented!();
-        // Self::part2_core(shared::parse(input))
+    pub fn part2(input: &str) -> i32 {
+        Self::part2_core(shared::parse(input))
     }
 
-    pub fn part2_core(input: (Vec<Vec<char>>, Vec<(usize, usize, usize)>)) -> String {
-        let (mut stacks,moves) = input;
-        // println!("{:?} {:?}", stacks, moves);
-        for (count, from, to) in &moves {
-            let fromstack = stacks[*from].clone();
-            stacks[*to].reverse();
-            let rev = fromstack.iter().take(*count).rev();
-            stacks[*to].extend(rev);
-            stacks[*to].reverse();
+    pub fn part2_core(input: &str) -> i32 {
+        println!("input: {:?}", input);
+        let mut seen: VecDeque<char> = VecDeque::from([]);
+        let mut seen_set: HashSet<char> = HashSet::with_capacity(14);
+        for i in 0..input.len() {
+            let char = input.chars().nth(i).unwrap();
+            if seen.len() < 14 {
+                seen.push_back(char);
+                seen_set.insert(char);
+                continue;
+            }
+            println!("ch = {} seen = {:?}, seen_set = {}", char, seen, seen_set.len());
+            let oldest = seen.pop_front().unwrap();
+            seen.push_back(char);
+            println!("replacing {} / {}", oldest, char);
+            let mut dup = false;
+            for i in 0..seen.len() {
+                for j in i+1..seen.len() {
+                    if seen[i] == seen[j] {
+                        dup = true;
+                    }
+                }
+            }
+            if !dup {
+                return (i+1).try_into().unwrap();
+            }
+            // if seen_set.len() == 14 {
+                // return (i+1).try_into().unwrap();
+            // }
+            
+            
+            
 
-            stacks[*from].reverse();
-            let orglen = stacks[*from].len();
-            stacks[*from].truncate(orglen-count);
-            stacks[*from].reverse();
-            // println!("{:?} {:?}", stacks, moves);
+            // let removed = seen_set.remove(&oldest);
+            // seen_set.insert(char);
+
         }
-        // println!("{:?} {:?}", stacks, moves);
-        let mut top = String::new();
-        for stack in stacks {
-            top.push(stack[0]);
-        }
-        top
+        panic!("AHHH");
     }
 }
