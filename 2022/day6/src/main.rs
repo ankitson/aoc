@@ -15,19 +15,27 @@ pub fn main() {
     println!("Hello Day 6!");
     let input: &str = include_str!("../inputs/sample6.txt");
     let part1 = soln1::Soln1::part1(input);
-    println!("Part1/Sample = {:?}", part1);
+    println!("part1/sample6 = {:?}", part1);
 
     let input: &str = include_str!("../inputs/day6.txt");
     let part1 = soln1::Soln1::part1(input);
-    println!("Part1/Input1 = {:?}", part1);
+    println!("part1/day6 = {:?}", part1);
 
     let input: &str = include_str!("../inputs/sample6.txt");
     let part2 = soln1::Soln1::part2(input);
-    println!("Part2/Sample = {:?}", part2);
+    println!("part2/sample6 = {:?}", part2);
 
     let input: &str = include_str!("../inputs/day6.txt");
     let part2 = soln1::Soln1::part2(input);
-    println!("Part2/Input1 = {:?}", part2);
+    println!("part2/day6 = {:?}", part2);
+
+    let input: &str = include_str!("../inputs/sample6.txt");
+    let part2 = soln1::Soln1::part2_windows(input);
+    println!("part2_windows/sample6 = {:?}", part2);
+
+    let input: &str = include_str!("../inputs/day6.txt");
+    let part2 = soln1::Soln1::part2_windows(input);
+    println!("part2_windows/day6 = {:?}", part2);
 }
 
 #[cfg(test)]
@@ -57,5 +65,11 @@ mod tests {
         // assert_eq!(soln1::Soln1::part2_set("nppdvjthqldpwncqszvftbrmjlhg"), 23);
         // assert_eq!(soln1::Soln1::part2_set("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"), 29);
         // assert_eq!(soln1::Soln1::part2_set("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"), 26);
+
+        assert_eq!(soln1::Soln1::part2_windows("mjqjpqmgbljsphdztnvjfqwrcgsmlb"), 19);
+        assert_eq!(soln1::Soln1::part2_windows("bvwbjplbgvbhsrlpgdmjqwftvncz"), 23);
+        assert_eq!(soln1::Soln1::part2_windows("nppdvjthqldpwncqszvftbrmjlhg"), 23);
+        assert_eq!(soln1::Soln1::part2_windows("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"), 29);
+        assert_eq!(soln1::Soln1::part2_windows("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"), 26);
     }
 }

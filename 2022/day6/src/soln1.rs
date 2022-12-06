@@ -63,6 +63,10 @@ impl Soln1 {
         }
         panic!("AHHH");
     }
+    
+    pub fn part2_windows(input: &str) -> usize {
+        input.as_bytes().windows(14).position(|w| -> bool { HashSet::<_>::from_iter(w.iter()).len() == 14}).unwrap() + 14
+    }
 
     pub fn part2_set(input: &str) -> i32 {
         let mut seen: VecDeque<char> = VecDeque::from([]);
