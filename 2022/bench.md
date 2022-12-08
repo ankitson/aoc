@@ -29,5 +29,9 @@ test day6.part2.realinput/part2 ... bench:              3381460 ns/iter (+/- 808
 test day6.part2.realinput/part2_core ... bench:         3326953 ns/iter (+/- 37051)
 test day6.part2.realinput/part2_windows ... bench:      1203586 ns/iter (+/- 2564)
 
+test day8.part1.realinput/part1 ... bench:               408230 ns/iter (+/- 6440)
+test day8.part1.realinput/part1_core ... bench:          388230 ns/iter (+/- 1393)
+test day8.part2.realinput/part2 ... bench:               486804 ns/iter (+/- 6357)
+test day8.part2.realinput/part2_core ... bench:          465868 ns/iter (+/- 13824)
 
 ```

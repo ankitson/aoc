@@ -15,7 +15,7 @@ pub fn part1_noparse(c: &mut Criterion) {
 
     let parsed = shared::parse(contents);
     let mut group = c.benchmark_group("day8.part1.realinput");
-    group.bench_function("part1_core", |b| b.iter(|| soln1::Soln1::part1_core(black_box(parsed))));
+    group.bench_function("part1_core", |b| b.iter(|| soln1::Soln1::part1_core(black_box(parsed.to_owned()))));
     group.finish();
 }
 
@@ -27,5 +27,14 @@ pub fn part2(c: &mut Criterion) {
     group.finish();
 }
 
-criterion_group!(benches, part1, part1_noparse, part2);
+pub fn part2_noparse(c: &mut Criterion) {
+    let contents: &str = include_str!("../inputs/day8.txt");
+
+    let parsed = shared::parse(contents);
+    let mut group = c.benchmark_group("day8.part2.realinput");
+    group.bench_function("part2_core", |b| b.iter(|| soln1::Soln1::part2_core(black_box(parsed.to_owned()))));
+    group.finish();
+}
+
+criterion_group!(benches, part1, part1_noparse, part2, part2_noparse);
 criterion_main!(benches);
