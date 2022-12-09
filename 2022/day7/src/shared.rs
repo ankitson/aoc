@@ -7,7 +7,7 @@ pub enum Command {
     Ls,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Listing {
     File(String, usize),
     Dir(String),
