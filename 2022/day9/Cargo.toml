@@ -1,0 +1,23 @@
+[package]
+name = "day9"
+version = "0.1.0"
+authors = ["Ankit Soni <ankitsoni9@gmail.com>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dev-dependencies]
+criterion = { version = "0.4.0", features = ["html_reports"] }
+
+[dependencies]
+dhat = "0.3.2"
+itertools = "0.10.5"
+scan_fmt = "0.2.6"
+
+[features]
+heapprofile = []
+
+
+[[bench]]
+name = "corebench"
+harness = false
