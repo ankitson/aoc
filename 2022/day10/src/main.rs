@@ -29,12 +29,16 @@ pub fn main() {
     println!("part1/day10 = {:?}", part1);
 
     let input: &str = include_str!("../inputs/sample10.txt");
-    let part2 = soln1::Soln1::part2(input);
-    println!("part2/sample10 = {:?}", part2);
+    println!("part2/sample10 = \n");
+    soln1::Soln1::part2(input);
+
+    let input: &str = include_str!("../inputs/sample10_2.txt");
+    println!("part2/sample10_2 = \n"); //, part2);
+    soln1::Soln1::part2(input);
 
     let input: &str = include_str!("../inputs/day10.txt");
-    let part2 = soln1::Soln1::part2(input);
-    println!("part2/day10 = {:?}", part2);
+    println!("part2/day10 = \n");
+    soln1::Soln1::part2(input);
 }
 
 #[cfg(test)]
@@ -43,10 +47,5 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        // assert_eq!(soln1::Soln1::part1("mjqjpqmgbljsphdztnvjfqwrcgsmlb"), 8);
-        // assert_eq!(soln1::Soln1::part1("bvwbjplbgvbhsrlpgdmjqwftvncz"), 5);
-        // assert_eq!(soln1::Soln1::part1("nppdvjthqldpwncqszvftbrmjlhg"), 6);
-        // assert_eq!(soln1::Soln1::part1("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"), 10);
-        // assert_eq!(soln1::Soln1::part1("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"), 11);
     }
 }

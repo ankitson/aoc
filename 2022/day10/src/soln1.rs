@@ -1,10 +1,13 @@
-// use std::collections::HashSet;
 use itertools::Itertools;
-use crate::shared;
 
 pub struct Soln1 {}
 impl Soln1 {
+
     pub fn part1(input: &str) -> i32 {
+        Self::part1_core(input)
+    }
+
+    pub fn part1_core(input: &str) -> i32 {
         let cycles = [20,60,100,140,180,220];
         let mut cycle = 1;
         let mut x = 1;
@@ -14,63 +17,83 @@ impl Soln1 {
             match parts[0] {
                 "noop" => {
                     if cycles.contains(&cycle) {
-                        println!("noop value at cycle {} = {}", cycle, x);
                         strength += cycle * x;
                     } 
                     cycle += 1;
-                    // println!("nop cycle = {}", cycle);
-                    // if cycles.contains(&cycle) {
-                        // println!("value at cycle {} / {} = {}", cycle, cycle+1, x);
-                        // strength += cy/cle * x;
-                    // }
                 },
                 "addx" => {
-                    //addx 19
-                    // if cycles.contains(&cycle) {
-                        // println!("value at cycle {} / {} = {}", cycle, cycle+1, x);
-                        // strength += cycle * x;
-                    // }
-                    
-                    //cycle is 18 before add => cycle is 20 before next instruction
-                    //cycle is 19, 20 before add => use current X
                     if cycles.contains(&cycle) {
-                        println!("add1 value at cycle {} = {}", cycle, x);
                         strength += cycle * x;
                     } else if cycles.contains(&(cycle+1)) {
-                        println!("add2 value at cycle {} = {}", cycle+1, x);
-
                         strength += (cycle+1) * x;
                     }
-                    
                     cycle += 2;
-                    // println!("add cycle = {}", cycle);
                     let n = parts[1].parse::<i32>().expect("ah");
                     x += n;
-                    // if cycles.contains(&cycle) {
-                        // println!("value at cycle {} / {} = {}", cycle, cycle+1, x);
-                        // strength += cycle * x;
-                    // }
                 },
                 _      => panic!("illegal")
             }
         }
-        // if cycles.contains(&cycle) || cycles.contains(&(cycle+1)) {
-            // println!("value at cycle {} / {} = {}", cycle, cycle+1, x);
-            // strength += cycle * x;
-        // }
         strength
-        // todo!()
     }
 
-    pub fn part1_core(grid: Vec<Vec<u32>>) -> i32 {
-        todo!()
+    pub fn part2(input: &str) -> () {
+        Self::part2_core(input)
     }
 
-    pub fn part2(input: &str) -> usize {
-        todo!()
+    pub fn part2_core(input: &str) -> () {
+        /*
+         * The cycle num = pixel currently drawing on
+         * [x-1,x,x+1] -> the 3 pixels that are on
+         * 
+         * if cycle num in [x-1,x,x+1] -> draw on pixel
+         */
+        let mut screen = vec!['.'; 40*6];
+        let mut cycle: usize = 1;
+        let mut x = 1i32;
+        for line in input.lines() {
+            let parts = line.split(" ").collect_vec();
+
+            match parts[0] {
+                "noop" => {
+                    //Value of X here = Value before/during CYCLE
+                    //cycle is 1-indexed.
+                    //we draw pixel CYCLE-1 during CYCLE
+                    let vert_pos = ((cycle-1) % 40) as i32;
+                    if vec![x-1,x,x+1].contains(&vert_pos) {
+                        screen[cycle-1] = '#';
+                    }
+                    cycle += 1;
+                    //after cycle 1
+                },
+                "addx" => {
+                    //Value of X here = Value before/during CYCLE
+                    let vert_pos = ((cycle-1) % 40) as i32;
+                    if vec![x-1,x,x+1].contains(&vert_pos) {
+                        screen[cycle-1] = '#';
+                    }
+
+                    //Value of X here = Value before/during CYCLE+1
+                    let vert_pos = ((cycle-1+1) % 40) as i32;
+                    if vec![x-1,x,x+1].contains(&(vert_pos)) {
+                        screen[cycle] = '#';
+                    }
+
+                    cycle += 2;
+                    let n = parts[1].parse::<i32>().expect("ah");
+                    x += n;
+                },
+                _      => panic!("illegal")
+            }
+        }
+        for i in 0..40*6 {
+            print!("{}",screen[i]);
+            if i % 40 == 39 {
+                println!();
+            }
+        }
+        ()        
     }
 
-    pub fn part2_core(grid: Vec<Vec<u32>>) -> i32 {
-        todo!()
-    }
+
 }
