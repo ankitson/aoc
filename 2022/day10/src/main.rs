@@ -29,16 +29,17 @@ pub fn main() {
     println!("part1/day10 = {:?}", part1);
 
     let input: &str = include_str!("../inputs/sample10.txt");
-    println!("part2/sample10 = \n");
-    soln1::Soln1::part2(input);
+    let part2 = soln1::Soln1::part2(input);
+    println!("part2/sample10 = \n{}", part2);
 
     let input: &str = include_str!("../inputs/sample10_2.txt");
-    println!("part2/sample10_2 = \n"); //, part2);
-    soln1::Soln1::part2(input);
+    let part2 = soln1::Soln1::part2(input);
+    println!("part2/sample10_2 = \n{}", part2);
 
     let input: &str = include_str!("../inputs/day10.txt");
-    println!("part2/day10 = \n");
-    soln1::Soln1::part2(input);
+    let part2 = soln1::Soln1::part2(input);
+    println!("part2/day10 = \n{}", part2);
+    
 }
 
 #[cfg(test)]

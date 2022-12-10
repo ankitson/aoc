@@ -34,4 +34,7 @@ test day8.part1.realinput/part1_core ... bench:          388230 ns/iter (+/- 139
 test day8.part2.realinput/part2 ... bench:               486804 ns/iter (+/- 6357)
 test day8.part2.realinput/part2_core ... bench:          465868 ns/iter (+/- 13824)
 
+test day10.part1.realinput/part1 ... bench:                9629 ns/iter (+/- 110)
+test day10.part2.realinput/part2 ... bench:               11978 ns/iter (+/- 114)
+
 ```

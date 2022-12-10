@@ -37,11 +37,11 @@ impl Soln1 {
         strength
     }
 
-    pub fn part2(input: &str) -> () {
+    pub fn part2(input: &str) -> String {
         Self::part2_core(input)
     }
 
-    pub fn part2_core(input: &str) -> () {
+    pub fn part2_core(input: &str) -> String {
         /*
          * The cycle num = pixel currently drawing on
          * [x-1,x,x+1] -> the 3 pixels that are on
@@ -86,14 +86,16 @@ impl Soln1 {
                 _      => panic!("illegal")
             }
         }
+        let mut screen_rows = vec![vec![' '; 40]; 6];
+        let mut row = 0; 
         for i in 0..40*6 {
-            print!("{}",screen[i]);
+            screen_rows[row][i % 40] = screen[i];
             if i % 40 == 39 {
-                println!();
+                row += 1;
             }
         }
-        ()        
+        let mut str_rows = screen_rows.iter().map(|row| row.iter().collect::<String>());
+        str_rows.join("\n")
     }
-
 
 }
