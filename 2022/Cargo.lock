@@ -230,6 +230,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "day10"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "dhat",
+ "itertools",
+ "scan_fmt",
+]
+
+[[package]]
 name = "day2"
 version = "0.1.0"
 dependencies = [
