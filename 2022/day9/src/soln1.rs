@@ -75,9 +75,46 @@ impl Soln1 {
         todo!()
     }
 
-    pub fn part2(input: &str) -> i32 {
-        // Self::part2_core(shared::parse(input));
-        todo!();
+    // pub fn part2(input: &str) -> i32 {
+    //     // Self::part2_core(shared::parse(input));
+    //     todo!();
+    // }
+
+    pub fn part2(input: &str) -> usize {
+        let mut visited = HashSet::<(i32, i32)>::new();
+        let mut positions = vec![(0,0); 10];
+        // let mut prev = (0, 0);
+        visited.insert((0,0));
+        input.lines().filter(|l| !l.is_empty()).for_each(|line| {
+            let (dd, nn) = line.split_once(" ").expect("illegal line");
+            let num = nn.parse::<i32>().expect("illegal num");
+            let dir = dd.chars().nth(0).unwrap();
+            // println!("line {} {}", dir, num);
+            for i in 0..num {
+                positions[0] = Self::incr(dir, positions[0]);
+                for j in 1..10 {
+                    let xd = positions[j-1].0 - positions[j].0;
+                    let yd = positions[j-1].1 - positions[j].1;
+                    if xd.abs() > 1 || yd.abs() > 1 {
+                        positions[j].0 += xd.signum();
+                        positions[j].1 += yd.signum();
+                    }
+                }
+                visited.insert((positions[9].0, positions[9].1));
+                // prev = coord;
+                // coord = Self::incr(dir, coord);
+
+                // if i != num - 1 && num != 1 {
+                // visited.insert(coord);
+                // }
+            }
+            // println!("tail visited:"); // {:?}", visited);
+            // Self::draw_visited(&visited);
+        });
+        // Self::draw_visited(&visited);
+        visited.len()
+        // Self::part1_core(shared::parse(input));
+        // todo!()
     }
 
     pub fn part2_core(grid: Vec<Vec<u32>>) -> i32 {
