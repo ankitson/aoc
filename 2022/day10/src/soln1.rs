@@ -6,9 +6,9 @@ pub struct Soln1 {}
 impl Soln1 {
     pub fn part1(input: &str) -> i32 {
         let cycles = [20,60,100,140,180,220];
-        let mut cycle = 0;
+        let mut cycle = 1;
         let mut x = 1;
-        let mut strength = 1;
+        let mut strength = 0;
         for line in input.lines() {
             let parts = line.split(" ").collect_vec();
             match parts[0] {
