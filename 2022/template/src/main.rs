@@ -15,22 +15,22 @@ pub fn main() {
     #[cfg(feature = "heapprofile")]
     let _dhat = Dhat::start_heap_profiling();
 
-    println!("Hello Day 12!");
-    let input: &str = include_str!("../inputs/sample12.txt");
+    println!("Hello Day {DAY_NUM}!");
+    let input: &str = include_str!("../inputs/sample{DAY_NUM}.txt");
     let part1 = soln1::Soln1::part1(input);
     println!("part1/sample1 = {:?}", part1);
 
-    let input: &str = include_str!("../inputs/day12.txt");
+    let input: &str = include_str!("../inputs/input{DAY_NUM}.txt");
     let part1 = soln1::Soln1::part1(input);
-    println!("part1/day12 = {:?}", part1);
+    println!("part1/day{DAY_NUM} = {:?}", part1);
 
-    let input: &str = include_str!("../inputs/sample12.txt");
+    let input: &str = include_str!("../inputs/sample{DAY_NUM}.txt");
     let part2 = soln1::Soln1::part2(input);
-    println!("part2/sample12 = \n{}", part2);
+    println!("part2/sample{DAY_NUM} = \n{}", part2);
 
-    let input: &str = include_str!("../inputs/day12.txt");
+    let input: &str = include_str!("../inputs/input{DAY_NUM}.txt");
     let part2 = soln1::Soln1::part2(input);
-    println!("part2/day12 = \n{}", part2);
+    println!("part2/day{DAY_NUM} = \n{}", part2);
 }
 
 #[cfg(test)]
