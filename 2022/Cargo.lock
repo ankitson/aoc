@@ -154,7 +154,7 @@ dependencies = [
  "ciborium",
  "clap",
  "criterion-plot",
- "itertools",
+ "itertools 0.10.5",
  "lazy_static",
  "num-traits",
  "oorandom",
@@ -175,7 +175,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6b50826342786a51a89e2da3a28f1c32b06e387201bc2d19791f622c673706b1"
 dependencies = [
  "cast",
- "itertools",
+ "itertools 0.10.5",
 ]
 
 [[package]]
@@ -223,10 +223,83 @@ dependencies = [
 ]
 
 [[package]]
-name = "day1"
+name = "day01"
 version = "0.1.0"
 dependencies = [
  "criterion",
+ "itertools 0.10.5",
+]
+
+[[package]]
+name = "day02"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+]
+
+[[package]]
+name = "day03"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "itertools 0.10.5",
+]
+
+[[package]]
+name = "day04"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "itertools 0.10.5",
+]
+
+[[package]]
+name = "day05"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "dhat",
+ "itertools 0.10.5",
+]
+
+[[package]]
+name = "day06"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "dhat",
+ "itertools 0.10.5",
+]
+
+[[package]]
+name = "day07"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "dhat",
+ "itertools 0.11.0",
+ "regex",
+ "scan_fmt",
+]
+
+[[package]]
+name = "day08"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "dhat",
+ "itertools 0.10.5",
+ "scan_fmt",
+]
+
+[[package]]
+name = "day09"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "dhat",
+ "itertools 0.10.5",
+ "scan_fmt",
 ]
 
 [[package]]
@@ -235,69 +308,20 @@ version = "0.1.0"
 dependencies = [
  "criterion",
  "dhat",
- "itertools",
+ "itertools 0.10.5",
  "scan_fmt",
 ]
 
 [[package]]
-name = "day2"
-version = "0.1.0"
-dependencies = [
- "criterion",
-]
-
-[[package]]
-name = "day3"
-version = "0.1.0"
-dependencies = [
- "criterion",
- "itertools",
-]
-
-[[package]]
-name = "day4"
-version = "0.1.0"
-dependencies = [
- "criterion",
- "itertools",
-]
-
-[[package]]
-name = "day5"
+name = "day16"
 version = "0.1.0"
 dependencies = [
  "criterion",
  "dhat",
- "itertools",
-]
-
-[[package]]
-name = "day6"
-version = "0.1.0"
-dependencies = [
- "criterion",
- "dhat",
- "itertools",
-]
-
-[[package]]
-name = "day8"
-version = "0.1.0"
-dependencies = [
- "criterion",
- "dhat",
- "itertools",
+ "itertools 0.10.5",
+ "regex",
  "scan_fmt",
-]
-
-[[package]]
-name = "day9"
-version = "0.1.0"
-dependencies = [
- "criterion",
- "dhat",
- "itertools",
- "scan_fmt",
+ "term_grid",
 ]
 
 [[package]]
@@ -364,6 +388,15 @@ name = "itertools"
 version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b0fd2260e829bddf4cb6ea802289de2f86d6a7a690192fbe91b3f46e0f2c8473"
+dependencies = [
+ "either",
+]
+
+[[package]]
+name = "itertools"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1c173a5686ce8bfa551b3563d0c2170bf24ca44da99c7ca4bfdab5418c3fe57"
 dependencies = [
  "either",
 ]
@@ -599,9 +632,9 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.5.4"
+version = "1.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d07a8629359eb56f1e2fb1652bb04212c072a87ba68546a04065d525673ac461"
+checksum = "e076559ef8e241f2ae3479e36f97bd5741c0330689e217ad51ce2c76808b868a"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -610,9 +643,9 @@ dependencies = [
 
 [[package]]
 name = "regex-syntax"
-version = "0.6.25"
+version = "0.6.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f497285884f3fcff424ffc933e56d7cbca511def0c9831a7f9b5f6153e3cc89b"
+checksum = "456c603be3e8d448b072f410900c09faf164fbce2d480456f50eea6e25f9c848"
 
 [[package]]
 name = "rustc-demangle"
@@ -715,6 +748,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "term_grid"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a7c9eb7705cb3f0fd71d3955b23db6d372142ac139e8c473952c93bf3c3dc4b7"
+dependencies = [
+ "unicode-width",
+]
+
+[[package]]
 name = "textwrap"
 version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -735,6 +777,12 @@ dependencies = [
  "serde",
  "serde_json",
 ]
+
+[[package]]
+name = "unicode-width"
+version = "0.1.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c0edd1e5b14653f783770bce4a4dabb4a5108a5370a5f5d8cfe8710c361f6c8b"
 
 [[package]]
 name = "unicode-xid"
