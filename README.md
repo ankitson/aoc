@@ -1,4 +1,4 @@
-Using AoC to build familiarity with Rust
+Advent of Code solutions in Rust and other languages
 
 [x]   AoC 2021
 
