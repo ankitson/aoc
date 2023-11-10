@@ -3,7 +3,7 @@ use day07::shared;
 use day07::soln1;
 
 pub fn part1(c: &mut Criterion) {
-    let contents: &str = include_str!("../../inputs/input07.txt");
+    let contents: &str = include_str!("../../inputs/day07.txt");
 
     let mut group = c.benchmark_group("day07.part1.realinput");
     group.bench_function("part1", |b| b.iter(|| soln1::Soln1::part1(black_box(contents))));
@@ -11,7 +11,7 @@ pub fn part1(c: &mut Criterion) {
 }
 
 pub fn part2(c: &mut Criterion) {
-    let contents: &str = include_str!("../../inputs/input07.txt");
+    let contents: &str = include_str!("../../inputs/day07.txt");
 
     let mut group = c.benchmark_group("day07.part2.realinput");
     group.bench_function("part2", |b| b.iter(|| soln1::Soln1::part2(black_box(contents))));

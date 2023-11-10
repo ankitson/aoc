@@ -3,7 +3,7 @@ use day06::shared;
 use day06::soln1;
 
 pub fn part1(c: &mut Criterion) {
-    let contents: &str = include_str!("../../inputs/day6.txt");
+    let contents: &str = include_str!("../../inputs/day06.txt");
 
     let mut group = c.benchmark_group("day6.part1.realinput");
     group.bench_function("part1", |b| b.iter(|| soln1::Soln1::part1(black_box(contents))));
@@ -11,7 +11,7 @@ pub fn part1(c: &mut Criterion) {
 }
 
 pub fn part1_noparse(c: &mut Criterion) {
-    let contents: &str = include_str!("../../inputs/day6.txt");
+    let contents: &str = include_str!("../../inputs/day06.txt");
 
     let parsed = shared::parse(contents);
     let mut group = c.benchmark_group("day6.part1.realinput");
@@ -20,7 +20,7 @@ pub fn part1_noparse(c: &mut Criterion) {
 }
 
 pub fn part2(c: &mut Criterion) {
-    let contents: &str = include_str!("../../inputs/day6.txt");
+    let contents: &str = include_str!("../../inputs/day06.txt");
 
     let mut group = c.benchmark_group("day6.part2.realinput");
     group.bench_function("part2", |b| b.iter(|| soln1::Soln1::part2(black_box(contents))));
@@ -28,7 +28,7 @@ pub fn part2(c: &mut Criterion) {
 }
 
 pub fn part2_windows(c: &mut Criterion) {
-    let contents: &str = include_str!("../../inputs/day6.txt");
+    let contents: &str = include_str!("../../inputs/day06.txt");
 
     let mut group = c.benchmark_group("day6.part2.realinput");
     group.bench_function("part2_windows", |b| b.iter(|| soln1::Soln1::part2_windows(black_box(contents))));
@@ -36,7 +36,7 @@ pub fn part2_windows(c: &mut Criterion) {
 }
 
 pub fn part2_noparse(c: &mut Criterion) {
-    let contents: &str = include_str!("../../inputs/day6.txt");
+    let contents: &str = include_str!("../../inputs/day06.txt");
 
     let parsed = shared::parse(contents);
     let mut group = c.benchmark_group("day6.part2.realinput");

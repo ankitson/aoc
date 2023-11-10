@@ -17,7 +17,7 @@ pub fn main() {
     let part1 = soln1::Soln1::part1(input);
     println!("part1/sample1 = {:?}", part1);
 
-    let input: &str = include_str!("../../inputs/input{DAY_NUM}.txt");
+    let input: &str = include_str!("../../inputs/day{DAY_NUM}.txt");
     let part1 = soln1::Soln1::part1(input);
     println!("part1/day{DAY_NUM} = {:?}", part1);
 
@@ -25,7 +25,7 @@ pub fn main() {
     let part2 = soln1::Soln1::part2(input);
     println!("part2/sample{DAY_NUM} = \n{}", part2);
 
-    let input: &str = include_str!("../../inputs/input{DAY_NUM}.txt");
+    let input: &str = include_str!("../../inputs/day{DAY_NUM}.txt");
     let part2 = soln1::Soln1::part2(input);
     println!("part2/day{DAY_NUM} = \n{}", part2);
 }

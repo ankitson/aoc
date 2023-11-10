@@ -1,5 +1,5 @@
-mod soln1;
 mod shared;
+mod soln1;
 
 #[cfg(feature = "heapprofile")]
 use dhat::{Dhat, DhatAlloc};
@@ -13,27 +13,27 @@ pub fn main() {
     let _dhat = Dhat::start_heap_profiling();
 
     println!("Hello Day 6!");
-    let input: &str = include_str!("../../inputs/sample6.txt");
+    let input: &str = include_str!("../../inputs/sample06.txt");
     let part1 = soln1::Soln1::part1(input);
     println!("part1/sample6 = {:?}", part1);
 
-    let input: &str = include_str!("../../inputs/day6.txt");
+    let input: &str = include_str!("../../inputs/day06.txt");
     let part1 = soln1::Soln1::part1(input);
     println!("part1/day6 = {:?}", part1);
 
-    let input: &str = include_str!("../../inputs/sample6.txt");
+    let input: &str = include_str!("../../inputs/sample06.txt");
     let part2 = soln1::Soln1::part2(input);
     println!("part2/sample6 = {:?}", part2);
 
-    let input: &str = include_str!("../../inputs/day6.txt");
+    let input: &str = include_str!("../../inputs/day06.txt");
     let part2 = soln1::Soln1::part2(input);
     println!("part2/day6 = {:?}", part2);
 
-    let input: &str = include_str!("../../inputs/sample6.txt");
+    let input: &str = include_str!("../../inputs/sample06.txt");
     let part2 = soln1::Soln1::part2_windows(input);
     println!("part2_windows/sample6 = {:?}", part2);
 
-    let input: &str = include_str!("../../inputs/day6.txt");
+    let input: &str = include_str!("../../inputs/day06.txt");
     let part2 = soln1::Soln1::part2_windows(input);
     println!("part2_windows/day6 = {:?}", part2);
 }
