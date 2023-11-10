@@ -101,8 +101,8 @@ def pretty_print_recurse(dirtree: Dict, ident=0) -> None:
     elif type(val) == int:
       print(f"- {key} (file, size={val})")
 
-def part1(inpu: str, max_size: int) -> int:
-  dirtree = parse_tree(input)
+def part1(input_str: str, max_size: int) -> int:
+  dirtree = parse_tree(input_str)
   pop_sizes(dirtree)
   print("Directory Tree: ")
   pretty_print_recurse(dirtree)
@@ -120,8 +120,8 @@ def part1(inpu: str, max_size: int) -> int:
     return sum
   return helper(dirtree, max_size)
 
-def part2(input: str, total_space: int, free_space: int) -> int:
-  dirtree = parse_tree(input)
+def part2(input_str: str, total_space: int, free_space: int) -> int:
+  dirtree = parse_tree(input_str)
   pop_sizes(dirtree)
 
   needed_space = free_space - (total_space - dirtree['/'][0])
@@ -139,12 +139,12 @@ def part2(input: str, total_space: int, free_space: int) -> int:
   helper(dirtree)
   return best
 
-f = open('../inputs/sample07.txt')
-print(f"Part 1 (sample) = {part1(f.read(), 100000)}") #95437
-f = open('../inputs/input07.txt')
-print(f"Part 1 (realinput) = {part1(f.read(), 100000)}") #1642503
+sample = open('../inputs/sample07.txt').read()
+input1 = open('../inputs/input07.txt').read()
+print(f"Part 1 (sample) = {part1(sample, 100000)}") #95437
+print(f"Part 1 (realinput) = {part1(input1, 100000)}") #1642503
 
 f = open('../inputs/sample07.txt')
-print(f"Part 2 (sample) = {part2(f.read(), 70_000_000, 30_000_000)}") #24933642
+print(f"Part 2 (sample) = {part2(sample, 70_000_000, 30_000_000)}") #24933642
 f = open('../inputs/input07.txt')
-print(f"Part 2 (realinput) = {part2(f.read(), 70_000_000, 30_000_000)}") #6999588
+print(f"Part 2 (realinput) = {part2(input1, 70_000_000, 30_000_000)}") #6999588
