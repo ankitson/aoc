@@ -15,7 +15,6 @@ itertools = "*"
 scan_fmt = "*"
 regex = "*"
 nom = "*"
-combine = "4"
 
 [features]
 heapprofile = []
