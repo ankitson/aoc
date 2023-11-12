@@ -10,6 +10,15 @@ pub fn part1(c: &mut Criterion) {
     group.finish();
 }
 
+pub fn part1_core(c: &mut Criterion) {
+    let contents: &str = include_str!("../../inputs/day11.txt");
+    let mut parsed = shared::parse(contents);
+
+    let mut group = c.benchmark_group("day11.part1.realinput");
+    group.bench_function("part1_core", |b| b.iter(|| soln1::Soln1::part1_core(black_box(&mut parsed))));
+    group.finish();
+}
+
 pub fn part2(c: &mut Criterion) {
     let contents: &str = include_str!("../../inputs/day11.txt");
 
@@ -18,5 +27,14 @@ pub fn part2(c: &mut Criterion) {
     group.finish();
 }
 
-criterion_group!(benches, part1, part2);
+pub fn part2_core(c: &mut Criterion) {
+    let contents: &str = include_str!("../../inputs/day11.txt");
+    let mut parsed = shared::parse(contents);
+
+    let mut group = c.benchmark_group("day11.part2.realinput");
+    group.bench_function("part2_core", |b| b.iter(|| soln1::Soln1::part2_core(black_box(&mut parsed))));
+    group.finish();
+}
+
+criterion_group!(benches, part1, part1_core, part2, part2_core);
 criterion_main!(benches);
