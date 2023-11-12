@@ -5,6 +5,7 @@ use std::collections::VecDeque;
 pub type Input = Vec<Monke>;
 pub type Output = usize;
 
+#[derive(Debug, Clone)]
 pub struct Monke {
     pub items: VecDeque<usize>,
     pub op: Operation,
@@ -13,11 +14,13 @@ pub struct Monke {
     pub throw_false: usize,
 }
 
+#[derive(Debug, Clone, Copy)]
 pub enum Operation {
     Add(Term),
     Mult(Term),
 }
 
+#[derive(Debug, Clone, Copy)]
 pub enum Term {
     Prev,
     Const(usize),
