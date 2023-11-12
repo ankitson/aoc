@@ -1,16 +1,12 @@
-use itertools::Itertools;
-use regex::Regex;
 use std::collections::VecDeque;
 
 use nom::branch::alt;
-pub use nom::bytes::complete::tag;
-use nom::bytes::complete::take_while;
-use nom::character::complete::{multispace0, space0, space1};
+use nom::bytes::complete::tag;
+use nom::character::complete::{multispace0, multispace1, space0};
 use nom::combinator::{map, value};
-use nom::IResult;
-
 use nom::multi::{separated_list0, separated_list1};
-use nom::sequence::{delimited, preceded, separated_pair, tuple};
+use nom::sequence::{delimited, preceded};
+use nom::IResult;
 
 pub type Input = Vec<Monke>;
 pub type Output = usize;
@@ -52,13 +48,15 @@ pub fn parse(input: &str) -> Input {
         map(nom::character::complete::u32, |n| n as usize)(input)
     }
     fn header(input: &str) -> IResult<&str, usize> {
-        preceded(tag("Monkey "), num)(input)
+        delimited(tag("Monkey "), num, tag(":"))(input)
     }
     fn starting(input: &str) -> IResult<&str, VecDeque<usize>> {
-        preceded(space1, preceded(tag("Starting items: "), map(separated_list1(tag(","), num), |x| x.into())))(input)
+        preceded(multispace1, preceded(tag("Starting items: "), map(separated_list1(tag(", "), num), |x| x.into())))(
+            input,
+        )
     }
     fn operation(input: &str) -> IResult<&str, Operation> {
-        let (rem, _) = preceded(space1, tag("Operation: new = old "))(input)?;
+        let (rem, _) = preceded(multispace1, tag("Operation: new = old "))(input)?;
         let (rem, op) = alt((tag("*"), tag("+")))(rem)?;
         let (rem, rhs) = preceded(space0, alt((map(num, |x| Term::Const(x)), value(Term::Prev, tag("old")))))(rem)?;
         let op = match (op, rhs) {
@@ -69,14 +67,14 @@ pub fn parse(input: &str) -> Input {
         Ok((rem, op))
     }
     fn divtest(input: &str) -> IResult<&str, usize> {
-        let (rem, _) = preceded(space1, tag("Test: divisible by "))(input)?;
-        let (rem, rhs) = num(input)?;
+        let (rem, _) = preceded(multispace0, tag("Test: divisible by "))(input)?;
+        let (rem, rhs) = num(rem)?;
         Ok((rem, rhs))
     }
     fn branch(input: &str) -> IResult<&str, (bool, usize)> {
         let (rem, branch_pred) = alt((
-            value(true, preceded(space1, tag("If true: throw to monkey "))),
-            value(false, preceded(space1, tag("If false: throw to monkey "))),
+            value(true, preceded(multispace1, tag("If true: throw to monkey "))),
+            value(false, preceded(multispace1, tag("If false: throw to monkey "))),
         ))(input)?;
         let (rem, rhs) = num(rem)?;
         Ok((rem, (branch_pred, rhs)))
@@ -92,7 +90,7 @@ pub fn parse(input: &str) -> Input {
         Ok((rem, monke))
     }
     fn monkes(input: &str) -> IResult<&str, Vec<Monke>> {
-        separated_list0(space1, monke)(input)
+        separated_list0(multispace1, monke)(input)
     }
 
     let (rem, parsed) = monkes(input).unwrap();

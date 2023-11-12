@@ -16,10 +16,12 @@ pub fn main() {
     let input: &str = include_str!("../../inputs/sample11.txt");
     let part1 = soln1::Soln1::part1(input);
     println!("part1/sample1 = {:?}", part1);
+    assert_eq!(part1, 10605);
 
     let input: &str = include_str!("../../inputs/day11.txt");
     let part1 = soln1::Soln1::part1(input);
     println!("part1/day11 = {:?}", part1);
+    assert_eq!(part1, 108240);
 
     let input: &str = include_str!("../../inputs/sample11.txt");
     let part2 = soln1::Soln1::part2(input);
@@ -37,6 +39,5 @@ mod tests {
     #[test]
     fn test_part1() {
         println!("Testing part1...");
-        assert!(1 == 1)
     }
 }
