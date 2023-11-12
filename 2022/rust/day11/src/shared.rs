@@ -40,7 +40,7 @@ impl Operation {
 pub fn parse(input: &str) -> Input {
     let monkes = vec![
         Monke {
-            items: vec![79, 78].into(),
+            items: vec![79, 98].into(),
             op: Operation::Mult(Term::Const(19)),
             divisor: 23,
             throw_true: 2,

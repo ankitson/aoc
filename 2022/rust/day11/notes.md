@@ -205,6 +205,8 @@ pub fn part1_core(input: &mut Input) -> Output {
 
 Now the answer for the sample should be 101*105, but mine is 101*106. Monkey #3 is getting an extra inspection somewhere. I also don't understand why the second cloine is necessary.
 
+Ok it works now, that bug was actually just a bug in my input.
+
 # PROBLEM
 
 --- Day 11: Monkey in the Middle ---
