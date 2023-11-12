@@ -207,6 +207,19 @@ Now the answer for the sample should be 101*105, but mine is 101*106. Monkey #3 
 
 Ok it works now, that bug was actually just a bug in my input.
 
+### [2023-11-11 7:00PM]
+
+Finished the parser and the answer to part1 worked immediately! Feels good. Now onto part 2.
+
+So part 2 just has big numbers when multiplying, but if we mod them by the product of all divisors before, it works out. Technically the smallest mod that would work is the LCM of all divisors
+
+Based on this property:
+
+For any set of integers n, p and d: if p mod d = 0, then
+  (n mod p) mod d = n mod d
+
+And thats all for day 11!
+
 # PROBLEM
 
 --- Day 11: Monkey in the Middle ---
