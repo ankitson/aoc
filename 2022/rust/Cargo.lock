@@ -320,6 +320,7 @@ dependencies = [
  "criterion",
  "dhat",
  "itertools 0.10.5",
+ "nom",
  "regex",
  "scan_fmt",
 ]
