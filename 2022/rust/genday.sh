@@ -21,5 +21,5 @@ echo "Generating template for day $day";
 
 cp -R template day$day
 fdfind -t file --glob "*" -0 day$day/ | xargs --null -I{} sed -i "s/{DAY_NUM}/$day/g" {}
-touch inputs/input$day.txt
+touch inputs/day$day.txt
 touch inputs/sample$day.txt
