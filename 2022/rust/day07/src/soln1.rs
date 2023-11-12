@@ -1,5 +1,4 @@
 use itertools::Itertools;
-use nom::IResult;
 use std::collections::BTreeMap;
 
 use nom::branch::alt;
@@ -7,6 +6,7 @@ pub use nom::bytes::complete::tag;
 use nom::bytes::complete::take_while;
 use nom::character::complete::multispace0;
 use nom::combinator::map;
+use nom::IResult;
 
 use nom::multi::separated_list0;
 use nom::sequence::{delimited, preceded, separated_pair, tuple};

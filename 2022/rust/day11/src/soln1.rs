@@ -7,6 +7,7 @@ pub struct Soln1 {}
 impl Soln1 {
     pub fn part1(raw_input: &str) -> Output {
         let mut input = parse(raw_input);
+        dbg!(input.clone());
         Self::part1_core(&mut input)
     }
 
