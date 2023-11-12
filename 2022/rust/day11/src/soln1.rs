@@ -13,7 +13,7 @@ impl Soln1 {
     pub fn part1_core(input: &mut Input) -> Output {
         let monkes: &mut Vec<Monke> = input;
         let mut monkeInspects = HashMap::<usize, usize>::new();
-        for _ in 0..20 {
+        for round in 0..20 {
             for i in 0..monkes.len() {
                 let monke = &monkes[i];
                 let monke_clone = &mut monke.clone();
@@ -30,7 +30,7 @@ impl Soln1 {
                     let dest_monke = &mut monkes[dest];
                     dest_monke.items.push_back(new_val);
                 }
-                monkes[i] = monke_clone.clone();
+                monkes[i] = monke_clone.clone(); //why another clone here?
             }
         }
         dbg!(monkeInspects.clone());
