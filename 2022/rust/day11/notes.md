@@ -1,5 +1,172 @@
 # Notes
 
+I'm going to ignore the parsing and work out what data structure we want first.
+
+Something like this seems a start:
+```rust
+pub struct Monke {
+    items: Vec<usize>,
+    op: Operation,
+    divisor: usize,
+}
+
+pub enum Operation {
+    Add(Term),
+    Mult(Term),
+}
+
+pub enum Term {
+    Prev,
+    Const(usize),
+}
+```
+
+However the inner vec needs to be mutable so monkeys can throw and receive things. It looks like I can just mark the whole struct mutable in functions to do that:
+
+```rust
+impl Monke {
+pub fn remove_front(&mut self) -> Option<usize> {
+        self.items.pop_front()
+}
+}
+```
+
+So we can represent monkeys like this:
+
+```rust
+let monkes = vec![
+        Monke {
+            items: vec![79, 78].into(),
+            op: Operation::Mult(Term::Const(19)),
+            divisor: 23,
+            throw_true: 2,
+            throw_false: 3,
+        },
+        ...
+      ]
+```
+
+and i have an implementation for part1, that does not compile:
+
+```rust
+pub fn part1_core(input: &Input) -> Output {
+        let monkes = input;
+        let mut monkeInspects = HashMap::<usize, usize>::new();
+        for _ in 0..20 {
+            for i in 0..monkes.len() {
+                let monke = &mut monkes[i];
+                let op = &monke.op;
+                while monke.items.len() > 0 {
+                    monkeInspects.entry(i).and_modify(|x| *x += 1).or_insert(1);
+                    let item = monke.items.pop_front().unwrap();
+                    let new_val = op.eval(item) / 3;
+                    let dest = match new_val % monke.divisor {
+                        0 => monke.throw_true,
+                        _ => monke.throw_false,
+                    };
+                    let mut dest_monke = monkes[dest];
+                    dest_monke.items.push_back(new_val);
+                }
+            }
+        }
+        let most = monkeInspects.values().sorted_by(|a, b| Ord::cmp(&b, &a)).take(2).collect_vec();
+        let monke_bizness = most[0] * most[1];
+        monke_bizness
+    }
+```
+
+error:
+```rust
+error[E0596]: cannot borrow `*monkes` as mutable, as it is behind a `&` reference
+  --> day11/src/soln1.rs:18:34
+   |
+18 |                 let monke = &mut monkes[i];
+   |                                  ^^^^^^ `monkes` is a `&` reference, so the data it refers to cannot be borrowed as mutable
+   |
+help: consider specifying this binding's type
+   |
+14 |         let monkes: &mut Vec<Monke> = input;
+   |                   +++++++++++++++++
+
+error[E0507]: cannot move out of `*op` which is behind a shared reference
+  --> day11/src/soln1.rs:23:35
+   |
+23 |                     let new_val = op.eval(item) / 3;
+   |                                   ^^ ---------- `*op` moved due to this method call
+   |                                   |
+   |                                   move occurs because `*op` has type `Operation`, which does not implement the `Copy` trait
+   |
+note: `Operation::eval` takes ownership of the receiver `self`, which moves `*op`
+  --> day11/src/shared.rs:27:17
+   |
+27 |     pub fn eval(self, prev: usize) -> usize {
+   |                 ^^^^
+
+error[E0507]: cannot move out of index of `Vec<Monke>`
+  --> day11/src/soln1.rs:28:42
+   |
+28 |                     let mut dest_monke = monkes[dest];
+   |                                          ^^^^^^^^^^^^ move occurs because value has type `Monke`, which does not implement the `Copy` trait
+   |
+help: consider borrowing here
+   |
+28 |                     let mut dest_monke = &monkes[dest];
+   |                                          +
+```
+
+we can make the input mutable:
+```rust
+Self::part1_core(&mut input)
+...
+pub fn part1_core(input: &mut Input) -> Output {
+    let monkes: &mut Vec<Monke> = input;
+...
+}
+```
+
+errors:
+```rust
+error[E0507]: cannot move out of `*op` which is behind a shared reference
+  --> day11/src/soln1.rs:23:35
+   |
+23 |                     let new_val = op.eval(item) / 3;
+   |                                   ^^ ---------- `*op` moved due to this method call
+   |                                   |
+   |                                   move occurs because `*op` has type `Operation`, which does not implement the `Copy` trait
+   |
+note: `Operation::eval` takes ownership of the receiver `self`, which moves `*op`
+  --> day11/src/shared.rs:27:17
+   |
+27 |     pub fn eval(self, prev: usize) -> usize {
+   |                 ^^^^
+
+error[E0502]: cannot borrow `*monkes` as immutable because it is also borrowed as mutable
+  --> day11/src/soln1.rs:28:42
+   |
+18 |                 let monke = &mut monkes[i];
+   |                                  ------ mutable borrow occurs here
+19 |                 let op = &monke.op;
+20 |                 while monke.items.len() > 0 {
+   |                       ----------- mutable borrow later used here
+...
+28 |                     let mut dest_monke = monkes[dest];
+   |                                          ^^^^^^ immutable borrow occurs here
+
+error[E0507]: cannot move out of index of `Vec<Monke>`
+  --> day11/src/soln1.rs:28:42
+   |
+28 |                     let mut dest_monke = monkes[dest];
+   |                                          ^^^^^^^^^^^^ move occurs because value has type `Monke`, which does not implement the `Copy` trait
+   |
+help: consider borrowing here
+   |
+28 |                     let mut dest_monke = &monkes[dest];
+   |                                          +
+```
+
+we can fix the first error by just changing the `self` to `&self`. 
+
+The rest might be more complicated.. we want to mutate two items in the `monkes: Vec<Monke>` at once and rust does not like that.
 
 
 # PROBLEM
