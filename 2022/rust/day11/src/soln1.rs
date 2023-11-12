@@ -7,7 +7,6 @@ pub struct Soln1 {}
 impl Soln1 {
     pub fn part1(raw_input: &str) -> Output {
         let mut input = parse(raw_input);
-        dbg!(input.clone());
         Self::part1_core(&mut input)
     }
 
@@ -34,7 +33,6 @@ impl Soln1 {
                 monkes[i] = monke_clone.clone(); //why another clone here?
             }
         }
-        dbg!(monkeInspects.clone());
         let most = monkeInspects.values().sorted_by(|a, b| Ord::cmp(&b, &a)).take(2).collect_vec();
         let monke_bizness = most[0] * most[1];
         monke_bizness
