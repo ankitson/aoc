@@ -169,6 +169,42 @@ we can fix the first error by just changing the `self` to `&self`.
 The rest might be more complicated.. we want to mutate two items in the `monkes: Vec<Monke>` at once and rust does not like that.
 
 
+I fixed it with some ugly copying:
+
+```rust
+pub fn part1_core(input: &mut Input) -> Output {
+        let monkes: &mut Vec<Monke> = input;
+        let mut monkeInspects = HashMap::<usize, usize>::new();
+        for _ in 0..20 {
+            for i in 0..monkes.len() {
+                let monke = &monkes[i];
+                let monkeClone = &mut monke.clone();
+                monkeInspects.entry(i).and_modify(|v| *v += monke.items.len()).or_insert(monke.items.len());
+
+                let op = monkeClone.op;
+                let len = monkeClone.items.len();
+                while monkeClone.items.len() > 0 {
+                    let item = monkeClone.items.pop_front().unwrap();
+                    let new_val = op.eval(item) / 3;
+                    let dest = match new_val % monkeClone.divisor {
+                        0 => monkeClone.throw_true,
+                        _ => monkeClone.throw_false,
+                    };
+                    let dest_monke = &mut monkes[dest];
+                    dest_monke.items.push_back(new_val);
+                }
+                monkes[i] = monkeClone.clone();
+            }
+        }
+        dbg!(monkeInspects.clone());
+        let most = monkeInspects.values().sorted_by(|a, b| Ord::cmp(&b, &a)).take(2).collect_vec();
+        let monke_bizness = most[0] * most[1];
+        monke_bizness
+    }
+```
+
+Now the answer for the sample should be 101*105, but mine is 101*106. Monkey #3 is getting an extra inspection somewhere. I also don't understand why the second cloine is necessary.
+
 # PROBLEM
 
 --- Day 11: Monkey in the Middle ---
