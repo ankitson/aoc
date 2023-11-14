@@ -12,7 +12,7 @@ pub fn parse(input: &str) -> (Vec<Vec<char>>, Vec<(usize,usize,usize)>) {
             let n3 = parts[5].parse::<usize>().expect("illegal") - 1;
             moves.push((n1,n2,n3));
         }
-        else if (line.is_empty()) {
+        else if line.is_empty() {
             continue;
         }
         else {
