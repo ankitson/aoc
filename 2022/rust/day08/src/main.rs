@@ -1,9 +1,6 @@
 mod shared;
 mod soln1;
 
-#[macro_use]
-extern crate scan_fmt;
-
 #[cfg(feature = "heapprofile")]
 use dhat::{Dhat, DhatAlloc};
 

@@ -13,10 +13,10 @@ impl Soln1 {
         let mut num_visible = 0;
         for i in 0..rows {
             for j in 0..cols {
-                let is_blocked = (Self::blocked(-1, 0, i, j, &grid)
+                let is_blocked = Self::blocked(-1, 0, i, j, &grid)
                     && Self::blocked(1, 0, i, j, &grid)
                     && Self::blocked(0, 1, i, j, &grid)
-                    && Self::blocked(0, -1, i, j, &grid));
+                    && Self::blocked(0, -1, i, j, &grid);
                 if !is_blocked {
                     num_visible += 1;
                 }
@@ -28,8 +28,8 @@ impl Soln1 {
     fn blocked(dx: i32, dy: i32, x: usize, y: usize, grid: &Vec<Vec<u32>>) -> bool {
         let rows = grid.len();
         let cols = grid[0].len();
-        let mut rx: i32 = (i32::try_from(x).unwrap() + dx);
-        let mut ry: i32 = (i32::try_from(y).unwrap() + dy);
+        let mut rx: i32 = i32::try_from(x).unwrap() + dx;
+        let mut ry: i32 = i32::try_from(y).unwrap() + dy;
         while rx >= 0 && ry >= 0 && rx < rows.try_into().unwrap() && ry < cols.try_into().unwrap() {
             let xx = usize::try_from(rx).unwrap();
             let yy = usize::try_from(ry).unwrap();
@@ -53,10 +53,10 @@ impl Soln1 {
         let mut max_score = 0;
         for i in 0..rows {
             for j in 0..cols {
-                let score = (Self::score(-1, 0, i, j, &grid)
+                let score = Self::score(-1, 0, i, j, &grid)
                     * Self::score(1, 0, i, j, &grid)
                     * Self::score(0, 1, i, j, &grid)
-                    * Self::score(0, -1, i, j, &grid));
+                    * Self::score(0, -1, i, j, &grid);
                 max_score = max_score.max(score);
             }
         }
@@ -66,8 +66,8 @@ impl Soln1 {
     fn score(dx: i32, dy: i32, x: usize, y: usize, grid: &Vec<Vec<u32>>) -> i32 {
         let rows = grid.len();
         let cols = grid[0].len();
-        let mut rx: i32 = (i32::try_from(x).unwrap() + dx);
-        let mut ry: i32 = (i32::try_from(y).unwrap() + dy);
+        let mut rx: i32 = i32::try_from(x).unwrap() + dx;
+        let mut ry: i32 = i32::try_from(y).unwrap() + dy;
         let mut score = 0;
         while rx >= 0 && ry >= 0 && rx < rows.try_into().unwrap() && ry < cols.try_into().unwrap() {
             let xx = usize::try_from(rx).unwrap();
