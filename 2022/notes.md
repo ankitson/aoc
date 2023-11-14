@@ -7,12 +7,46 @@
    - [Problem Statement](#problem)
 2. [Day 11](#day-11)
    - [Notes](#notes-1)
+   - [Problem Statement](#problem-1)
 
 
 # Day 12
 ## Notes
 
-[2023-11-13] 3:51PM
+### [2023-11-13] 6:30PM
+
+Finished rust solution - basically just a transcription of the python version
+
+Had one error:
+```rust
+let start_positions = grid.iter().enumerate().flat_map(|(ri, row)| {
+    row.iter().enumerate().filter_map(|(ci, item)| if *item == 0 { Some((ri, ci)) } else { None })
+});
+
+error[E0373]: closure may outlive the current function, but it borrows `ri`, which is owned by the current function
+```
+
+So i had to add a move:
+```diff
+-   row.iter().enumerate().filter_map(|(ci, item)| if *item == 0 { Some((ri, ci)) } else { None })
++   row.iter().enumerate().filter_map(move |(ci, item)| if *item == 0 { Some((ri, ci)) } else { None }) 
+```
+
+The python implementation takes 1-2 minutes to finish part 2 (with the curses rendering though), Rust finishes in 74ms.
+
+```
+day12.part1.realinput/part1
+                        time:   [914.90 µs 919.45 µs 924.84 µs]
+day12.part1.realinput/part1_core
+                        time:   [892.14 µs 897.61 µs 904.43 µs]
+day12.part2.realinput/part2
+                        time:   [73.079 ms 73.493 ms 73.972 ms]
+day12.part2.realinput/part2_core
+                        time:   [72.497 ms 72.837 ms 73.208 ms]
+```
+
+### [2023-11-13] 3:51PM
+
 Finished day 12 in python with a simple BFS. I created animations using curses which look really great.scr
 The part 2 implementation is naive - it just re-runs the BFS from every possible starting position.
 
