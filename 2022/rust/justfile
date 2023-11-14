@@ -13,3 +13,7 @@ run target:
 clean:
   @echo 'running cargo clean..'
   cargo clean
+
+bench target:
+  @echo 'running cargo criterion on {{target}}..'
+  mkdir -p benchmark_results && cargo criterion -p {{target}} --message-format=json | tee benchmark_results/{{target}}.json
