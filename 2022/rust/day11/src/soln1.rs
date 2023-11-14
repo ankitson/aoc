@@ -13,7 +13,7 @@ impl Soln1 {
     pub fn part1_core(input: &mut Input) -> Output {
         let monkes: &mut Vec<Monke> = input;
         let mut monke_inspects = HashMap::<usize, usize>::new();
-        for round in 0..20 {
+        for _round in 0..20 {
             for i in 0..monkes.len() {
                 let monke = &monkes[i];
                 let monke_clone = &mut monke.clone();
@@ -47,7 +47,7 @@ impl Soln1 {
         let monkes: &mut Vec<Monke> = input;
         let mut monke_inspects = HashMap::<usize, usize>::new();
         let divisor_prod: usize = monkes.iter().map(|m| m.divisor).product();
-        for round in 0..10000 {
+        for _round in 0..10000 {
             for i in 0..monkes.len() {
                 let monke = &monkes[i];
                 let monke_clone = &mut monke.clone();

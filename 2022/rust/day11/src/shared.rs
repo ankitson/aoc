@@ -60,8 +60,8 @@ pub fn parse(input: &str) -> Input {
         let (rem, op) = alt((tag("*"), tag("+")))(rem)?;
         let (rem, rhs) = preceded(space0, alt((map(num, |x| Term::Const(x)), value(Term::Prev, tag("old")))))(rem)?;
         let op = match (op, rhs) {
-            ("+", term) => Operation::Add(rhs),
-            ("*", term) => Operation::Mult(rhs),
+            ("+", _term) => Operation::Add(rhs),
+            ("*", _term) => Operation::Mult(rhs),
             _ => unreachable!(),
         };
         Ok((rem, op))
@@ -80,7 +80,7 @@ pub fn parse(input: &str) -> Input {
         Ok((rem, (branch_pred, rhs)))
     }
     fn monke(input: &str) -> IResult<&str, Monke> {
-        let (rem, monke_num) = header(input)?;
+        let (rem, _monke_num) = header(input)?;
         let (rem, start_items) = starting(rem)?;
         let (rem, op) = operation(rem)?;
         let (rem, divisor) = divtest(rem)?;
@@ -93,11 +93,11 @@ pub fn parse(input: &str) -> Input {
         separated_list0(multispace1, monke)(input)
     }
 
-    let (rem, parsed) = monkes(input).unwrap();
+    let (_rem, parsed) = monkes(input).unwrap();
     parsed
 }
 
-pub fn _parse(input: &str) -> Input {
+pub fn _parse(_input: &str) -> Input {
     let monkes = vec![
         Monke {
             items: vec![79, 98].into(),
