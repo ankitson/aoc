@@ -1,3 +1,4 @@
+import csv
 import json
 import os
 
@@ -29,29 +30,31 @@ for filename in os.listdir(BENCHMARK_DIR):
         if item['reason'] == 'benchmark-complete':
           item_id = item['id']
           (lb,typical,ub) = extract_measure(item['typical'])
-          results[item_id] = {'item': item_id, 'lower': lb, 'typical': typical, 'upper': ub}
+          results[item_id] = {'item': item_id, 'lower_ns': lb, 'typical_ns': typical, 'upper_ns': ub}
 
-# Write summary to JSON
-OUTPUT_FILE = 'benchmark_summary.json'
+# Write summary to CSV
+OUTPUT_FILE = 'benchmark_summary.csv'
 f = open(OUTPUT_FILE, 'w')
+writer = csv.DictWriter(f, fieldnames=['item','lower_ns','typical_ns','upper_ns'], lineterminator="\n")
+writer.writeheader()
 keys = sorted(results.keys())
 for key in keys:
-  serialized = json.dumps(results[key])
-  f.write(serialized+"\n")
+  result = results[key]
+  writer.writerow(result)
 f.close()
 
 # Write summary to text and print
 OUTPUT_FILE = 'benchmark_summary.txt'
 with open(OUTPUT_FILE,'w') as f:
-  header_str = f"{'ITEM':50}           {'TIME(ns)':15}     {'TIME(ms)':15}    {'TIME(s)':15}\n"
+  header_str = f"{'ITEM':<50}{'TIME(ns)':>20}{'TIME(ms)':>20}{'TIME(s)':>20}\n"
   f.write(header_str)
   print(header_str,end="")
   for key in keys:
     result = results[key]
-    timens = result['typical']
+    timens = result['typical_ns']
     timems = timens / 1000
     times = timems / 1000
-    result_str = f"{result['item']:50}    {timens:15.2f}ns {timems:15.2f}ms {times:15.2f}s\n"
+    result_str = f"{result['item']:<50}{timens:>18.2f}ns{timems:>18.2f}ms{times:>19.2f}s\n"
     f.write(result_str)
     print(result_str,end="")
 f.close()
