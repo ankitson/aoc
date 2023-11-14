@@ -27,15 +27,15 @@ impl Soln1 {
         }
         neighbors
     }
-    fn dfs(grid: &Vec<Vec<usize>>, start: (usize, usize), end: (usize, usize)) -> Option<usize> {
-        let mut to_visit: VecDeque<(usize, usize)> = VecDeque::from([start]);
+    fn bfs(grid: &Vec<Vec<usize>>, start: Vec<(usize, usize)>, end: Vec<(usize, usize)>) -> Option<usize> {
+        let mut to_visit: VecDeque<(usize, usize)> = VecDeque::from(start);
         let mut next_layer: VecDeque<(usize, usize)> = VecDeque::new();
         let mut dist: usize = 0;
         let mut seen: HashSet<(usize, usize)> = HashSet::new();
         while !to_visit.is_empty() {
             let visit = to_visit.pop_front().unwrap();
             seen.insert(visit);
-            if visit == end {
+            if end.contains(&visit) {
                 return Some(dist);
             }
             let nbrs = Self::get_neighbors(&grid, visit);
@@ -54,7 +54,7 @@ impl Soln1 {
     }
     pub fn part1_core(input: &Input) -> Output {
         let (grid, start, end) = input;
-        let res = Self::dfs(grid, *start, *end);
+        let res = Self::bfs(grid, vec![*start], vec![*end]);
         res.unwrap()
     }
 
@@ -65,7 +65,6 @@ impl Soln1 {
 
     pub fn part2_core(input: &Input) -> Output {
         let (grid, _, end) = input;
-        let mut best_dist = usize::MAX;
         let start_positions = grid
             .iter()
             .enumerate()
@@ -76,10 +75,6 @@ impl Soln1 {
                     .collect_vec()
             })
             .collect_vec();
-        for (start_row, start_col) in start_positions {
-            let dist = Self::dfs(grid, (start_row, start_col), *end).unwrap_or(usize::MAX);
-            best_dist = best_dist.min(dist);
-        }
-        best_dist
+        Self::bfs(grid, start_positions, vec![*end]).unwrap_or(usize::MAX)
     }
 }
