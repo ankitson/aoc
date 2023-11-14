@@ -551,6 +551,17 @@ What is the fewest steps required to move from your current position to the loca
 
 ## Notes
 
+can try something like this:
+```rust
+    fn token_nom(input: &str) -> IResult<&str, Token> {
+        alt(delimited(tag("["), Self::token_nom, tag("]")), num)(input)?
+    }
+```
+
+but it doesn't compile. I also want to try to do this in a streaming fashion, without parsing the whole thing into an AST.
+
+this is always so confusing. i have some unresolved mess of ideas about parsers in my head that i need to fully flesh out and resolve. there are so many ways to write them.
+
 Reminder: I need to remember to use `scan_fmt`. It is very useful for simple parsing.
 
 Being able to say `just fix day11` and it actually working is pretty cool :)
