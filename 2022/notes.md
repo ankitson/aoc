@@ -551,6 +551,69 @@ What is the fewest steps required to move from your current position to the loca
 
 ## Notes
 
+Reminder: I need to remember to use `scan_fmt`. It is very useful for simple parsing.
+
+Being able to say `just fix day11` and it actually working is pretty cool :)
+```bash
+(venv) [23/11/14 02:46]ankit@devbox:~/code/aoc/2022/rust (2022-cleanup *)$ just check day11
+running cargo check on day11..
+cargo check -p day11
+warning: unused variable: `round`
+  --> day11/src/soln1.rs:16:13
+   |
+16 |         for round in 0..20 {
+   |             ^^^^^ help: if this is intentional, prefix it with an underscore: `_round`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: unused variable: `round`
+  --> day11/src/soln1.rs:50:13
+   |
+50 |         for round in 0..10000 {
+   |             ^^^^^ help: if this is intentional, prefix it with an underscore: `_round`
+
+warning: unused variable: `rem`
+  --> day11/src/shared.rs:96:10
+   |
+96 |     let (rem, parsed) = monkes(input).unwrap();
+   |          ^^^ help: if this is intentional, prefix it with an underscore: `_rem`
+
+warning: unused variable: `term`
+  --> day11/src/shared.rs:63:19
+   |
+63 |             ("+", term) => Operation::Add(rhs),
+   |                   ^^^^ help: if this is intentional, prefix it with an underscore: `_term`
+
+warning: unused variable: `term`
+  --> day11/src/shared.rs:64:19
+   |
+   ....
+
+
+   (venv) [23/11/14 02:46]ankit@devbox:~/code/aoc/2022/rust (2022-cleanup *)$ just fix day11
+running cargo fix on day11..
+cargo fix --lib -p day11 --allow-dirty
+    Checking day11 v0.1.0 (/home/ankit/code/aoc/2022/rust/day11)
+       Fixed day11/src/soln1.rs (2 fixes)
+       Fixed day11/src/shared.rs (5 fixes)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.15s
+
+    (venv) [23/11/14 02:46]ankit@devbox:~/code/aoc/2022/rust (2022-cleanup *)$ just check day11
+running cargo check on day11..
+cargo check -p day11
+    Checking day11 v0.1.0 (/home/ankit/code/aoc/2022/rust/day11)
+warning: unused `#[macro_use]` import
+ --> day11/src/main.rs:4:1
+  |
+4 | #[macro_use]
+  | ^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: `day11` (bin "day11") generated 1 warning
+    Finished dev [unoptimized + debuginfo] target(s) in 0.17s
+```
+
 ## Problem
 You climb the hill and again try contacting the Elves. However, you instead receive a signal you weren't expecting: a distress signal.
 
@@ -666,3 +729,4 @@ Using these rules, you can determine which of the pairs in the example are in th
 What are the indices of the pairs that are already in the right order? (The first pair has index 1, the second pair has index 2, and so on.) In the above example, the pairs in the right order are 1, 2, 4, and 6; the sum of these indices is 13.
 
 Determine which pairs of packets are already in the right order. What is the sum of the indices of those pairs?
+
