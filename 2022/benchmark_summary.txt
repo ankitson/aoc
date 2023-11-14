@@ -30,7 +30,7 @@ day11.part1.realinput/part1                                 32687.66ns          
 day11.part1.realinput/part1_core                            27156.56ns             27.16ms               0.03s
 day11.part2.realinput/part2                              22839856.72ns          22839.86ms              22.84s
 day11.part2.realinput/part2_core                         23065829.40ns          23065.83ms              23.07s
-day12.part1.realinput/part1                                959164.64ns            959.16ms               0.96s
-day12.part1.realinput/part1_core                           909815.58ns            909.82ms               0.91s
-day12.part2.realinput/part2                              73589824.97ns          73589.82ms              73.59s
-day12.part2.realinput/part2_core                         75224575.67ns          75224.58ms              75.22s
+day12.part1.realinput/part1                                965976.87ns            965.98ms               0.97s
+day12.part1.realinput/part1_core                           914594.50ns            914.59ms               0.91s
+day12.part2.realinput/part2                               2081997.22ns           2082.00ms               2.08s
+day12.part2.realinput/part2_core                          2052475.49ns           2052.48ms               2.05s
