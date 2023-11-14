@@ -140,11 +140,10 @@ def part2(input_str: str, total_space: int, free_space: int) -> int:
   return best
 
 sample = open('../inputs/sample07.txt').read()
-input1 = open('../inputs/input07.txt').read()
+input1 = open('../inputs/day07.txt').read()
+
+print("Hello Day 7!")
 print(f"Part 1 (sample) = {part1(sample, 100000)}") #95437
 print(f"Part 1 (realinput) = {part1(input1, 100000)}") #1642503
-
-f = open('../inputs/sample07.txt')
 print(f"Part 2 (sample) = {part2(sample, 70_000_000, 30_000_000)}") #24933642
-f = open('../inputs/input07.txt')
 print(f"Part 2 (realinput) = {part2(input1, 70_000_000, 30_000_000)}") #6999588
