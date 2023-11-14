@@ -1,4 +1,4 @@
-use itertools::Itertools;
+
 pub struct Soln1 {}
 impl Soln1 {
     // pub fn parse(input: &str) -> Vec<i32> {
@@ -21,7 +21,7 @@ impl Soln1 {
             match cals {
                 Ok(i) => current += i,
                 Err(_) => {
-                    if (current >= max) {
+                    if current >= max {
                         max = current;
                     }
                     current = 0;
