@@ -1,0 +1,15 @@
+fix target:
+  @echo 'running cargo fix on {{target}}..'
+  cargo fix --lib -p {{target}} --allow-dirty
+
+check target:
+  @echo 'running cargo check on {{target}}..'
+  cargo check -p {{target}}
+
+run target:
+  @echo 'running {{target}}..'
+  cargo run -p {{target}}
+
+clean:
+  @echo 'running cargo clean..'
+  cargo clean
