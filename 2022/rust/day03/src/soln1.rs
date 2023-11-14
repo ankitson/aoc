@@ -32,7 +32,7 @@ impl Soln1 {
     }
 
     fn priority(ch: &char) -> i32 {
-        if (ch.is_ascii_uppercase()) {
+        if ch.is_ascii_uppercase() {
             ((*ch as i32) - ('A' as i32)) + 27
         } else {
             ((*ch as i32) - ('a' as i32)) + 1
@@ -43,7 +43,7 @@ impl Soln1 {
         let lines = input.split('\n').collect_vec();
         let mut total = 0;
         for chunk in lines.chunks(3) {
-            if (chunk.len() < 3) {
+            if chunk.len() < 3 {
                 continue;
             }
             let cm1 = Self::common_characters(chunk[0], chunk[1]);
