@@ -1,7 +1,4 @@
 use std::collections::HashSet;
-
-use crate::shared;
-
 pub struct Soln1 {}
 impl Soln1 {
     pub fn part1(input: &str) -> usize {
@@ -15,7 +12,7 @@ impl Soln1 {
             let num = nn.parse::<i32>().expect("illegal num");
             let dir = dd.chars().nth(0).unwrap();
             // println!("line {} {}", dir, num);
-            for i in 0..num {
+            for _i in 0..num {
                 coordh = Self::incr(dir, coordh);
                 let xd = (coordh.0 as i32) - (coordt.0 as i32);
                 let yd = (coordh.1 as i32) - (coordt.1 as i32);
@@ -23,7 +20,7 @@ impl Soln1 {
                     coordt.0 += xd.signum();
                     coordt.1 += yd.signum();
                 }
-                visited.insert((coordt));
+                visited.insert(coordt);
                 // prev = coord;
                 // coord = Self::incr(dir, coord);
 
@@ -40,9 +37,10 @@ impl Soln1 {
         // todo!()
     }
 
+    #[allow(dead_code)]
     fn draw_visited(visited: &HashSet<(i32, i32)>) {
-        let max_x = visited.iter().map(|(x, y)| x).max().unwrap();
-        let max_y = visited.iter().map(|(x, y)| y).max().unwrap();
+        let max_x = visited.iter().map(|(x, _y)| x).max().unwrap();
+        let max_y = visited.iter().map(|(_x, y)| y).max().unwrap();
         // let mut grid = vec![];
         for y in (0..=*max_y).rev() {
             // let mut row = vec![];
@@ -71,7 +69,8 @@ impl Soln1 {
         }
     }
 
-    pub fn part1_core(grid: Vec<Vec<u32>>) -> i32 {
+    #[allow(dead_code)]
+    pub fn part1_core(_grid: Vec<Vec<u32>>) -> i32 {
         todo!()
     }
 
@@ -82,19 +81,19 @@ impl Soln1 {
 
     pub fn part2(input: &str) -> usize {
         let mut visited = HashSet::<(i32, i32)>::new();
-        let mut positions = vec![(0,0); 10];
+        let mut positions = vec![(0, 0); 10];
         // let mut prev = (0, 0);
-        visited.insert((0,0));
+        visited.insert((0, 0));
         input.lines().filter(|l| !l.is_empty()).for_each(|line| {
             let (dd, nn) = line.split_once(" ").expect("illegal line");
             let num = nn.parse::<i32>().expect("illegal num");
             let dir = dd.chars().nth(0).unwrap();
             // println!("line {} {}", dir, num);
-            for i in 0..num {
+            for _i in 0..num {
                 positions[0] = Self::incr(dir, positions[0]);
                 for j in 1..10 {
-                    let xd = positions[j-1].0 - positions[j].0;
-                    let yd = positions[j-1].1 - positions[j].1;
+                    let xd = positions[j - 1].0 - positions[j].0;
+                    let yd = positions[j - 1].1 - positions[j].1;
                     if xd.abs() > 1 || yd.abs() > 1 {
                         positions[j].0 += xd.signum();
                         positions[j].1 += yd.signum();
@@ -117,7 +116,8 @@ impl Soln1 {
         // todo!()
     }
 
-    pub fn part2_core(grid: Vec<Vec<u32>>) -> i32 {
+    #[allow(dead_code)]
+    pub fn part2_core(_grid: Vec<Vec<u32>>) -> i32 {
         todo!()
     }
 }

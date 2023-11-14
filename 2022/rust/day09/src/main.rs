@@ -1,9 +1,6 @@
 mod shared;
 mod soln1;
 
-#[macro_use]
-extern crate scan_fmt;
-
 #[cfg(feature = "heapprofile")]
 use dhat::{Dhat, DhatAlloc};
 
@@ -35,11 +32,11 @@ pub fn main() {
 
 #[cfg(test)]
 mod tests {
-    use crate::soln1;
+    use super::soln1;
 
     #[test]
     fn test_part1() {
-        // assert_eq!(soln1::Soln1::part1("mjqjpqmgbljsphdztnvjfqwrcgsmlb"), 8);
+        assert_eq!(soln1::Soln1::part1("mjqjpqmgbljsphdztnvjfqwrcgsmlb"), 8);
         // assert_eq!(soln1::Soln1::part1("bvwbjplbgvbhsrlpgdmjqwftvncz"), 5);
         // assert_eq!(soln1::Soln1::part1("nppdvjthqldpwncqszvftbrmjlhg"), 6);
         // assert_eq!(soln1::Soln1::part1("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"), 10);
