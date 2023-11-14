@@ -13,9 +13,8 @@
 ## Notes
 
 [2023-11-13] 3:51PM
-Finished day 12 in python with a simple BFS. I also added in animations using curses which look really great.
-
-The part 2 implementation is definitely naive though. It just re-runs the BFS from every possible starting position.
+Finished day 12 in python with a simple BFS. I created animations using curses which look really great.scr
+The part 2 implementation is naive - it just re-runs the BFS from every possible starting position.
 
 ## Problem
 
