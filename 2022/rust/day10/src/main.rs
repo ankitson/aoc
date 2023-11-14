@@ -1,9 +1,6 @@
 mod shared;
 mod soln1;
 
-#[macro_use]
-extern crate scan_fmt;
-
 #[cfg(feature = "heapprofile")]
 use dhat::{Dhat, DhatAlloc};
 
@@ -39,7 +36,6 @@ pub fn main() {
     let input: &str = include_str!("../../inputs/day10.txt");
     let part2 = soln1::Soln1::part2(input);
     println!("part2/day10 = \n{}", part2);
-    
 }
 
 #[cfg(test)]
@@ -47,6 +43,5 @@ mod tests {
     use crate::soln1;
 
     #[test]
-    fn test_part1() {
-    }
+    fn test_part1() {}
 }
