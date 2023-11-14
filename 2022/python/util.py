@@ -1,6 +1,5 @@
 from typing import Iterable, Tuple
 
-
 def c(colors: str | Iterable[str], text: str) -> str:
   color_dict = {
     "PURPLE": "\033[95m",
