@@ -48,18 +48,15 @@ impl Soln1 {
   }
 
   fn winner(p1: char, p2: char, invert: bool) -> i32 {
-    let mapped_p1 = (p1 as i32) - { if (!invert) { ('A' as i32) } else { 'X' as i32 } };
-    let mapped_p2 = (p2 as i32) - { if (!invert) { 'X' as i32 } else { 'A' as i32 } };
-    if (mapped_p1 > mapped_p2) { return -1 * Self::winner(p2,p1, !invert); }
+    let mapped_p1 = (p1 as i32) - { if !invert { 'A' as i32 } else { 'X' as i32 } };
+    let mapped_p2 = (p2 as i32) - { if !invert { 'X' as i32 } else { 'A' as i32 } };
+    if mapped_p1 > mapped_p2 { return -1 * Self::winner(p2,p1, !invert); }
     let score = match (mapped_p1, mapped_p2) {
       (0,0) => 0, (1,1) => 0, (2,2) => 0,
       (0,1) => 1, (0,2) => -1,
       (1,2) => 1,
       _     => panic!("no")
     };
-    fn rev(i: i32) -> String {
-      match i { 0 => "rock".to_string(), 1 => "paper".to_string(), 2 => "scissor".to_string(), _ => panic!("no") }
-    }      
     score
   }
 }
