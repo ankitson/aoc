@@ -8,7 +8,11 @@ import day12
 import util
 
 def main():
-  day = int(sys.argv[1])
+  day = sys.argv[1]
+  if day[0:3] == 'day':
+    day = (day[3:])
+  day = int(day)
+    
   if day == 7:
     run_day7()
   elif day == 12:
