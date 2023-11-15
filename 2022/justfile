@@ -1,0 +1,2 @@
+summarize_bench:
+  python summarize_bench.py

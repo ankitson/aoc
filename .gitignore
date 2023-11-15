@@ -2,3 +2,4 @@
 .vscode/
 cargo-timing*
 raw_bench.txt
+*.code-workspace
