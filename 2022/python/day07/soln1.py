@@ -101,11 +101,12 @@ def pretty_print_recurse(dirtree: Dict, ident=0) -> None:
     elif type(val) == int:
       print(f"- {key} (file, size={val})")
 
-def part1(input_str: str, max_size: int) -> int:
+def part1(input_str: str, max_size: int, bench=False) -> int:
   dirtree = parse_tree(input_str)
   pop_sizes(dirtree)
-  print("Directory Tree: ")
-  pretty_print_recurse(dirtree)
+  if not bench:
+    print("Directory Tree: ")
+    pretty_print_recurse(dirtree)
 
   def helper(dir, max_size):
     if len(dir) == 0:
@@ -139,11 +140,21 @@ def part2(input_str: str, total_space: int, free_space: int) -> int:
   helper(dirtree)
   return best
 
-sample = open('../inputs/sample07.txt').read()
-input1 = open('../inputs/day07.txt').read()
+def main(sample, input1):
+  print(f"Hello Day 7!")
 
-print("Hello Day 7!")
-print(f"Part 1 (sample) = {part1(sample, 100000)}") #95437
-print(f"Part 1 (realinput) = {part1(input1, 100000)}") #1642503
-print(f"Part 2 (sample) = {part2(sample, 70_000_000, 30_000_000)}") #24933642
-print(f"Part 2 (realinput) = {part2(input1, 70_000_000, 30_000_000)}") #6999588
+  soln = part1(sample, 100000)
+  print(f"Part 1 (sample) = {soln}")
+  assert(soln == 95437)
+
+  soln = part1(input1, 100000)
+  print(f"Part 1 (realinput) = {soln}")
+  assert(soln == 1642503)
+
+  soln = part2(sample, 70_000_000, 30_000_000)
+  print(f"Part 2 (sample) = {soln}")
+  assert(soln == 24933642)
+
+  soln = part2(input1, 70_000_000, 30_000_000)
+  print(f"Part 2 (realinput) = {soln}")
+  assert(soln == 6999588)

@@ -1,5 +1,18 @@
+import os
 from typing import Iterable, Tuple
 
+# PATHS
+script_dir = os.path.dirname(os.path.abspath(__file__))
+input_dir = os.path.join(script_dir,"inputs")
+benchmark_dir = os.path.join(script_dir,"benchmark_results")
+def sample_input(day):
+  return os.path.join(input_dir, f"sample{day:02d}.txt")
+def real_input(day):
+  return os.path.join(input_dir, f"day{day:02d}.txt")
+def bench_path(day):
+  return os.path.join(benchmark_dir, f"day{day:02d}.json")
+
+# PRETTY-PRINTING
 def c(colors: str | Iterable[str], text: str) -> str:
   color_dict = {
     "PURPLE": "\033[95m",

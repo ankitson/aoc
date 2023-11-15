@@ -19,18 +19,23 @@ def extract_measure(dict):
 
 # Read rust benchmark results
 results = {}
-BENCHMARK_DIR = 'rust/benchmark_results/'
-for filename in os.listdir(BENCHMARK_DIR):
-  if filename.endswith('.json'):
-    filepath = os.path.join(BENCHMARK_DIR, filename)
-    with open(filepath, 'r') as file:
-      contents = file.readlines()
-      for line in contents:
-        item = json.loads(line)
-        if item['reason'] == 'benchmark-complete':
-          item_id = item['id']
-          (lb,typical,ub) = extract_measure(item['typical'])
-          results[item_id] = {'item': item_id, 'lower_ns': lb, 'typical_ns': typical, 'upper_ns': ub}
+BENCHMARK_DIRS = {
+  'rust': 'rust/benchmark_results/',
+  'python': 'python/benchmark_results'
+}
+
+for (lang,BENCHMARK_DIR) in BENCHMARK_DIRS.items():
+  for filename in os.listdir(BENCHMARK_DIR):
+    if filename.endswith('.json'):
+      filepath = os.path.join(BENCHMARK_DIR, filename)
+      with open(filepath, 'r') as file:
+        contents = file.readlines()
+        for line in contents:
+          item = json.loads(line)
+          if item['reason'] == 'benchmark-complete':
+            item_id = lang + "." + item['id']
+            (lb,typical,ub) = extract_measure(item['typical'])
+            results[item_id] = {'item': item_id, 'lower_ns': lb, 'typical_ns': typical, 'upper_ns': ub}
 
 # Write summary to CSV
 OUTPUT_FILE = 'benchmark_summary.csv'

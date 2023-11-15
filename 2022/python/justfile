@@ -1,0 +1,5 @@
+run target *ARGS:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  echo 'Running python day {{target}}..'
+  cd ../ && source venv/bin/activate && cd ./python && python runner.py {{target}} {{ARGS}}
