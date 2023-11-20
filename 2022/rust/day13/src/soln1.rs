@@ -8,11 +8,35 @@ use crate::shared::{parse, Input, Output};
 use nom::bytes::complete::{tag, take_while1};
 use nom::{branch::alt, combinator::map, *};
 pub struct Soln1 {}
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 enum Token<'a> {
     Literal(usize),
     List(Vec<Token<'a>>),
     Uneval(&'a str),
+}
+
+impl<'a> PartialOrd for Token<'a> {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(&other))
+    }
+}
+
+impl<'a> Ord for Token<'a> {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        match (&self, &other) {
+            (Token::Literal(a), Token::Literal(b)) => a.cmp(&b),
+            (left @ Token::List(_), right @ Token::Literal(_)) => {
+                (left.clone()).cmp(&Token::List(vec![*right.clone()]))
+            }
+            (left @ Token::Literal(_), right @ Token::List(_)) => {
+                (&Token::List(vec![*left.clone()])).cmp(right.clone())
+            }
+            (left @ Token::List(_), right @ Token::List(_)) => left.clone().cmp(right.clone()),
+
+            (Token::Uneval(_), _) => unimplemented!(),
+            (_, Token::Uneval(_)) => unimplemented!(),
+        }
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -120,11 +144,8 @@ impl Soln1 {
     pub fn part1_core(input: &Input) -> Result<Output, Box<dyn Error>> {
         println!("core input: {input:?}");
         for (left, right) in input {
-            println!("left:");
-            let lparse = Self::parse_tree_string(left)?;
-            // println!("right:");
-            // Self::parse_tree_string(right);
-            //use "parse_tree_string" fn here?
+            let ltree = Self::parse_tree_string(left);
+            let rtree = Self::parse_tree_string(right);
         }
         todo!()
     }
