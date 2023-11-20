@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 use std::error::Error;
 
 use itertools::{Itertools, PeekingNext};
@@ -25,70 +26,26 @@ impl<'a> Ord for Token<'a> {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         match (&self, &other) {
             (Token::Literal(a), Token::Literal(b)) => a.cmp(&b),
-            (left @ Token::List(_), right @ Token::Literal(_)) => {
-                (left.clone()).cmp(&Token::List(vec![*right.clone()]))
+            (left @ Token::List(_), right @ Token::Literal(v)) => (**left).cmp(&Token::List(vec![Token::Literal(*v)])),
+            (left @ Token::Literal(v), right @ Token::List(_)) => (&Token::List(vec![Token::Literal(*v)])).cmp(*right),
+            (left @ Token::List(lv), right @ Token::List(rv)) => {
+                for item in lv.iter().zip_longest(rv.iter()) {
+                    match item {
+                        itertools::EitherOrBoth::Both(v1, v2) => {
+                            let elem_cmp = (*v1).cmp(v2);
+                            if elem_cmp != Ordering::Equal {
+                                return elem_cmp;
+                            }
+                        }
+                        itertools::EitherOrBoth::Left(_) => return Ordering::Greater,
+                        itertools::EitherOrBoth::Right(_) => return Ordering::Less,
+                    }
+                }
+                return Ordering::Equal;
             }
-            (left @ Token::Literal(_), right @ Token::List(_)) => {
-                (&Token::List(vec![*left.clone()])).cmp(right.clone())
-            }
-            (left @ Token::List(_), right @ Token::List(_)) => left.clone().cmp(right.clone()),
 
             (Token::Uneval(_), _) => unimplemented!(),
             (_, Token::Uneval(_)) => unimplemented!(),
-        }
-    }
-}
-
-#[derive(Clone, Debug)]
-struct TreeString {
-    contents: String,
-    pos: Vec<usize>,
-}
-
-impl TreeString {
-    fn tok(packet: &str) -> IResult<&str, String> {
-        alt((nom::character::complete::digit1, tag("["), tag("]"), tag(",")))(packet)
-            .map(|res_str| (res_str.0, res_str.1.to_string()))
-    }
-    fn new(contents: &str) -> TreeString {
-        TreeString { contents: contents.to_string(), pos: vec![] }
-    }
-}
-
-impl Iterator for TreeString {
-    type Item = (usize, usize, usize);
-
-    fn next(&mut self) -> Option<Self::Item> {
-        loop {
-            let x = TreeString::tok(&self.contents);
-            // println!("tok: {x:?}");
-            let (rem, tok1) = TreeString::tok(&self.contents).unwrap();
-            if rem.is_empty() {
-                return None;
-            }
-            self.contents = rem.to_string();
-            let mut in_list = false;
-            let mut prev = None;
-            match tok1.as_str() {
-                "[" => {
-                    self.pos.push(0);
-                    prev = Some("[");
-                    in_list = true;
-                }
-                "]" => {
-                    if in_list {}
-                    self.pos.pop();
-                }
-                "," => {
-                    let pos = self.pos.pop().unwrap();
-                    let idx = pos + 1;
-                    self.pos.push(idx);
-                }
-                num => {
-                    let numv = num.parse::<usize>().unwrap();
-                    return Some((numv, self.pos.len(), *self.pos.last().unwrap()));
-                }
-            }
         }
     }
 }
@@ -101,7 +58,6 @@ impl Soln1 {
     }
 
     fn parse_tree_string(str: &str) -> Result<(Option<Token>, &str), Box<dyn Error>> {
-        println!("Parsing: {str}");
         if str.is_empty() {
             return Ok((None, ""));
         }
@@ -136,18 +92,21 @@ impl Soln1 {
 
     pub fn part1(raw_input: &str) -> Output {
         let (rem, mut input) = Self::parse_into_pairs(raw_input).unwrap();
-        println!("nom parsed:\n{input:?}");
         let newinp = input.iter_mut().map(|(a, b)| (a.to_string(), b.to_string())).collect_vec();
-        Self::part1_core(&newinp).expect("fail core")
+        let ordered = Self::part1_core(&newinp).expect("part1_core failed");
+        ordered.iter().sum()
     }
 
-    pub fn part1_core(input: &Input) -> Result<Output, Box<dyn Error>> {
-        println!("core input: {input:?}");
-        for (left, right) in input {
-            let ltree = Self::parse_tree_string(left);
-            let rtree = Self::parse_tree_string(right);
+    pub fn part1_core(input: &Input) -> Result<Vec<usize>, Box<dyn Error>> {
+        let mut ordered = vec![];
+        for (idx, (left, right)) in input.iter().enumerate() {
+            let ltree = Self::parse_tree_string(left)?;
+            let rtree = Self::parse_tree_string(right)?;
+            if ltree < rtree {
+                ordered.push(idx + 1)
+            }
         }
-        todo!()
+        Ok(ordered)
     }
 
     pub fn part2(raw_input: &str) -> Output {
