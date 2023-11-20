@@ -406,6 +406,7 @@ dependencies = [
  "criterion 0.5.1",
  "dhat",
  "itertools 0.10.5",
+ "nom",
  "regex",
  "scan_fmt",
 ]

@@ -14,6 +14,7 @@ dhat = "*"
 itertools = "*"
 scan_fmt = "*"
 regex = "*"
+nom = "*"
 
 [features]
 heapprofile = []

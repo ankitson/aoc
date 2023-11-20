@@ -1,3 +1,5 @@
+#![feature(result_option_inspect)]
+
 mod shared;
 mod soln1;
 
@@ -17,17 +19,17 @@ pub fn main() {
     let part1 = soln1::Soln1::part1(input);
     println!("part1/sample1 = {:?}", part1);
 
-    let input: &str = include_str!("../../inputs/day13.txt");
-    let part1 = soln1::Soln1::part1(input);
-    println!("part1/day13 = {:?}", part1);
+    // let input: &str = include_str!("../../inputs/day13.txt");
+    // let part1 = soln1::Soln1::part1(input);
+    // println!("part1/day13 = {:?}", part1);
 
     let input: &str = include_str!("../../inputs/sample13.txt");
     let part2 = soln1::Soln1::part2(input);
-    println!("part2/sample13 = \n{}", part2);
+    println!("part2/sample13 = {:?}", part2);
 
     let input: &str = include_str!("../../inputs/day13.txt");
     let part2 = soln1::Soln1::part2(input);
-    println!("part2/day13 = \n{}", part2);
+    println!("part2/day13 = {:?}", part2);
 }
 
 #[cfg(test)]
