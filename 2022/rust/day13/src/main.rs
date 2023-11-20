@@ -28,10 +28,12 @@ pub fn main() {
     let input: &str = include_str!("../../inputs/sample13.txt");
     let part2 = soln1::Soln1::part2(input);
     println!("part2/sample13 = {:?}", part2);
+    assert_eq!(part2, 140);
 
     let input: &str = include_str!("../../inputs/day13.txt");
     let part2 = soln1::Soln1::part2(input);
     println!("part2/day13 = {:?}", part2);
+    assert_eq!(part2, 20952);
 }
 
 #[cfg(test)]
