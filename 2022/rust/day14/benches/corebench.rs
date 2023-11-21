@@ -27,7 +27,7 @@ pub fn part2(c: &mut Criterion) {
 pub fn part2_core(c: &mut Criterion) {
     let contents: &str = include_str!("../../inputs/day14.txt");
     let parsed = shared::parse(contents, true);
-    let mut group = c.benchmark_group("day14.part1.realinput");
+    let mut group = c.benchmark_group("day14.part2.realinput");
     group.bench_function("part2_core.nosum", |b| b.iter(|| soln1::Soln1::part2_core(black_box(parsed.clone()))));
     group.finish();
 }
