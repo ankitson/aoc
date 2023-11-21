@@ -42,5 +42,9 @@ rust.day13.soln1.realinput/part1                           392082.09ns          
 rust.day13.soln1.realinput/part1_core.nosum                374506.79ns            374.51µs              0.37ms               0.00s
 rust.day13.soln1.realinput/part2                           488959.67ns            488.96µs              0.49ms               0.00s
 rust.day13.soln1.realinput/part2_core.nosum                461982.81ns            461.98µs              0.46ms               0.00s
-rust.TOTAL                                               31684576.07ns          31684.58µs             31.68ms               0.03s
+rust.day14.part1.realinput/part1                           342756.47ns            342.76µs              0.34ms               0.00s
+rust.day14.part1.realinput/part1_core.nosum                243870.19ns            243.87µs              0.24ms               0.00s
+rust.day14.part1.realinput/part2_core.nosum              11260910.22ns          11260.91µs             11.26ms               0.01s
+rust.day14.part2.realinput/part2                         11125387.02ns          11125.39µs             11.13ms               0.01s
+rust.TOTAL                                               43152719.56ns          43152.72µs             43.15ms               0.04s
 python.TOTAL                                            100348640.59ns         100348.64µs            100.35ms               0.10s
