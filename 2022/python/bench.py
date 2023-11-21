@@ -44,11 +44,11 @@ def main():
       bench_file.write(text_out+"\n")
   
   if day == 7:
-    bench_it('day07.part1.realinput', day07.soln1.part1,input1,100_000,True)
-    bench_it('day07.part2.realinput', day07.soln1.part2,input1,70_000_000, 30_000_000)
+    bench_it('day07.soln1.realinput/part1', day07.soln1.part1,input1,100_000,True)
+    bench_it('day07.soln2.realinput/part2', day07.soln1.part2,input1,70_000_000, 30_000_000)
   elif day == 12:
-    bench_it('day12.part1.realinput', day12.soln1.part1,input1)
-    bench_it('day12.part2.realinput', day12.soln1.part2,input1)
+    bench_it('day12.soln1.realinput/part1', day12.soln1.part1,input1)
+    bench_it('day12.soln1.realinput/part2', day12.soln1.part2,input1)
 
   bench_file.close()
 
