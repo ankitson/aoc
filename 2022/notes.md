@@ -751,6 +751,49 @@ Determine which pairs of packets are already in the right order. What is the sum
 
 ## Notes
 
+```
+pub struct OffsetGrid<T: Clone> {
+    pub grid: Vec<Vec<T>>,
+    pub offset: (isize, isize),
+    pub wrap: bool,
+}
+pub type Input = OffsetGrid<bool>;
+...
+
+let parsed = shared::parse(contents);
+let mut group = c.benchmark_group("day14.part1.realinput");
+group.bench_function("part1_core.nosum", |b| b.iter(|| soln1::Soln1::part1_core(black_box(parsed))));
+...
+pub fn part1_core(mut input: Input) -> Output { ... }
+
+...
+error[E0507]: cannot move out of `parsed`, a captured variable in an `FnMut` closure
+  --> day14/benches/corebench.rs:16:105
+   |
+14 |     let parsed = shared::parse(contents);
+   |         ------ captured outer variable
+15 |     let mut group = c.benchmark_group("day14.part1.realinput");
+16 |     group.bench_function("part1_core.nosum", move |b| b.iter(move || soln1::Soln1::part1_core(black_box(parsed))));
+   |                                                              ------- captured by this `FnMut` closure   ^^^^^^ move occurs because `parsed` has type `OffsetGrid<bool
+>`, which does not implement the `Copy` trait
+
+error[E0507]: cannot move out of `parsed`, a captured variable in an `FnMut` closure
+  --> day14/benches/corebench.rs:16:62
+   |
+14 |     let parsed = shared::parse(contents);
+   |         ------ captured outer variable
+15 |     let mut group = c.benchmark_group("day14.part1.realinput");
+16 |     group.bench_function("part1_core.nosum", move |b| b.iter(move || soln1::Soln1::part1_core(black_box(parsed))));
+   |                                              --------        ^^^^^^^                                    ------
+   |                                              |               |                                          |
+   |                                              |               |                                          variable moved due to use in closure
+   |                                              |               `parsed` is moved here                     move occurs because `parsed` has type `OffsetGrid<bool>`, which does not implement the `Copy` trait
+   |                                              captured by this `FnMut` closure
+
+```
+
+Because, we iterate over the bench with `b.iter`, the first iteration gets ownership of `parsed` (and mutates it). Rust is rightfully telling us the `parsed` will be clobbered/modified by the time the second iteration gets to it. So we add a `.clone` like `black_box(parsed.clone())`.
+
 ## Problem
 
 --- Day 14: Regolith Reservoir ---

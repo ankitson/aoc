@@ -5,14 +5,30 @@ pub struct Soln1 {}
 impl Soln1 {
     pub fn part1(raw_input: &str) -> Output {
         let input = parse(raw_input);
-        println!("{}", input);
-        Self::part1_core(&input)
+        Self::part1_core(input)
     }
 
-    pub fn part1_core(input: &Input) -> Output {
-        let mut sands = 0;
-        loop {}
-        todo!()
+    pub fn part1_core(mut input: Input) -> Output {
+        let mut sands: usize = 0;
+        let mut pos = (0 as isize, 500 as isize);
+        while input.get_safe(pos).is_some() {
+            let tries = [(pos.0 + 1, pos.1), (pos.0 + 1, pos.1 - 1), (pos.0 + 1, pos.1 + 1)];
+            if let Some(new_pos) = tries.into_iter().find(|pos| matches!(input.get_safe(*pos), Some(&true))) {
+                input.set(pos, true);
+                input.set(new_pos, false);
+                pos = new_pos;
+                continue;
+            }
+
+            if tries.into_iter().find(|pos| input.get_safe(*pos).is_none()).is_some() {
+                break;
+            }
+
+            sands += 1;
+            input.set(pos, false);
+            pos = (0, 500);
+        }
+        sands
     }
 
     pub fn part2(raw_input: &str) -> Output {
