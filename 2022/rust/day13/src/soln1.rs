@@ -1,12 +1,9 @@
 use std::cmp::Ordering;
-use std::error::Error;
 
+use anyhow::Result;
 use itertools::Itertools;
-use nom::sequence::separated_pair;
-use nom::{multi::separated_list1, IResult};
 
-use crate::shared::{parse, Input, Output};
-use nom::bytes::complete::{tag, take_while1};
+use crate::shared::{self, Input, Output};
 pub struct Soln1 {}
 #[derive(Clone, Debug, PartialEq, Eq)]
 enum Token<'a> {
@@ -50,13 +47,7 @@ impl<'a> Ord for Token<'a> {
 }
 
 impl Soln1 {
-    fn parse_into_pairs(raw_input: &str) -> IResult<&str, Vec<(&str, &str)>> {
-        separated_list1(tag("\n\n"), separated_pair(take_while1(|s| s != '\n'), tag("\n"), take_while1(|s| s != '\n')))(
-            raw_input,
-        )
-    }
-
-    fn parse_tree_string(str: &str) -> Result<(Option<Token>, &str), Box<dyn Error>> {
+    fn parse_tree_string(str: &str) -> Result<(Option<Token>, &str)> {
         if str.is_empty() {
             return Ok((None, ""));
         }
@@ -89,14 +80,13 @@ impl Soln1 {
         }
     }
 
-    pub fn part1(raw_input: &str) -> Output {
-        let (_rem, mut input) = Self::parse_into_pairs(raw_input).unwrap();
-        let newinp = input.iter_mut().map(|(a, b)| (a.to_string(), b.to_string())).collect_vec();
-        let ordered = Self::part1_core(&newinp).expect("part1_core failed");
+    pub fn part1(raw_input: &'static str) -> Output {
+        let input = shared::parse(raw_input).unwrap();
+        let ordered = Self::part1_core(&input).expect("part1_core failed");
         ordered.iter().sum()
     }
 
-    pub fn part1_core(input: &Input) -> Result<Vec<usize>, Box<dyn Error>> {
+    pub fn part1_core(input: &Input) -> Result<Vec<usize>> {
         let mut ordered = vec![];
         for (idx, (left, right)) in input.iter().enumerate() {
             let ltree = Self::parse_tree_string(left)?;
@@ -108,14 +98,13 @@ impl Soln1 {
         Ok(ordered)
     }
 
-    pub fn part2(raw_input: &str) -> Output {
-        let (_rem, mut input) = Self::parse_into_pairs(raw_input).unwrap();
-        let newinp = input.iter_mut().map(|(a, b)| (a.to_string(), b.to_string())).collect_vec();
-        let ans = Self::part2_core(&newinp).expect("part2_core failed");
+    pub fn part2(raw_input: &'static str) -> Output {
+        let input = shared::parse(raw_input).unwrap();
+        let ans = Self::part2_core(&input).expect("part2_core failed");
         ans.0 * ans.1
     }
 
-    pub fn part2_core(input: &Input) -> Result<(usize, usize), Box<dyn Error>> {
+    pub fn part2_core(input: &Input) -> Result<(usize, usize)> {
         let packet2 = Token::List(vec![Token::List(vec![Token::Literal(2)])]);
         let packet6 = Token::List(vec![Token::List(vec![Token::Literal(6)])]);
         let mut extended = input
