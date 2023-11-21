@@ -23,11 +23,11 @@ pub fn main() {
 
     let input: &str = include_str!("../../inputs/sample{DAY_NUM}.txt");
     let part2 = soln1::Soln1::part2(input);
-    println!("part2/sample{DAY_NUM} = \n{}", part2);
+    println!("part2/sample{DAY_NUM} = {:?}", part2);
 
     let input: &str = include_str!("../../inputs/day{DAY_NUM}.txt");
     let part2 = soln1::Soln1::part2(input);
-    println!("part2/day{DAY_NUM} = \n{}", part2);
+    println!("part2/day{DAY_NUM} = {:?}", part2);
 }
 
 #[cfg(test)]
