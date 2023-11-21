@@ -1,40 +1,46 @@
-ITEM                                                          TIME(ns)            TIME(ms)             TIME(s)
-rust.day01.part1.realinput/part1                            36334.16ns             36.33ms               0.04s
-rust.day01.part2.realinput/part2                            37031.26ns             37.03ms               0.04s
-rust.day02.part1.realinput/part1                            24624.58ns             24.62ms               0.02s
-rust.day02.part2.realinput/part2                            19800.93ns             19.80ms               0.02s
-rust.day03.part1.realinput/part1                           243873.06ns            243.87ms               0.24s
-rust.day03.part2.realinput/part2                           266226.34ns            266.23ms               0.27s
-rust.day04.part1.realinput/part1                            75314.40ns             75.31ms               0.08s
-rust.day04.part2.realinput/part2                            76165.65ns             76.17ms               0.08s
-rust.day05.part1.realinput/part1                            89429.16ns             89.43ms               0.09s
-rust.day05.part1.realinput/part1_core                       16997.33ns             17.00ms               0.02s
-rust.day05.part2.realinput/part2                            93164.78ns             93.16ms               0.09s
-rust.day05.part2.realinput/part2_core                       18091.53ns             18.09ms               0.02s
-rust.day06.part1.realinput/part1                           443017.93ns            443.02ms               0.44s
-rust.day06.part1.realinput/part1_core                      444586.65ns            444.59ms               0.44s
-rust.day06.part2.realinput/part2                          4330260.62ns           4330.26ms               4.33s
-rust.day06.part2.realinput/part2_core                     4354603.69ns           4354.60ms               4.35s
-rust.day06.part2.realinput/part2_windows                  1154029.63ns           1154.03ms               1.15s
-python.day07.part1.realinput                              8148373.92ns           8148.37ms               8.15s
-rust.day07.part1.realinput/part1                           315539.28ns            315.54ms               0.32s
-python.day07.part2.realinput                              8132347.87ns           8132.35ms               8.13s
-rust.day07.part2.realinput/part2                           316813.36ns            316.81ms               0.32s
-rust.day08.part1.realinput/part1                           438467.54ns            438.47ms               0.44s
-rust.day08.part1.realinput/part1_core                      420182.12ns            420.18ms               0.42s
-rust.day08.part2.realinput/part2                           501674.39ns            501.67ms               0.50s
-rust.day08.part2.realinput/part2_core                      483170.39ns            483.17ms               0.48s
-rust.day09.txt.part1.realinput/part1                       353415.02ns            353.42ms               0.35s
-rust.day09.txt.part2.realinput/part2                       514135.06ns            514.14ms               0.51s
-rust.day10.part1.realinput/part1                             9009.29ns              9.01ms               0.01s
-rust.day10.part2.realinput/part2                            10235.43ns             10.24ms               0.01s
-rust.day11.part1.realinput/part1                            32687.66ns             32.69ms               0.03s
-rust.day11.part1.realinput/part1_core                       27156.56ns             27.16ms               0.03s
-rust.day11.part2.realinput/part2                         22839856.72ns          22839.86ms              22.84s
-rust.day11.part2.realinput/part2_core                    23065829.40ns          23065.83ms              23.07s
-python.day12.part1.realinput                             19312361.44ns          19312.36ms              19.31s
-rust.day12.part1.realinput/part1                           965976.87ns            965.98ms               0.97s
-rust.day12.part1.realinput/part1_core                      914594.50ns            914.59ms               0.91s
-python.day12.part2.realinput                             61300708.70ns          61300.71ms              61.30s
-rust.day12.part2.realinput/part2                          2081997.22ns           2082.00ms               2.08s
-rust.day12.part2.realinput/part2_core                     2052475.49ns           2052.48ms               2.05s
+ITEM                                                          TIME(ns)            TIME(µs)            TIME(ms)             TIME(s)
+rust.day01.soln1.realinput/part1                            36011.41ns             36.01µs              0.04ms               0.00s
+rust.day01.soln1.realinput/part2                            36095.80ns             36.10µs              0.04ms               0.00s
+rust.day02.soln1.realinput/part1                            25175.59ns             25.18µs              0.03ms               0.00s
+rust.day02.soln1.realinput/part2                            21042.66ns             21.04µs              0.02ms               0.00s
+rust.day03.soln1.realinput/part1                           245755.95ns            245.76µs              0.25ms               0.00s
+rust.day03.soln2.realinput/part2                           267588.66ns            267.59µs              0.27ms               0.00s
+rust.day04.soln1.realinput/part1                            78121.49ns             78.12µs              0.08ms               0.00s
+rust.day04.soln1.realinput/part2                            75656.28ns             75.66µs              0.08ms               0.00s
+rust.day05.soln1.realinput/part1                            98099.12ns             98.10µs              0.10ms               0.00s
+rust.day05.soln1.realinput/part1_core.nosum                 17060.65ns             17.06µs              0.02ms               0.00s
+rust.day05.soln1.realinput/part2                            90653.34ns             90.65µs              0.09ms               0.00s
+rust.day05.soln1.realinput/part2_core.nosum                 19355.66ns             19.36µs              0.02ms               0.00s
+rust.day06.soln1.realinput/part1                           444545.37ns            444.55µs              0.44ms               0.00s
+rust.day06.soln1.realinput/part1_core.nosum                438135.94ns            438.14µs              0.44ms               0.00s
+rust.day06.soln1.realinput/part2.nosum                    4337244.06ns           4337.24µs              4.34ms               0.00s
+rust.day06.soln1.realinput/part2_core.nosum               4303658.30ns           4303.66µs              4.30ms               0.00s
+rust.day06.soln1.realinput/part2_windows                  1168673.51ns           1168.67µs              1.17ms               0.00s
+rust.day07.soln1.realinput/part1                           320059.78ns            320.06µs              0.32ms               0.00s
+python.day07.soln1.realinput/part1                        8237432.67ns           8237.43µs              8.24ms               0.01s
+rust.day07.soln1.realinput/part2                           320225.06ns            320.23µs              0.32ms               0.00s
+python.day07.soln2.realinput/part2                        8219555.90ns           8219.56µs              8.22ms               0.01s
+rust.day08.soln1.realinput/part1                           451976.23ns            451.98µs              0.45ms               0.00s
+rust.day08.soln1.realinput/part1_core.nosum                420088.61ns            420.09µs              0.42ms               0.00s
+rust.day08.soln1.realinput/part2                           503580.37ns            503.58µs              0.50ms               0.00s
+rust.day08.soln1.realinput/part2_core.nosum                472037.28ns            472.04µs              0.47ms               0.00s
+rust.day09.soln1.realinput/part1                           351198.07ns            351.20µs              0.35ms               0.00s
+rust.day09.soln2.realinput/part2                           501895.12ns            501.90µs              0.50ms               0.00s
+rust.day10.soln1.realinput/part1                             9310.31ns              9.31µs              0.01ms               0.00s
+rust.day10.soln1.realinput/part2                            10278.57ns             10.28µs              0.01ms               0.00s
+rust.day11.soln1.realinput/part1                            32263.83ns             32.26µs              0.03ms               0.00s
+rust.day11.soln1.realinput/part1_core.nosum                 30188.01ns             30.19µs              0.03ms               0.00s
+rust.day11.soln1.realinput/part2                         22629178.82ns          22629.18µs             22.63ms               0.02s
+rust.day11.soln1.realinput/part2_core.nosum              23268701.18ns          23268.70µs             23.27ms               0.02s
+rust.day12.soln1.realinput/part1                          1008259.85ns           1008.26µs              1.01ms               0.00s
+python.day12.soln1.realinput/part1                       19583185.39ns          19583.19µs             19.58ms               0.02s
+rust.day12.soln1.realinput/part1_core.nosum                898508.82ns            898.51µs              0.90ms               0.00s
+rust.day12.soln1.realinput/part2                          2077889.13ns           2077.89µs              2.08ms               0.00s
+python.day12.soln1.realinput/part2                       64308466.63ns          64308.47µs             64.31ms               0.06s
+rust.day12.soln1.realinput/part2_core.nosum               2097979.22ns           2097.98µs              2.10ms               0.00s
+rust.day13.soln1.realinput/part1                           392082.09ns            392.08µs              0.39ms               0.00s
+rust.day13.soln1.realinput/part1_core.nosum                374506.79ns            374.51µs              0.37ms               0.00s
+rust.day13.soln1.realinput/part2                           488959.67ns            488.96µs              0.49ms               0.00s
+rust.day13.soln1.realinput/part2_core.nosum                461982.81ns            461.98µs              0.46ms               0.00s
+rust.TOTAL                                               31684576.07ns          31684.58µs             31.68ms               0.03s
+python.TOTAL                                            100348640.59ns         100348.64µs            100.35ms               0.10s

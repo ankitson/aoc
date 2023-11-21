@@ -551,6 +551,8 @@ What is the fewest steps required to move from your current position to the loca
 
 ## Notes
 
+So i wrote the parser by hand here just to practice a recursive parser. TODO: do it in a streaming fashion instead of parsing the entire thing into memory beforehand.
+
 can try something like this:
 ```rust
     fn token_nom(input: &str) -> IResult<&str, Token> {
@@ -624,6 +626,7 @@ warning: unused `#[macro_use]` import
 warning: `day11` (bin "day11") generated 1 warning
     Finished dev [unoptimized + debuginfo] target(s) in 0.17s
 ```
+
 
 ## Problem
 You climb the hill and again try contacting the Elves. However, you instead receive a signal you weren't expecting: a distress signal.
