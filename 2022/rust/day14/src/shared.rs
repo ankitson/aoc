@@ -71,7 +71,7 @@ impl<T: Default + Clone> OffsetGrid<T> {
     }
 }
 
-pub fn parse(input: &str) -> Input {
+pub fn parse(input: &str, part2: bool) -> Input {
     let rock_coords = input
         .lines()
         .map(|line| {
@@ -91,8 +91,15 @@ pub fn parse(input: &str) -> Input {
         for (x, y) in rock {
             min_x = min_x.min(*x);
             max_x = max_x.max(*x);
+            if part2 {
+                max_x = max_x.max(*x + 2);
+            }
             min_y = min_y.min(*y);
             max_y = max_y.max(*y);
+            if part2 {
+                min_y = min_y.min(300);
+                max_y = max_y.max(700);
+            }
         }
     }
     let max_range = ((max_x - min_x).abs()).max((max_y - min_y).abs()) as usize;
@@ -117,5 +124,10 @@ pub fn parse(input: &str) -> Input {
         }
     }
     og.set((0, 500), false);
+    if part2 {
+        for y in min_y..=max_y {
+            og.set((max_x, y), false);
+        }
+    }
     og
 }
