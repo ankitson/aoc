@@ -1,0 +1,9 @@
+run target *ARGS:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  echo 'Running python day {{target}}..'
+  source venv/bin/activate && python runner.py {{target}} {{ARGS}}
+
+bench target:
+  echo "day={{target}}" > bench_config.py
+  python bench.py
