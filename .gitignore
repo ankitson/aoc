@@ -3,3 +3,4 @@
 cargo-timing*
 raw_bench.txt
 *.code-workspace
+.adventofcode.session

@@ -4,6 +4,10 @@ This folder has solutions for Advent of Code 2023 in various languages. Although
 
 We use `Justfiles` liberally to perform common tasks. You can run commands from a justfile from the folder its in, or from this folder by prefixing the path: i.e `cd rust && just run 5` is equivalent to `just rust/run 5`
 
+## Fetching Puzzles
+
+`just fetch <x>` will download the puzzle text and input for that day. The [aoc-cli](https://github.com/scarvalhojr/aoc-cli/) package must be installed for this to work.
+
 ## Templating
 
 `just genday <x>` will generate templates for that day in a given language. These are generated from the `template` dirs using the `genday.sh` script.
