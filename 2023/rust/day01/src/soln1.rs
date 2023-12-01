@@ -1,4 +1,6 @@
 use itertools::Itertools;
+use memchr::memchr3;
+use memchr::memrchr3;
 use regex::Regex;
 
 use crate::shared::{parse, Input, Output};
@@ -74,6 +76,40 @@ impl Soln1 {
                 _ => panic!("Unexpected string"),
             };
             current += big + (10 * small);
+        }
+        current
+    }
+
+    pub fn part1_memchr(raw_input: &str) -> Output {
+        let mut input = parse(raw_input);
+        Self::part1_memchr_core(&mut input)
+    }
+
+    pub fn part1_memchr_core(input: &mut Input) -> Output {
+        let mut input_lines: Vec<&str> = input.split('\n').collect();
+        let mut current = 0;
+        for i in 0..input_lines.len() {
+            let mut line: &str = input_lines[i];
+            let mut line_bytes = line.as_bytes();
+            if line.len() < 2 {
+                continue;
+            }
+
+            let m1 = memchr3(b'1', b'2', b'3', line_bytes);
+            let m2 = memchr3(b'4', b'5', b'6', line_bytes);
+            let m3 = memchr3(b'7', b'8', b'9', line_bytes);
+
+            let mr1 = memrchr3(b'1', b'2', b'3', line_bytes);
+            let mr2 = memrchr3(b'4', b'5', b'6', line_bytes);
+            let mr3 = memrchr3(b'7', b'8', b'9', line_bytes);
+
+            let min_val = [m1, m2, m3].iter().filter_map(|&x| x).min().unwrap();
+            let max_val = [mr1, mr2, mr3].iter().filter_map(|&x| x).max().unwrap();
+
+            let first = (line_bytes[min_val] - b'0') as usize;
+            let last = (line_bytes[max_val] - b'0') as usize;
+            let incr = last + (10 * first);
+            current += incr;
         }
         current
     }
