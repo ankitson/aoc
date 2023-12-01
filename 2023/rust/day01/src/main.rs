@@ -14,20 +14,26 @@ pub fn main() {
 
     println!("Hello Day 01!");
     let input: &str = include_str!("../../inputs/sample01.txt");
-    // let part1 = soln1::Soln1::part1(input);
-    // println!("part1/sample1 = {:?}", part1);
+    let part1 = soln1::Soln1::part1(input);
+    println!("part1/sample1 = {:?}", part1);
 
     let input: &str = include_str!("../../inputs/day01.txt");
     let part1 = soln1::Soln1::part1(input);
     println!("part1/day01 = {:?}", part1);
 
-    let input: &str = include_str!("../../inputs/sample01.txt");
+    let input: &str = include_str!("../../inputs/sample01_2.txt");
     let part2 = soln1::Soln1::part2(input);
-    println!("part2/sample01 = {:?}", part2);
+    println!("part2/sample01_2 = {:?}", part2);
 
     let input: &str = include_str!("../../inputs/day01.txt");
     let part2 = soln1::Soln1::part2(input);
     println!("part2/day01 = {:?}", part2);
+    assert_eq!(part2, 54706);
+
+    let input: &str = include_str!("../../inputs/day01.txt");
+    let part2 = soln1::Soln1::part2(input);
+    println!("part2/day01 = {:?}", part2);
+    assert_eq!(part2, 54706);
 }
 
 #[cfg(test)]
