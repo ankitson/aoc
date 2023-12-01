@@ -14,8 +14,8 @@ pub fn main() {
 
     println!("Hello Day 01!");
     let input: &str = include_str!("../../inputs/sample01.txt");
-    let part1 = soln1::Soln1::part1(input);
-    println!("part1/sample1 = {:?}", part1);
+    // let part1 = soln1::Soln1::part1(input);
+    // println!("part1/sample1 = {:?}", part1);
 
     let input: &str = include_str!("../../inputs/day01.txt");
     let part1 = soln1::Soln1::part1(input);
