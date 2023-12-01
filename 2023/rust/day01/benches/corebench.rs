@@ -11,6 +11,15 @@ pub fn part1(c: &mut Criterion) {
     group.finish();
 }
 
+pub fn part1_memchr(c: &mut Criterion) {
+    let contents: &str = include_str!("../../inputs/day01.txt");
+    let mut group = c.benchmark_group("day01.part1_simd.realinput");
+    group.bench_function("part1_memchr", |b| {
+        b.iter(|| soln1::Soln1::part1_memchr(black_box(contents)))
+    });
+    group.finish();
+}
+
 pub fn part2(c: &mut Criterion) {
     let contents: &str = include_str!("../../inputs/day01.txt");
     let mut group = c.benchmark_group("day01.part2.realinput");
@@ -20,5 +29,5 @@ pub fn part2(c: &mut Criterion) {
     group.finish();
 }
 
-criterion_group!(benches, part1, part2);
+criterion_group!(benches, part1, part1_memchr, part2);
 criterion_main!(benches);
