@@ -18,3 +18,17 @@ bench target:
   @echo 'running cargo criterion on {{target}}..'
   mkdir -p benchmark_results
   cargo criterion -p {{target}} --message-format=json | tee benchmark_results/{{target}}.json
+
+flamegraph target:
+  cargo flamegraph --profile release -p {{target}} -o benchmark_results/flame_{{target}}.svg
+
+heapprofile target:
+  cargo run --features heapprofile -p {{target}}
+  mv dhat-heap.json benchmark_results/dhat_{{target}}.json
+
+profile target: just flamegraph {{target}}
+  just bench {{target}}
+  just heapprofile {{target}}
+
+watch target:
+  cargo watch -x "run -p {{target}}"

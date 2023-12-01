@@ -44,7 +44,7 @@ def main():
 
   for (lang,BENCHMARK_DIR) in BENCHMARK_DIRS.items():
     for filename in os.listdir(BENCHMARK_DIR):
-      if filename.endswith('.json'):
+      if (not filename.startswith('dhat')) and filename.endswith('.json'):
         filepath = os.path.join(BENCHMARK_DIR, filename)
         with open(filepath, 'r') as file:
           contents = file.readlines()
