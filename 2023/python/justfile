@@ -1,3 +1,6 @@
+genday target:
+  ./genday.sh {{target}}
+
 run target *ARGS:
   #!/usr/bin/env bash
   set -euo pipefail

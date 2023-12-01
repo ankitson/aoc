@@ -1,3 +1,6 @@
+genday target:
+  ./genday.sh {{target}}
+
 fix target:
   @echo 'running cargo fix on {{target}}..'
   cargo fix --lib -p {{target}} --allow-dirty
@@ -26,7 +29,8 @@ heapprofile target:
   cargo run --features heapprofile -p {{target}}
   mv dhat-heap.json benchmark_results/dhat_{{target}}.json
 
-profile target: just flamegraph {{target}}
+profile target: 
+  just flamegraph {{target}}
   just bench {{target}}
   just heapprofile {{target}}
 
