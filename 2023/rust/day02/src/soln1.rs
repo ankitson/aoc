@@ -21,22 +21,10 @@ impl Soln1 {
                 split.split(',').for_each(|x| {
                     let (pn, pc) = x.trim().split_once(' ').unwrap();
                     let pn = pn.parse::<usize>().unwrap();
-                    match pc {
-                        "red" => {
-                            if pn > 12 {
-                                is_valid = false
-                            }
-                        }
-                        "green" => {
-                            if pn > 13 {
-                                is_valid = false
-                            }
-                        }
-                        "blue" => {
-                            if pn > 14 {
-                                is_valid = false
-                            }
-                        }
+                    match pc.as_bytes()[0] {
+                        b'r' => is_valid &= pn <= 12,
+                        b'g' => is_valid &= pn <= 13,
+                        b'b' => is_valid &= pn <= 14,
                         _ => panic!("illegal"),
                     }
                 })

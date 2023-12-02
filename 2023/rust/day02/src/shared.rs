@@ -1,6 +1,3 @@
-
-
-
 pub type Input = String;
 pub type Output = usize;
 
