@@ -7,6 +7,22 @@
 
 # Day 2: TBD
 
+Profiling - `cargo flamegraph --bench corebench`. running outside the container, from host. before that do `sudo echo 0 | tee /proc/sys/kernel/kptr_restrict`. then you should not see any errors about ```
+WARNING: Kernel address maps (/proc/{kallsyms,modules}) are restricted,
+check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.
+
+Samples in kernel functions may not be resolved if a suitable vmlinux
+...
+
+````
+but the generated flamegraph also includes the setup code for criterion, and i can't actually see any of my code..
+
+this may be useful: https://www.jibbow.com/posts/criterion-flamegraphs/
+
+
+What seems to work is just running the binary from `flamegraph` instead of the bench (`cargo flamegraph -p day02 --bin day02`), and wrapping the main operations in a for loop to run them many times
+
+
 # Day 1: Trebuchet?!
 
 ## Part 1
@@ -35,7 +51,7 @@ x86-64-v4
 x86-64-v3 (supported, searched)
 x86-64-v2 (supported, searched)
 ...
-```
+````
 
 I wrote a simple implementation that uses SIMD for part 1 using BurntSushi's [memchr](https://docs.rs/memchr/latest/memchr/) library. This is the first SIMD library I came across and I probably am not using it right - this is actually slower than the naive implementation:
 

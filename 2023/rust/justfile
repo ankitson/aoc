@@ -22,6 +22,16 @@ bench target:
   mkdir -p benchmark_results
   cargo criterion -p {{target}} --message-format=json | tee benchmark_results/{{target}}.json
 
+# To get the flamegraph to work, we have to pass in profile-time, and i don't know how to get
+# that argument passed in with the above way of running benchmarks to get JSON outputs as well
+# So for now, you have to run this to get flamegraphs, and the above `bench` command for JSON
+# benchmark results.
+bench_flame target:
+  @echo 'running cargo criterion on {{target}}..'
+  mkdir -p benchmark_results
+  cargo bench --bench corebench {{target}} -- --profile-time=5
+  #cargo criterion -p {{target}} --message-format=json --profile-time=5 | tee benchmark_results/flame_{{target}}.json
+
 flamegraph target:
   cargo flamegraph --profile release -p {{target}} -o benchmark_results/flame_{{target}}.svg
 

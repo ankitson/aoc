@@ -15,6 +15,7 @@ itertools = "*"
 scan_fmt = "*"
 regex = "*"
 memchr = "*"
+util = { path = "../util" }
 
 [features]
 heapprofile = []

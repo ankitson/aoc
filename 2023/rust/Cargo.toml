@@ -3,11 +3,10 @@
 resolver = "2"
 
 members = [
-  "day*", "experiments"
+  "day*", 
+  "experiments",
+  "util"
 ]
 
 [profile.release]
 debug = true
-
-# [build]
-# rustflags = ["-C", "target-cpu=native"] #For SIMD support

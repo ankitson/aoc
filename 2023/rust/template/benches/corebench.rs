@@ -1,6 +1,7 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use day{DAY_NUM}::shared;
 use day{DAY_NUM}::soln1;
+use util::perf;
 
 pub fn part1(c: &mut Criterion) {
     let contents: &str = include_str!("../../inputs/day{DAY_NUM}.txt");
@@ -32,5 +33,8 @@ pub fn part2_core(c: &mut Criterion) {
     group.finish();
 }
 
-criterion_group!(benches, part1, part1_core, part2, part2_core);
+criterion_group!(
+    name=benches;
+    config=Criterion::default().with_profiler(perf::FlamegraphProfiler::new(100));
+    targets=part1, part1_core, part2, part2_core);
 criterion_main!(benches);
