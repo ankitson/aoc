@@ -10,19 +10,17 @@ impl Soln1 {
 
     pub fn part1_core(input: &Input) -> Output {
         let lines = input.lines();
-        let mut possible: Vec<usize> = vec![];
+        let mut possible_sum = 0;
         let mut idx = 1;
         for line in lines {
             let mut is_valid = true;
 
-            let mut gameparts = line.split(':');
-            let info = gameparts.nth(1).unwrap();
-            let splits = info.split(';');
-            for split in splits {
+            let (_, info) = line.split_once(": ").unwrap();
+            let sets = info.split(';');
+            for split in sets {
                 split.split(',').for_each(|x| {
-                    let mut parts = x.trim().split(' ');
-                    let pn = parts.next().unwrap().parse::<usize>().unwrap();
-                    let pc = parts.next().unwrap();
+                    let (pn, pc) = x.trim().split_once(' ').unwrap();
+                    let pn = pn.parse::<usize>().unwrap();
                     match pc {
                         "red" => {
                             if pn > 12 {
@@ -44,11 +42,11 @@ impl Soln1 {
                 })
             }
             if is_valid {
-                possible.push(idx);
+                possible_sum += idx;
             }
             idx += 1;
         }
-        possible.iter().sum()
+        possible_sum
     }
 
     pub fn part2(raw_input: &str) -> Output {
@@ -65,8 +63,8 @@ impl Soln1 {
             let splits = info.split(';');
             let mut cresult = (0, 0, 0);
             for split in splits {
-                split.split(',').map(|x| x.trim()).for_each(|x| {
-                    let mut parts = x.split(' ');
+                split.split(',').for_each(|x| {
+                    let mut parts = x.trim().split(' ');
                     let pn = parts.next().unwrap().parse::<usize>().unwrap();
                     let pc = parts.next().unwrap();
                     match pc {
