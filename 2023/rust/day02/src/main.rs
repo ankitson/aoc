@@ -15,9 +15,17 @@ pub fn main() {
     println!("part1/sample1 = {:?}", part1);
     assert_eq!(part1, 8);
 
+    let part1 = soln1::Soln1::part1_parsing(input);
+    println!("part1_parsing/sample1 = {:?}", part1);
+    assert_eq!(part1, 8);
+
     let input: &str = include_str!("../../inputs/day02.txt");
     let part1 = soln1::Soln1::part1(input);
     println!("part1/day02 = {:?}", part1);
+    assert_eq!(part1, 2256);
+
+    let part1 = soln1::Soln1::part1_parsing(input);
+    println!("part1_parsing/day02 = {:?}", part1);
     assert_eq!(part1, 2256);
 
     let input: &str = include_str!("../../inputs/sample02.txt");
@@ -25,9 +33,17 @@ pub fn main() {
     println!("part2/sample02 = {:?}", part2);
     assert_eq!(part2, 2286);
 
+    let part2 = soln1::Soln1::part2_parsing(input);
+    println!("part2_parsing/sample02 = {:?}", part2);
+    assert_eq!(part2, 2286);
+
     let input: &str = include_str!("../../inputs/day02.txt");
     let part2 = soln1::Soln1::part2(input);
     println!("part2/day02 = {:?}", part2);
+    assert_eq!(part2, 74229);
+
+    let part2 = soln1::Soln1::part2_parsing(input);
+    println!("part2_parsing/day02 = {:?}", part2);
     assert_eq!(part2, 74229);
 }
 
