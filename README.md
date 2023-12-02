@@ -1,7 +1,7 @@
-Advent of Code solutions in Rust and other languages
+Advent of Code solutions in Rust and other languages. Each year's folder has more information.
 
-[x]   AoC 2021
+## [2023](/2023) - in progress
 
-[WIP] AoC 2022
+## [2022](/2022) - partial
 
-[WIP] AoC 2023
+## [2021](/2021) - complete
