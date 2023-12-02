@@ -275,6 +275,7 @@ dependencies = [
  "itertools 0.10.5",
  "regex",
  "scan_fmt",
+ "util",
 ]
 
 [[package]]
