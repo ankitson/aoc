@@ -16,6 +16,7 @@ def c(colors: str | Iterable[str], text: str) -> str:
     "YELLOW": "\033[93m",
     "RED": "\033[91m",
     "BOLD": "\033[1m",
+    "DIM": "\033[2m",
     "UNDERLINE": "\033[4m",
     "END": "\033[0m"
   }
@@ -91,7 +92,9 @@ def main():
       result_str = f"{result['item']:<50}{timens:>18.2f}ns{timeus:>18.2f}µs{timems:>18.2f}ms{times:>19.2f}s\n"
       txt_out.write(result_str)
 
-      if result_str.startswith('python'):
+      if result_str.find('nosum') != -1:
+        print(c("DIM",result_str),end="")
+      elif result_str.startswith('python'):
         print(c("GREEN",result_str),end="")
       elif result_str.startswith('rust'):
         print(c("RED",result_str),end="")
