@@ -1,7 +1,6 @@
 ITEM                                                          TIME(ns)            TIME(µs)            TIME(ms)             TIME(s)
-rust.day01.part1.realinput/part1                            72907.07ns             72.91µs              0.07ms               0.00s
-rust.day01.part1_simd.realinput/part1_simd                 107146.12ns            107.15µs              0.11ms               0.00s
-rust.day01.part2.realinput/part2                           346854.42ns            346.85µs              0.35ms               0.00s
-rust.day02.part1.realinput/part1                            86319.42ns             86.32µs              0.09ms               0.00s
-rust.day02.part2.realinput/part2                            82089.07ns             82.09µs              0.08ms               0.00s
-rust.TOTAL                                                 695316.09ns            695.32µs              0.70ms               0.00s
+rust.day01.part1.realinput/part1                            79510.31ns             79.51µs              0.08ms               0.00s
+rust.day01.part1_simd.realinput/part1_memchr                89720.26ns             89.72µs              0.09ms               0.00s
+rust.day02.part1.realinput/part1                            86033.52ns             86.03µs              0.09ms               0.00s
+rust.day02.part2.realinput/part2                            82225.19ns             82.23µs              0.08ms               0.00s
+rust.TOTAL                                                 337489.28ns            337.49µs              0.34ms               0.00s
