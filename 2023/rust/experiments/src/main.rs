@@ -9,6 +9,8 @@ pub fn main() {
     let _profiler = dhat::Profiler::new_heap();
 
     println!("Hello experiments!");
-    let popcnt1 = popcnt::popcnt(0b1010);
-    println!("popcnt(1010) = {:?}", popcnt1);
+    // let popcnt1 = popcnt::popcnt_naive(0b10101010);
+    let popcnt1 = 0;
+    let popcnt2 = popcnt::popcnt_split(0b10101010);
+    println!("popcnt(10101010) = {:?} = {:?}", popcnt1, popcnt2);
 }
