@@ -1,7 +1,7 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use day02::shared;
 use day02::soln1;
-use util::perf;
+use pprof::criterion::{Output, PProfProfiler};
 
 pub fn part1(c: &mut Criterion) {
     let contents: &str = include_str!("../../inputs/day02.txt");
@@ -23,6 +23,6 @@ pub fn part2(c: &mut Criterion) {
 
 criterion_group!(
     name=benches;
-    config=Criterion::default().with_profiler(perf::FlamegraphProfiler::new(100));
+    config=Criterion::default().with_profiler(PProfProfiler::new(100, Output::Flamegraph(None)));
     targets=part1, part2);
 criterion_main!(benches);
