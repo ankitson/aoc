@@ -16,18 +16,16 @@ impl Soln1 {
             let mut is_valid = true;
 
             let (_, info) = line.split_once(": ").unwrap();
-            let sets = info.split(';');
-            for split in sets {
-                split.split(',').for_each(|x| {
-                    let (pn, pc) = x.trim().split_once(' ').unwrap();
-                    let pn = pn.parse::<usize>().unwrap();
-                    match pc.as_bytes()[0] {
-                        b'r' => is_valid &= pn <= 12,
-                        b'g' => is_valid &= pn <= 13,
-                        b'b' => is_valid &= pn <= 14,
-                        _ => panic!("illegal"),
-                    }
-                })
+            let sets = info.split([';', ',']);
+            for set in sets {
+                let (pn, pc) = set.trim().split_once(' ').unwrap();
+                let pn = pn.parse::<usize>().unwrap();
+                match pc.as_bytes()[0] {
+                    b'r' => is_valid &= pn <= 12,
+                    b'g' => is_valid &= pn <= 13,
+                    b'b' => is_valid &= pn <= 14,
+                    _ => panic!("illegal"),
+                }
             }
             if is_valid {
                 possible_sum += idx;
