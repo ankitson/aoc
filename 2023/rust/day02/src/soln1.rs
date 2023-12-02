@@ -20,9 +20,9 @@ impl Soln1 {
             let splits = info.split(';');
             for split in splits {
                 split.split(',').for_each(|x| {
-                    let parts = x.trim().split(' ').collect_vec();
-                    let pn = parts[0].parse::<usize>().unwrap();
-                    let pc = parts[1];
+                    let mut parts = x.trim().split(' ');
+                    let pn = parts.next().unwrap().parse::<usize>().unwrap();
+                    let pc = parts.next().unwrap();
                     match pc {
                         "red" => {
                             if pn > 12 {
@@ -66,9 +66,9 @@ impl Soln1 {
             let mut cresult = (0, 0, 0);
             for split in splits {
                 split.split(',').map(|x| x.trim()).for_each(|x| {
-                    let parts = x.split(' ').collect_vec();
-                    let pn = parts[0].parse::<usize>().unwrap();
-                    let pc = parts[1];
+                    let mut parts = x.split(' ');
+                    let pn = parts.next().unwrap().parse::<usize>().unwrap();
+                    let pc = parts.next().unwrap();
                     match pc {
                         "red" => cresult.0 = pn.max(cresult.0),
                         "green" => cresult.1 = pn.max(cresult.1),
