@@ -237,7 +237,7 @@ version = "0.1.0"
 dependencies = [
  "criterion",
  "dhat",
- "itertools 0.10.5",
+ "itertools 0.12.0",
  "regex",
  "scan_fmt",
 ]
