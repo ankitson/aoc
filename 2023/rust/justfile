@@ -26,7 +26,7 @@ bench target:
 # that argument passed in with the above way of running benchmarks to get JSON outputs as well
 # So for now, you have to run this to get flamegraphs, and the above `bench` command for JSON
 # benchmark results.
-bench_flame target:
+benchflame target:
   @echo 'running cargo criterion on {{target}}..'
   mkdir -p benchmark_results
   cargo bench --bench corebench {{target}} -- --profile-time=5
