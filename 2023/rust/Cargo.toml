@@ -9,5 +9,5 @@ members = [
 [profile.release]
 debug = true
 
-[build]
-rustflags = ["-C", "target-cpu=native"] #For SIMD support
+# [build]
+# rustflags = ["-C", "target-cpu=native"] #For SIMD support
