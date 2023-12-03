@@ -51,22 +51,14 @@ x86-64-v4
 x86-64-v3 (supported, searched)
 x86-64-v2 (supported, searched)
 ...
-<<<<<<< HEAD
 ````
-
-=======
-
-```
->>>>>>> 2023-day02
 
 I wrote a simple implementation that uses SIMD for part 1 using BurntSushi's [memchr](https://docs.rs/memchr/latest/memchr/) library. This is the first SIMD library I came across and I probably am not using it right - this is actually slower than the naive implementation:
 
 ```
-
 ITEM TIME(µs)
 rust.day01.part1.realinput/part1 72.91µs
 rust.day01.part1_simd.realinput/part1_simd 107.15µs
-
 ```
 
 Since this library can only search for 3 1-byte long needles at a time, I have to do 6 searches per string. This is why I only wrote part 1 using this lib, not part 2. So to actually use SIMD better I will need to find a different library or dive in and see how to implement this search. The `ripgrep` library might be useful as a reference here?
@@ -74,14 +66,10 @@ Since this library can only search for 3 1-byte long needles at a time, I have t
 I added a rustflag to my `cargo` config to be able to use SIMD:
 
 ```
-
 [23/12/01 18:52]ankit@devbox:~/code/aoc/2023/rust/day01 (main \*)$ cat ~/.cargo/config
 [alias]
 rr = "run --release"
 
 [build]
 rustflags = ["-C", "target-cpu=native"] #For SIMD support
-
-```
-
 ```
