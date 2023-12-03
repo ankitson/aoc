@@ -72,7 +72,7 @@ def main():
       totals[lang]['typical_ns'] += val['typical_ns']
       totals[lang]['upper_ns'] += val['upper_ns']
     
-  print(f"Skipped {sum(nosums.values()):.2f}ns of reports - {list(nosums.keys())}")
+  print(f"Skipped {sum(nosums.values()):.2f}ns of reports from total - {list(nosums.keys())}")
 
   # Write summary to files & stdout
   with open(CSV_OUTPUT, 'w') as csv_out, open(MD_OUTPUT,'w') as md_out:
