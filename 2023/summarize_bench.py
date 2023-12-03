@@ -40,8 +40,8 @@ def main():
     'rust': 'rust/benchmark_results/',
     'python': 'python/benchmark_results/'
   }
-  CSV_OUTPUT = 'benchmark_summary.csv'
-  TXT_OUTPUT = 'benchmark_summary.txt'
+  CSV_OUTPUT = 'bench.csv'
+  MD_OUTPUT = 'bench.md'
 
   for (lang,BENCHMARK_DIR) in BENCHMARK_DIRS.items():
     for filename in os.listdir(BENCHMARK_DIR):
@@ -74,14 +74,15 @@ def main():
     
   print(f"Skipped {sum(nosums.values()):.2f}ns of reports - {list(nosums.keys())}")
 
-  with open(CSV_OUTPUT, 'w') as csv_out, open(TXT_OUTPUT,'w') as txt_out:
-  # Write summary to CSV
+  # Write summary to files & stdout
+  with open(CSV_OUTPUT, 'w') as csv_out, open(MD_OUTPUT,'w') as md_out:
     csv_writer = csv.DictWriter(csv_out, fieldnames=['item','lower_ns','typical_ns','upper_ns',], lineterminator="\n")
     csv_writer.writeheader()
 
-    header_str = f"{'ITEM':<50}{'TIME(ns)':>20}{'TIME(µs)':>20}{'TIME(ms)':>20}{'TIME(s)':>20}\n"
-    txt_out.write(header_str)
-    print(c(["BLUE","BOLD"],header_str),end="")
+    md_header_str = f"|{'ITEM':<50}|{'TIME(ns)':>15}|{'TIME(µs)':>15}|{'TIME(ms)':>15}|{'TIME(s)':>15}|\n"
+    md_header_str += "|" + "-" * 50 + "|" + "-" * 15 + "|" + "-" * 15 + "|" + "-" * 15 + "|" + "-" * 15 + "|" + "\n" 
+    md_out.write(md_header_str)
+    print(c(["BLUE","BOLD"],md_header_str),end="")
 
     for key in bench_keys:
       result = results[key]
@@ -89,29 +90,26 @@ def main():
 
       timens = result['typical_ns']
       timeus, timems, times = timens/(1000), timens/(1000_000), timens/(1000_000_000) 
-      result_str = f"{result['item']:<50}{timens:>18.2f}ns{timeus:>18.2f}µs{timems:>18.2f}ms{times:>19.2f}s\n"
-      txt_out.write(result_str)
+      md_str = f"|{result['item']:<50}|{timens:>13.2f}ns|{timeus:>13.2f}µs|{timems:>13.2f}ms|{times:>14.2f}s|\n"
+      md_out.write(md_str)
 
-      if result_str.find('nosum') != -1:
-        print(c("DIM",result_str),end="")
-      elif result_str.startswith('python'):
-        print(c("GREEN",result_str),end="")
-      elif result_str.startswith('rust'):
-        print(c("RED",result_str),end="")
-      # elif result_str.endswith('TOTAL'):
-        # print(c("BLUE",result_str),end="")
+      if md_str.find('nosum') != -1:
+        print(c("DIM",md_str),end="")
+      elif md_str.find('python') != -1:
+        print(c("GREEN",md_str),end="")
+      elif md_str.find('rust') != -1:
+        print(c("RED",md_str),end="")
     
     for (k,v) in totals.items():
       item = k+".TOTAL"
       csv_writer.writerow({"item": item, "lower_ns": v['lower_ns'], "typical_ns": v['typical_ns'], "upper_ns": v['upper_ns']})
 
-      result_str = f"{result['item']:<50}{timens:>18.2f}ns{timeus:>18.2f}µs{timems:>18.2f}ms{times:>19.2f}s\n"
       timens = v['typical_ns']
-      timeus, timems, times = timens/(1000), timens/(1000_000), timens/(1000_000_000)
-      result_str = f"{item:<50}{timens:>18.2f}ns{timeus:>18.2f}µs{timems:>18.2f}ms{times:>19.2f}s\n"
-      txt_out.write(result_str)
+      timeus, timems, times = timens/(1000), timens/(1000_000), timens/(1000_000_000)      
+      md_str = f"|{item:<50}|{timens:>13.2f}ns|{timeus:>13.2f}µs|{timems:>13.2f}ms|{times:>14.2f}s|\n"
+      md_out.write(md_str)
 
-      print(c("BLUE",result_str),end="")
+      print(c("BLUE",md_str),end="")
 
 
 def extract_measure(dict):
