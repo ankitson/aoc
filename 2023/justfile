@@ -2,4 +2,22 @@ fetch day:
   aoc --session-file .adventofcode.session --input-file "inputs/day{{day}}.txt" --puzzle-file "puzzles/day{{day}}.txt" --day {{day}} --year 2023 download
 
 summarize_bench:
-  python summarize_bench.py
+  #!/usr/bin/env python3
+  from subprocess import run
+  import sys
+  print("Running summarize bench") 
+  run([sys.executable, 'summarize_bench.py'])
+  benches = open('bench.md','r').readlines()
+  filtered = '\n'.join([line.strip() for line in benches if not "nosum" in line])
+  # print(f"benches: {filtered[0:5]}")
+  readme_file = open('README.md', 'r+')
+  contents = readme_file.read()
+  tagstart = contents.find("<tstart>")
+  tagend = contents.find("<tend>")
+  contents = contents[:tagstart] + "<tstart></tstart>\n" + filtered + "\n<tend></tend>" + contents[tagend+len("<tend></tend>"):]
+  readme_file.seek(0)
+  readme_file.write(contents)
+  readme_file.close()
+
+#summarize_bench:
+#  python summarize_bench.py

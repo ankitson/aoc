@@ -6,13 +6,15 @@ We use `Justfiles` liberally to perform common tasks. You can run commands from 
 
 ## Status
 
-| ITEM                                     | TIME(ns)        | TIME(µs)     | TIME(ms)   | TIME(s)   |
-| ---------------------------------------- | --------------- | ------------ | ---------- | --------- |
-| rust.day01.part1.realinput/part1         | 72896.11ns      | 72.90µs      | 0.07ms     | 0.00s     |
-| rust.day01.part2.realinput/part2         | 346756.31ns     | 346.76µs     | 0.35ms     | 0.00s     |
-| rust.day02.part1.realinput/part1_parsing | 7082.83ns       | 7.08µs       | 0.01ms     | 0.00s     |
-| rust.day02.part2.realinput/part2_parsing | 8926.44ns       | 8.93µs       | 0.01ms     | 0.00s     |
-| **rust.TOTAL**                           | **435661.69ns** | **435.66µs** | **0.44ms** | **0.00s** |
+<tstart></tstart>
+|ITEM | TIME(ns)| TIME(µs)| TIME(ms)| TIME(s)|
+|--------------------------------------------------|---------------|---------------|---------------|---------------|
+|rust.day01.part1.realinput/part1 | 72896.11ns| 72.90µs| 0.07ms| 0.00s|
+|rust.day01.part2.realinput/part2 | 346756.31ns| 346.76µs| 0.35ms| 0.00s|
+|rust.day02.part1.realinput/part1_parsing | 7196.17ns| 7.20µs| 0.01ms| 0.00s|
+|rust.day02.part2.realinput/part2_parsing | 8962.86ns| 8.96µs| 0.01ms| 0.00s|
+|rust.TOTAL | 435811.45ns| 435.81µs| 0.44ms| 0.00s|
+<tend></tend>
 
 ## Fetching Puzzles
 
