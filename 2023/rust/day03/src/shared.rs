@@ -1,9 +1,10 @@
 use itertools::Itertools;
 use regex::Regex;
 
-pub type Input = String;
-pub type Output = String;
+pub type Input = Vec<Vec<char>>;
+pub type Output = usize;
 
 pub fn parse(input: &str) -> Input {
-    todo!()
+    let grid = input.lines().map(|x| x.chars().collect_vec()).collect_vec();
+    grid
 }
