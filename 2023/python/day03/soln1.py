@@ -24,8 +24,7 @@ def part1(input):
       rows[nx].append(ny)
     
     for (rn,cols) in rows.items():
-      sorted_cols = sorted(cols)
-      for j in sorted_cols:
+      for j in cols:
         if (rn,j) in seen:
           continue
         before = max(j-1,0)
@@ -71,8 +70,7 @@ def part2(input):
       rows[nx].append(ny)
     
     for (rn,cols) in rows.items():
-      sorted_cols = sorted(cols)
-      for j in sorted_cols:
+      for j in cols:
         if (rn,j) in seen:
           continue
         before = max(j-1,0)
@@ -102,13 +100,22 @@ def main(sample, input1):
 
   soln = part1(sample)
   print(f"Part 1 (sample) = {soln}")
+  assert(soln == 4361)
 
   soln = part1(input1)
   print(f"Part 1 (realinput) = {soln}")
+  assert(soln == 535078)
+
+  input2 = open('../inputs/day03_2.txt', 'r').read()
+  soln = part1(input2)
+  print(f"Part 1 (otherinput) = {soln}")
+  assert(soln == 539637)
 
   soln = part2(sample)
   print(f"Part 2 (sample) = {soln}")
+  assert(soln == 467835)
 
   soln = part2(input1)
   print(f"Part 2 (realinput) = {soln}")
+  assert(soln == 75312571)
 

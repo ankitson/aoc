@@ -6,9 +6,11 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 input_dir = os.path.join(script_dir,"inputs")
 benchmark_dir = os.path.join(script_dir,"benchmark_results")
 def sample_input(day):
-  return os.path.join(input_dir, f"sample{day:02d}.txt")
+  return input_file(f"sample{day:02d}.txt")
 def real_input(day):
-  return os.path.join(input_dir, f"day{day:02d}.txt")
+  return input_file(f"day{day:02d}.txt")
+def input_file(name):
+  return os.path.join(input_dir, name)
 def bench_path(day):
   return os.path.join(benchmark_dir, f"day{day:02d}.json")
 
