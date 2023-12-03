@@ -1,5 +1,4 @@
 use itertools::Itertools;
-use regex::Regex;
 
 pub type Input = Vec<Vec<char>>;
 pub type Output = usize;
