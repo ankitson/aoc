@@ -143,10 +143,7 @@ impl Soln1 {
                     }
                 } else if num > 0 {
                     for gear in &gears {
-                        gear_parts
-                            .entry(*gear)
-                            .and_modify(|v| v.push(num))
-                            .or_insert(vec![num]);
+                        gear_parts.entry(*gear).or_default().push(num);
                     }
                     num = 0;
                     gears = HashSet::new();
@@ -183,7 +180,7 @@ impl Soln1 {
             let nbrs = nbrs.iter().filter(|(x, y)| input[*x][*y].is_digit(10));
             let mut rows: HashMap<usize, Vec<usize>> = HashMap::new();
             for (nx, ny) in nbrs {
-                rows.entry(*nx).or_insert_with(Vec::new).push(*ny);
+                rows.entry(*nx).or_default().push(*ny);
             }
 
             for (&rn, cols) in rows.iter() {
