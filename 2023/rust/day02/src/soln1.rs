@@ -156,14 +156,14 @@ impl Soln1 {
         fn accept_n(str: &str) -> (&str, usize) {
             let mut chars = str.chars();
             let cd0 = chars.next().unwrap();
+            let d0 = cd0.to_digit(10).unwrap();
             let pd1 = chars.next().unwrap();
             if pd1.is_ascii_digit() {
-                let d1 = (pd1 as u8) - ('0' as u8);
-                let d0 = (cd0 as u8) - ('0' as u8);
+                let d1 = pd1.to_digit(10).unwrap();
                 let n = 10 * d0 + d1;
                 return (&str[2..], n as usize);
             } else {
-                return (&str[1..], (cd0 as usize) - ('0' as usize));
+                return (&str[1..], d0 as usize);
             }
         }
         fn accept_color(str: &str) -> (&str, u8) {
@@ -191,14 +191,11 @@ impl Soln1 {
                 input = ninput;
                 let (ninput, c) = accept_color(input);
                 input = ninput;
-                if c == 0 {
-                    maxr = maxr.max(n);
-                } else if c == 1 {
-                    maxg = maxg.max(n);
-                } else if c == 2 {
-                    maxb = maxb.max(n);
-                } else {
-                    unreachable!();
+                match c {
+                    0 => maxr = maxr.max(n),
+                    1 => maxg = maxg.max(n),
+                    2 => maxb = maxb.max(n),
+                    _ => panic!("unknown color"),
                 }
                 if input.len() == 0 {
                     break;
