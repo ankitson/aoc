@@ -1,5 +1,5 @@
 fetch day:
-  aoc --session-file .adventofcode.session --input-file "inputs/day{{day}}.txt" --puzzle-file "puzzles/day{{day}}.txt" --day {{day}} --year 2023 download
+  aoc --session-file .adventofcode.session --input-file "inputs/day{{day}}.txt" --puzzle-file "puzzles/day{{day}}.md" --day {{day}} --year 2023 download
 
 summarize_bench:
   #!/usr/bin/env python3
