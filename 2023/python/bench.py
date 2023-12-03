@@ -5,6 +5,8 @@ import sys
 
 import bench_config
 import day01
+import day02
+import day03
 import util
 
 def str_result(result, tag):
@@ -46,6 +48,12 @@ def main():
   if day == 1:
     bench_it('day01.soln1.realinput/part1', day01.soln1.part1,input1)
     bench_it('day01.soln1.realinput/part2', day01.soln1.part2,input1)
+  if day == 2:
+    bench_it('day02.soln1.realinput/part1', day02.soln1.part1,input1)
+    bench_it('day02.soln1.realinput/part2', day02.soln1.part2,input1)
+  if day == 3:
+    bench_it('day03.soln1.realinput/part1', day03.soln1.part1,input1)
+    bench_it('day03.soln1.realinput/part2', day03.soln1.part2,input1)
   else:
     raise Exception(f"No benchmarks defined for day {day}")
 
