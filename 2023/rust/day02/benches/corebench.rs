@@ -14,7 +14,7 @@ pub fn part1(c: &mut Criterion) {
 
 pub fn part1_parsing(c: &mut Criterion) {
     let contents: &str = include_str!("../../inputs/day02.txt");
-    let mut group = c.benchmark_group("day02.part1_parsing.realinput");
+    let mut group = c.benchmark_group("day02.part1.realinput");
     group.bench_function("part1_parsing", |b| {
         b.iter(|| soln1::Soln1::part1_parsing(black_box(contents)))
     });
@@ -32,7 +32,7 @@ pub fn part2(c: &mut Criterion) {
 
 pub fn part2_parsing(c: &mut Criterion) {
     let contents: &str = include_str!("../../inputs/day02.txt");
-    let mut group = c.benchmark_group("day02.part2_parsing.realinput");
+    let mut group = c.benchmark_group("day02.part2.realinput");
     group.bench_function("part2_parsing", |b| {
         b.iter(|| soln1::Soln1::part2_parsing(black_box(contents)))
     });

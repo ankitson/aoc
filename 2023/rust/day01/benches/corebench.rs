@@ -15,7 +15,7 @@ pub fn part1(c: &mut Criterion) {
 pub fn part1_memchr(c: &mut Criterion) {
     let contents: &str = include_str!("../../inputs/day01.txt");
     let mut group = c.benchmark_group("day01.part1_simd.realinput");
-    group.bench_function("part1_memchr", |b| {
+    group.bench_function("part1_memchr.nosum", |b| {
         b.iter(|| soln1::Soln1::part1_memchr(black_box(contents)))
     });
     group.finish();

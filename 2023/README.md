@@ -4,6 +4,16 @@ This folder has solutions for Advent of Code 2023 in various languages. Although
 
 We use `Justfiles` liberally to perform common tasks. You can run commands from a justfile from the folder its in, or from this folder by prefixing the path: i.e `cd rust && just run 5` is equivalent to `just rust/run 5`
 
+## Status
+
+| ITEM                                     | TIME(ns)        | TIME(µs)     | TIME(ms)   | TIME(s)   |
+| ---------------------------------------- | --------------- | ------------ | ---------- | --------- |
+| rust.day01.part1.realinput/part1         | 72896.11ns      | 72.90µs      | 0.07ms     | 0.00s     |
+| rust.day01.part2.realinput/part2         | 346756.31ns     | 346.76µs     | 0.35ms     | 0.00s     |
+| rust.day02.part1.realinput/part1_parsing | 7082.83ns       | 7.08µs       | 0.01ms     | 0.00s     |
+| rust.day02.part2.realinput/part2_parsing | 8926.44ns       | 8.93µs       | 0.01ms     | 0.00s     |
+| **rust.TOTAL**                           | **435661.69ns** | **435.66µs** | **0.44ms** | **0.00s** |
+
 ## Fetching Puzzles
 
 `just fetch <x>` will download the puzzle text and input for that day. The [aoc-cli](https://github.com/scarvalhojr/aoc-cli/) package must be installed for this to work.
