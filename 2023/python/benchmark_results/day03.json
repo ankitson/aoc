@@ -1,0 +1,2 @@
+{"reason": "benchmark-complete", "id": "day03.soln1.realinput/part1", "typical": {"unit": "ns", "lower_bound": 4838437.637721425, "estimate": 4976308.370775466, "upper_bound": 5114179.103829507}}
+{"reason": "benchmark-complete", "id": "day03.soln1.realinput/part2", "typical": {"unit": "ns", "lower_bound": 4995585.604991785, "estimate": 5075291.441486721, "upper_bound": 5154997.277981657}}

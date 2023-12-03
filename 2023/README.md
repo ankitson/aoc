@@ -7,13 +7,16 @@ We use `Justfiles` liberally to perform common tasks. You can run commands from 
 ## Status
 
 <tstart></tstart>
-|ITEM                                              |       TIME(ns)|       TIME(µs)|       TIME(ms)|        TIME(s)|
+|ITEM | TIME(ns)| TIME(µs)| TIME(ms)| TIME(s)|
 |--------------------------------------------------|---------------|---------------|---------------|---------------|
-|rust.day01.part1.realinput/part1                  |     72896.11ns|        72.90µs|         0.07ms|          0.00s|
-|rust.day01.part2.realinput/part2                  |    346756.31ns|       346.76µs|         0.35ms|          0.00s|
-|rust.day02.part1.realinput/part1_parsing          |      7430.86ns|         7.43µs|         0.01ms|          0.00s|
-|rust.day02.part2.realinput/part2_parsing          |      9032.34ns|         9.03µs|         0.01ms|          0.00s|
-|rust.TOTAL                                        |    436115.62ns|       436.12µs|         0.44ms|          0.00s|
+|rust.day01.part1.realinput/part1 | 72896.11ns| 72.90µs| 0.07ms| 0.00s|
+|rust.day01.part2.realinput/part2 | 346756.31ns| 346.76µs| 0.35ms| 0.00s|
+|rust.day02.part1.realinput/part1_parsing | 7430.86ns| 7.43µs| 0.01ms| 0.00s|
+|rust.day02.part2.realinput/part2_parsing | 9032.34ns| 9.03µs| 0.01ms| 0.00s|
+|python.day03.soln1.realinput/part1 | 4976308.37ns| 4976.31µs| 4.98ms| 0.00s|
+|python.day03.soln1.realinput/part2 | 5075291.44ns| 5075.29µs| 5.08ms| 0.01s|
+|rust.TOTAL | 436115.62ns| 436.12µs| 0.44ms| 0.00s|
+|python.TOTAL | 10051599.81ns| 10051.60µs| 10.05ms| 0.01s|
 <tend></tend>
 
 ## Fetching Puzzles
