@@ -1,9 +1,6 @@
 mod shared;
 mod soln1;
 
-#[macro_use]
-extern crate scan_fmt;
-
 #[cfg(feature = "heapprofile")]
 #[global_allocator]
 static ALLOC: dhat::Alloc = dhat::Alloc;
@@ -16,18 +13,22 @@ pub fn main() {
     let input: &str = include_str!("../../inputs/sample04.txt");
     let part1 = soln1::Soln1::part1(input);
     println!("part1/sample1 = {:?}", part1);
+    assert_eq!(part1, 13);
 
     let input: &str = include_str!("../../inputs/day04.txt");
     let part1 = soln1::Soln1::part1(input);
     println!("part1/day04 = {:?}", part1);
+    assert_eq!(part1, 19135);
 
     let input: &str = include_str!("../../inputs/sample04.txt");
     let part2 = soln1::Soln1::part2(input);
     println!("part2/sample04 = {:?}", part2);
+    assert_eq!(part2, 30);
 
     let input: &str = include_str!("../../inputs/day04.txt");
     let part2 = soln1::Soln1::part2(input);
     println!("part2/day04 = {:?}", part2);
+    assert_eq!(part2, 5704953);
 }
 
 #[cfg(test)]
