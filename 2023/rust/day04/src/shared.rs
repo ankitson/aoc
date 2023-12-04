@@ -28,3 +28,15 @@ pub fn parse(input: &str) -> Input {
         })
         .collect_vec()
 }
+
+pub fn parse_faster(
+    raw_input: &str,
+) -> impl Iterator<Item = (impl Iterator<Item = u8> + '_, impl Iterator<Item = u8> + '_)> + '_ {
+    raw_input.lines().map(|line| {
+        let (_, thing) = line.split_once(':').unwrap();
+        let (wins, haves) = thing.split_once('|').unwrap();
+        let wins = wins.split_ascii_whitespace().filter_map(|x| x.parse::<u8>().ok());
+        let haves = haves.split_ascii_whitespace().filter_map(|x| x.parse::<u8>().ok());
+        (wins, haves)
+    })
+}
