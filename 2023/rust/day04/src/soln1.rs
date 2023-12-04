@@ -1,6 +1,7 @@
 use itertools::Itertools;
 
 use crate::shared::{parse, parse_faster, Input, Output};
+use bitset_core::BitSet;
 pub struct Soln1 {}
 impl Soln1 {
     pub fn part1(raw_input: &str) -> Output {
@@ -29,6 +30,28 @@ impl Soln1 {
                 points += ((2 as u32).pow((overlap - 1) as u32)) as usize;
             }
         }
+        points
+    }
+
+    pub fn part1_bitset(raw_input: &str) -> Output {
+        let mut points = 0;
+        raw_input.lines().for_each(|line| {
+            let (_, thing) = line.split_once(':').unwrap();
+            let (wins, haves) = thing.split_once('|').unwrap();
+
+            let mut winset = [0u128; 1];
+            wins.split_ascii_whitespace().filter_map(|x| x.parse::<u8>().ok()).for_each(|w| {
+                winset.bit_flip(w.into());
+            });
+            let mut haveset = [0u128; 1];
+            haves.split_ascii_whitespace().filter_map(|x| x.parse::<u8>().ok()).for_each(|h| {
+                haveset.bit_flip(h.into());
+            });
+            let overlap = (winset[0] & haveset[0]).count_ones();
+            if overlap > 0 {
+                points += ((2 as u32).pow((overlap - 1) as u32)) as usize;
+            }
+        });
         points
     }
 

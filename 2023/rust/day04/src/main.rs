@@ -19,6 +19,10 @@ pub fn main() {
     println!("part1_streamparse/sample1 = {:?}", part1);
     assert_eq!(part1, 13);
 
+    let part1 = soln1::Soln1::part1_bitset(input);
+    println!("part1_bitset/sample1 = {:?}", part1);
+    assert_eq!(part1, 13);
+
     let input: &str = include_str!("../../inputs/day04.txt");
     let part1 = soln1::Soln1::part1(input);
     println!("part1/day04 = {:?}", part1);
@@ -26,6 +30,10 @@ pub fn main() {
 
     let part1 = soln1::Soln1::part1_streamparse(input);
     println!("part1_streamparse/day04 = {:?}", part1);
+    assert_eq!(part1, 19135);
+
+    let part1 = soln1::Soln1::part1_bitset(input);
+    println!("part1_bitset/day04 = {:?}", part1);
     assert_eq!(part1, 19135);
 
     let input: &str = include_str!("../../inputs/sample04.txt");
