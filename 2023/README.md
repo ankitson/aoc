@@ -17,8 +17,10 @@ We use `Justfiles` liberally to perform common tasks. You can run commands from 
 |rust.day03.part2.realinput/part2_fast             |    221807.52ns|       221.81µs|         0.22ms|          0.00s|
 |python.day03.soln1.realinput/part1                |   4784365.16ns|      4784.37µs|         4.78ms|          0.00s|
 |python.day03.soln1.realinput/part2                |   5070635.30ns|      5070.64µs|         5.07ms|          0.01s|
+|python.day04.soln1.realinput/part1                |   2900695.14ns|      2900.70µs|         2.90ms|          0.00s|
+|python.day04.soln1.realinput/part2                |   6258441.93ns|      6258.44µs|         6.26ms|          0.01s|
 |rust.TOTAL                                        |    760565.08ns|       760.57µs|         0.76ms|          0.00s|
-|python.TOTAL                                      |   9855000.46ns|      9855.00µs|         9.86ms|          0.01s|
+|python.TOTAL                                      |  19014137.53ns|     19014.14µs|        19.01ms|          0.02s|
 <tend></tend>
 
 ## Fetching Puzzles
