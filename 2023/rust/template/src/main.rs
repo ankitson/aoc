@@ -1,6 +1,7 @@
 mod shared;
 mod soln1;
 
+#[allow(unused_imports)]
 #[macro_use]
 extern crate scan_fmt;
 
@@ -32,6 +33,7 @@ pub fn main() {
 
 #[cfg(test)]
 mod tests {
+    #[allow(unused_imports)]
     use crate::soln1;
 
     #[test]
