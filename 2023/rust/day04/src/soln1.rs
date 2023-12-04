@@ -39,15 +39,15 @@ impl Soln1 {
             let (_, thing) = line.split_once(':').unwrap();
             let (wins, haves) = thing.split_once('|').unwrap();
 
-            let mut winset = [0u128; 1];
+            let mut winset = 0u128;
             wins.split_ascii_whitespace().filter_map(|x| x.parse::<u8>().ok()).for_each(|w| {
                 winset.bit_flip(w.into());
             });
-            let mut haveset = [0u128; 1];
+            let mut haveset = 0u128;
             haves.split_ascii_whitespace().filter_map(|x| x.parse::<u8>().ok()).for_each(|h| {
                 haveset.bit_flip(h.into());
             });
-            let overlap = (winset[0] & haveset[0]).count_ones();
+            let overlap = (winset & haveset).count_ones();
             if overlap > 0 {
                 points += ((2 as u32).pow((overlap - 1) as u32)) as usize;
             }
