@@ -39,56 +39,48 @@ impl Soln1 {
         }
         depth_maps.push(current_map);
 
-        println!("seed ranges: {seed_ranges:?}");
-        println!("mapss: {depth_maps:?}");
-
         let mut min_idx: usize = usize::MAX;
-        // let mut memo: HashMap<usize, i64> = HashMap::new();
+        let mins = depth_maps.iter().map(|dm| dm.iter().map(|x| x.0).min().unwrap() as i64).collect_vec();
+        let maxs = depth_maps.iter().map(|dm| dm.iter().map(|x| x.0 + x.2).max().unwrap() as i64).collect_vec();
 
-        let mut mins = depth_maps.iter().map(|dm| dm.iter().map(|x| x.0).min().unwrap() as i64).collect_vec();
-        let mut maxs = depth_maps.iter().map(|dm| dm.iter().map(|x| x.0 + x.2).max().unwrap() as i64).collect_vec();
-
-        // seed_ranges.par_bridge().
         for i in (0..seed_ranges.len() - 1).step_by(2) {
             let start = seed_ranges[i];
             let rangelen = seed_ranges[i + 1];
-            let res = (start..=start + rangelen)
-                .into_par_iter()
-                .fold_with((usize::MAX, HashMap::new()), |(current_min, memo), seed| {
-                    if !memo.contains_key(&seed) {
-                        let mut curr = seed as i64;
-                        for depth in 0..depth_maps.len() {
-                            let mut mapped = false;
-                            if curr < mins[depth] || curr > maxs[depth] {
-                                continue;
-                            }
-
-                            let mut next = 0;
-                            for (src, dst, rnglen) in depth_maps.get(depth).unwrap() {
-                                let srcoff = curr - (*src as i64);
-                                if srcoff < 0 || srcoff > (*rnglen as i64) {
-                                    continue;
-                                } else if srcoff < (*rnglen as i64) && srcoff >= 0 {
-                                    mapped = true;
-                                    next = (*dst as i64) + srcoff;
-                                    break;
-                                }
-                            }
-                            if !mapped {
-                                next = curr;
-                            }
-                            curr = next;
+            let res = (start..=start + rangelen) //S seeds
+                .fold(usize::MAX, |current_min, seed| {
+                    let mut curr = seed as i64;
+                    for depth in 0..depth_maps.len() {
+                        //D depth = constant 8
+                        let mut mapped = false;
+                        if curr < mins[depth] || curr > maxs[depth] {
+                            continue; //it isnt in any range so it maps to itself
                         }
-                        let mut new_memo = memo.clone();
-                        new_memo.insert(seed, curr);
-                        (current_min.min(curr as usize), new_memo)
-                    } else {
-                        (current_min, memo)
+
+                        let mut next = 0;
+                        for (src, dst, rnglen) in depth_maps.get(depth).unwrap() {
+                            //K maps per depth
+                            let srcoff = curr - (*src as i64);
+                            if srcoff < 0 || srcoff > (*rnglen as i64) {
+                                continue;
+                            } else if srcoff < (*rnglen as i64) && srcoff >= 0 {
+                                mapped = true;
+                                next = (*dst as i64) + srcoff;
+                                break;
+                            }
+                        }
+                        if !mapped {
+                            next = curr;
+                        }
+                        curr = next;
                     }
-                })
-                .map(|x| x.0)
-                .min()
-                .unwrap();
+                    // let mut new_memo = memo.clone();
+                    // new_memo.insert(seed, curr);
+                    // (current_min.min(curr as usize), new_memo)
+                    current_min.min(curr as usize)
+                });
+            // .map(|x| x.0)
+            // .min()
+            // .unwrap();
             min_idx = min_idx.min(res);
         }
         min_idx
