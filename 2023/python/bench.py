@@ -8,6 +8,7 @@ import day01
 import day02
 import day03
 import day04
+import day05
 import util
 
 def str_result(result, tag):
@@ -55,9 +56,12 @@ def main():
   elif day == 3:
     bench_it('day03.soln1.realinput/part1', day03.soln1.part1,input1)
     bench_it('day03.soln1.realinput/part2', day03.soln1.part2,input1)
-  if day == 4:
+  elif day == 4:
     bench_it('day04.soln1.realinput/part1', day04.soln1.part1,input1)
     bench_it('day04.soln1.realinput/part2', day04.soln1.part2,input1)
+  elif day == 5:
+    bench_it('day05.soln1.realinput/part1', day05.soln1.part1,input1)
+    bench_it('day05.soln1.realinput/part2', day05.soln1.part2,input1)
   else:
     raise Exception(f"No benchmarks defined for day {day}")
 
