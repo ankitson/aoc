@@ -12,16 +12,39 @@ impl Soln1 {
         let (times, dists) = input;
         let mut ans = 1;
         for (time, dist) in times.iter().zip(dists) {
-            ans *= (0..*time).fold(0, |wins, hold| {
-                let dist_covered = (time - hold) * hold;
-                if dist_covered > *dist {
-                    wins + 1
-                } else {
-                    wins
-                }
-            });
+            let t = *time as f64;
+            let d = *dist as f64;
+            // (t-x)*x > d
+            // -x^2 + tx -d > 0
+            // x >= lower root && <= upper root
+            // rounding: x>= ceil(lower) && x <= floor(upper)
+            // num in ranges = floor(upper) - ceil(lower) + 1
+            // root = -b/2a +- sqrt(b^2-4ac)/ 2a
+            // a = -1, b = t, c = -d
+            // root = t/2 +- sqrt(t^2-4*d) / -2
+            let a = t / 2.0;
+            let b = (t.powi(2) - 4.0 * d).sqrt() / 2.0;
+            let r1 = a + b;
+            let r2 = a - b;
+
+            // matching the distance does not work we have to beat it.
+            // for integer roots like 10, 20 -> the range is 11->19.
+            // so we want to round up, but +1 if its already an int
+            let lower = if r2.fract() == 0.0 { r2 as usize + 1 } else { r2.ceil() as usize };
+            let upper = if r1.fract() == 0.0 { r1 as usize - 1 } else { r1.floor() as usize };
+
+            let range = upper - lower + 1;
+            ans *= range as usize;
         }
         ans
+    }
+
+    pub fn part2_fast(raw_input: &str) -> Output {
+        let lines = raw_input.lines().collect_vec();
+        let t = lines[0].split_ascii_whitespace().skip(1).join("").parse::<f64>().unwrap();
+        let d = lines[1].split_ascii_whitespace().skip(1).join("").parse::<f64>().unwrap();
+        let root_diff = (t * t - 4.0 * (-d) * (-1.0)).sqrt();
+        root_diff as usize
     }
 
     pub fn part2(raw_input: &str) -> Output {

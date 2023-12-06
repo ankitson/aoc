@@ -29,8 +29,18 @@ pub fn main() {
     println!("part2/sample06 = {:?}", part2);
     assert_eq!(part2, 71503);
 
+    let input: &str = include_str!("../../inputs/sample06.txt");
+    let part2 = soln1::Soln1::part2_fast(input);
+    println!("part2_fast/sample06 = {:?}", part2);
+    assert_eq!(part2, 71503);
+
     let input: &str = include_str!("../../inputs/day06.txt");
     let part2 = soln1::Soln1::part2(input);
+    println!("part2/day06 = {:?}", part2);
+    assert_eq!(part2, 40087680);
+
+    let input: &str = include_str!("../../inputs/day06.txt");
+    let part2 = soln1::Soln1::part2_fast(input);
     println!("part2/day06 = {:?}", part2);
     assert_eq!(part2, 40087680);
 }

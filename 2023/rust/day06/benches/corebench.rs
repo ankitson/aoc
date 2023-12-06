@@ -18,8 +18,10 @@ pub fn part2(c: &mut Criterion) {
     let parsed = shared::parse(contents);
     let mut group = c.benchmark_group("day06.part2.realinput");
 
-    group.bench_function("part2", |b| b.iter(|| soln1::Soln1::part2(black_box(contents))));
+    group.bench_function("part2.nosum", |b| b.iter(|| soln1::Soln1::part2(black_box(contents))));
     group.bench_function("part2_core.nosum", |b| b.iter(|| soln1::Soln1::part2_core(black_box(&parsed))));
+    group.bench_function("part2_fast", |b| b.iter(|| soln1::Soln1::part2_fast(black_box(contents))));
+
     group.finish();
 }
 
