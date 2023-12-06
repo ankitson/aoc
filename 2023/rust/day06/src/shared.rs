@@ -21,18 +21,20 @@ pub fn parse_fast(input: &str) -> (Vec<usize>, Vec<usize>) {
     let mut ts = Vec::with_capacity(10);
     let mut ds = Vec::with_capacity(10);
     let mut prev_spc = false;
+    let mut nseen = false;
     let mut i = 13;
     let mut b = bytes[i];
 
     while b != b'\n' {
         match b {
             b if b >= b'0' && b <= b'9' => {
-                if prev_spc {
+                if prev_spc && nseen {
                     ts.push(n);
                     n = 0;
-                    prev_spc = false;
                 }
-                n = 10 * n + ((b - b'0') as usize)
+                n = 10 * n + ((b - b'0') as usize);
+                nseen = true;
+                prev_spc = false;
             }
             b' ' => {
                 prev_spc = true;
@@ -44,17 +46,19 @@ pub fn parse_fast(input: &str) -> (Vec<usize>, Vec<usize>) {
     }
     ts.push(n);
     n = 0;
+    nseen = false;
     i += 1 + 12;
     b = bytes[i];
     while b != b'\n' {
         match b {
             b if b >= b'0' && b <= b'9' => {
-                if prev_spc {
+                if prev_spc && nseen {
                     ds.push(n);
                     n = 0;
-                    prev_spc = false;
                 }
-                n = 10 * n + ((b - b'0') as usize)
+                n = 10 * n + ((b - b'0') as usize);
+                nseen = true;
+                prev_spc = false;
             }
             b' ' => {
                 prev_spc = true;

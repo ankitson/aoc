@@ -5,6 +5,9 @@ pub struct Soln1 {}
 impl Soln1 {
     pub fn part1(raw_input: &str) -> Output {
         let input = parse_fast(raw_input);
+        let input2 = parse(raw_input);
+        println!("wrong?: {input:?}");
+        println!("correct: {input2:?}");
         Self::part1_core(&input)
     }
 
