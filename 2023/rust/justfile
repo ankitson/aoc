@@ -11,7 +11,7 @@ check target:
 
 run target:
   @echo 'running {{target}}..'
-  cargo run -p {{target}}
+  cargo run --release -p {{target}}
 
 clean:
   @echo 'running cargo clean..'
