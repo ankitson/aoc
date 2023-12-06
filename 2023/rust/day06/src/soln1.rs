@@ -1,10 +1,10 @@
 use itertools::Itertools;
 
-use crate::shared::{parse, Input, Output};
+use crate::shared::{parse, parse_fast, Input, Output};
 pub struct Soln1 {}
 impl Soln1 {
     pub fn part1(raw_input: &str) -> Output {
-        let input = parse(raw_input);
+        let input = parse_fast(raw_input);
         Self::part1_core(&input)
     }
 
@@ -39,7 +39,7 @@ impl Soln1 {
         ans
     }
 
-    pub fn part2_fast(raw_input: &str) -> Output {
+    pub fn part2_other(raw_input: &str) -> Output {
         let lines = raw_input.lines().collect_vec();
         let t = lines[0].split_ascii_whitespace().skip(1).join("").parse::<f64>().unwrap();
         let d = lines[1].split_ascii_whitespace().skip(1).join("").parse::<f64>().unwrap();
@@ -53,7 +53,7 @@ impl Soln1 {
     }
 
     pub fn part2(raw_input: &str) -> Output {
-        let input = parse(raw_input);
+        let input = parse_fast(raw_input);
         Self::part2_core(&input)
     }
 
