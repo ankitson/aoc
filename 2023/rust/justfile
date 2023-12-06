@@ -30,7 +30,7 @@ bench target:
 benchflame target:
   @echo 'running cargo criterion on {{target}}..'
   mkdir -p benchmark_results
-  cargo bench --bench corebench {{target}} -- --profile-time=5
+  cargo bench -p {{target}} --bench corebench {{target}} -- --profile-time=5
   #cargo criterion -p {{target}} --message-format=json --profile-time=5 | tee benchmark_results/flame_{{target}}.json
 
 flamegraph target:
