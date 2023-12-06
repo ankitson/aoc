@@ -17,10 +17,9 @@ scan_fmt = "*"
 regex = "*"
 util = { path = "../util" }
 
-[features]
-heapprofile = []
-
-
 [[bench]]
 name = "corebench"
 harness = false
+
+[features]
+heapprofile = []

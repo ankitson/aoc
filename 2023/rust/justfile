@@ -11,16 +11,16 @@ check target:
 
 run target:
   @echo 'running {{target}}..'
-  cargo run -p {{target}}
+  cargo run --release -p {{target}}
 
 clean:
   @echo 'running cargo clean..'
   cargo clean
 
-bench target:
+bench target *ARGS:
   @echo 'running cargo criterion on {{target}}..'
   mkdir -p benchmark_results
-  cargo criterion -p {{target}} --message-format=json 1>benchmark_results/{{target}}.json
+  cargo criterion -p {{target}} --message-format=json -- {{ARGS}} 1>benchmark_results/{{target}}.json
 
 # To get the flamegraph to work, we have to pass in profile-time, and i don't know how to get
 # that argument passed in with the above way of running benchmarks to get JSON outputs as well
