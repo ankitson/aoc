@@ -4,7 +4,7 @@ pub type Input = Vec<(Vec<char>, usize)>;
 pub type Output = usize;
 
 pub fn parse(raw_input: &'static str) -> Input {
-    let mut pairs = raw_input
+    let pairs = raw_input
         .lines()
         .filter_map(|x| {
             if x.len() < 2 {
