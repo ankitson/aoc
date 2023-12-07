@@ -79,8 +79,8 @@ def main():
     csv_writer = csv.DictWriter(csv_out, fieldnames=['item','lower_ns','typical_ns','upper_ns',], lineterminator="\n")
     csv_writer.writeheader()
 
-    md_header_str = f"|{'ITEM':<50}|{'TIME(ns)':>15}|{'TIME(µs)':>15}|{'TIME(ms)':>15}|{'TIME(s)':>15}|\n"
-    md_header_str += "|" + "-" * 50 + "|" + "-" * 15 + "|" + "-" * 15 + "|" + "-" * 15 + "|" + "-" * 15 + "|" + "\n" 
+    md_header_str = f"|{'ITEM':<50}|{'TIME(ns)':>20}|{'TIME(µs)':>20}|{'TIME(ms)':>15}|{'TIME(s)':>15}|\n"
+    md_header_str += "|" + "-" * 50 + "|" + "-" * 20 + "|" + "-" * 20 + "|" + "-" * 15 + "|" + "-" * 15 + "|" + "\n" 
     md_out.write(md_header_str)
     print(c(["BLUE","BOLD"],md_header_str),end="")
 
@@ -90,7 +90,7 @@ def main():
 
       timens = result['typical_ns']
       timeus, timems, times = timens/(1000), timens/(1000_000), timens/(1000_000_000) 
-      md_str = f"|{result['item']:<50}|{timens:>13.2f}ns|{timeus:>13.2f}µs|{timems:>13.2f}ms|{times:>14.2f}s|\n"
+      md_str = f"|{result['item']:<50}|{timens:>18.2f}ns|{timeus:>18.2f}µs|{timems:>13.2f}ms|{times:>14.2f}s|\n"
       md_out.write(md_str)
 
       if md_str.find('nosum') != -1:
@@ -106,7 +106,7 @@ def main():
 
       timens = v['typical_ns']
       timeus, timems, times = timens/(1000), timens/(1000_000), timens/(1000_000_000)      
-      md_str = f"|{item:<50}|{timens:>13.2f}ns|{timeus:>13.2f}µs|{timems:>13.2f}ms|{times:>14.2f}s|\n"
+      md_str = f"|{item:<50}|{timens:>18.2f}ns|{timeus:>18.2f}µs|{timems:>13.2f}ms|{times:>14.2f}s|\n"
       md_out.write(md_str)
 
       print(c("BLUE",md_str),end="")
