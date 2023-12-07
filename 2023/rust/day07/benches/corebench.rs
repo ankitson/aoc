@@ -5,7 +5,7 @@ use pprof::criterion::{Output, PProfProfiler};
 
 pub fn parse(c: &mut Criterion) {
     let contents: &str = include_str!("../../inputs/day07.txt");
-    let mut group = c.benchmark_group("day07.parse.realinput");
+    let mut group = c.benchmark_group("day07.parse.nosum.realinput");
 
     group.bench_function("parse", |b| b.iter(|| shared::parse(black_box(contents))));
     group.finish();
