@@ -27,11 +27,9 @@ bench target *ARGS:
 # So for now, you have to run this to get flamegraphs, and the above `bench` command for JSON
 # benchmark results.
 
-benchflame target:
+benchflame target *ARGS:
   @echo 'running cargo criterion on {{target}}..'
-  mkdir -p benchmark_results
-  cargo bench -p {{target}} --bench corebench {{target}} -- --profile-time=5
-  #cargo criterion -p {{target}} --message-format=json --profile-time=5 | tee benchmark_results/flame_{{target}}.json
+  cargo criterion -p {{target}} --bench corebench -- --profile-time=5 {{ARGS}}
 
 flamegraph target:
   cargo flamegraph --profile release -p {{target}} -o benchmark_results/flame_{{target}}.svg
@@ -45,5 +43,12 @@ profile target:
   just bench {{target}}
   just heapprofile {{target}}
 
+asm target *ARGS:
+  cargo asm --color -p {{target}} --rust {{ARGS}} > asm_{{target}}.s.ansi
+
+asmbench target:
+  just asm {{target}} --bench corebench --everything
+
 watch target:
   cargo watch -x "run -p {{target}}"
+
