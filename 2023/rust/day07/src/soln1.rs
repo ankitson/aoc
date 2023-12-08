@@ -5,8 +5,18 @@ use itertools::Itertools;
 use crate::shared::{self, Output};
 pub struct Soln1 {}
 impl Soln1 {
+    #[allow(dead_code)]
+    pub fn read_all() -> usize {
+        let contents: &str = include_str!("../../inputs/day07.txt");
+        let mut i: usize = 0;
+        for _ in contents.chars() {
+            i += 1;
+        }
+        i
+    }
+
     fn kind(hand: &Vec<char>, part2: bool) -> usize {
-        let mut counts = hand.iter().counts();
+        let mut counts = hand.iter().counts(); //O(H)
         let mut max_non_j = 'F';
         if part2 {
             let j_freq = *counts.get(&'J').unwrap_or(&0);
@@ -25,7 +35,7 @@ impl Soln1 {
                 }
             }
         }
-        let freqs = counts.values().sorted().rev().collect_vec();
+        let freqs = counts.values().sorted().rev().collect_vec(); //O(H LOG H)
 
         if freqs.len() == 1 {
             return 10; //FIVE OF A KIND
@@ -87,9 +97,11 @@ impl Soln1 {
     }
 
     pub fn part1(raw_input: &'static str) -> Output {
-        let mut pairs = shared::parse(raw_input);
+        let mut pairs = shared::parse(raw_input); //N pairs
+                                                  //O(N LOG N)
         pairs.sort_by(|(h1, _r1), (h2, _r2)| Soln1::compare(h1, h2, false));
         let mut winnings = 0;
+        //O(N)
         for (idx, (_hand, bid)) in pairs.iter().enumerate() {
             let mult = idx + 1;
             let winning = mult * bid;
