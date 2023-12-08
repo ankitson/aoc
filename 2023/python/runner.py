@@ -74,8 +74,9 @@ def run_day7():
 
 def run_day8():
   sample = open(util.sample_input(8),'r').read()
+  sample2 = open(util.input_file('sample08_2.txt'),'r').read()
   input1 = open(util.real_input(8),'r').read()
-  day08.soln1.main(sample,input1)
+  day08.soln1.main(sample,sample2,input1)
 
 if __name__ == '__main__':
   main()
