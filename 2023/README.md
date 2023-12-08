@@ -29,9 +29,11 @@ We use `Justfiles` liberally to perform common tasks. You can run commands from 
 |python.day06.soln1.realinput/part2                |           4731.52ns|              4.73µs|         0.00ms|          0.00s|
 |rust.day07.baselines.realinput/read_all           |           2488.84ns|              2.49µs|         0.00ms|          0.00s|
 |rust.day07.baselines.realinput/sort_10k_str       |          29414.33ns|             29.41µs|         0.03ms|          0.00s|
+|rust.day08.part1.realinput/part1                  |         468802.57ns|            468.80µs|         0.47ms|          0.00s|
+|rust.day08.part2.realinput/part2                  |        2380844.85ns|           2380.84µs|         2.38ms|          0.00s|
 |python.day08.soln1.realinput/part1                |        2911814.50ns|           2911.81µs|         2.91ms|          0.00s|
 |python.day08.soln1.realinput/part2                |       16461741.50ns|          16461.74µs|        16.46ms|          0.02s|
-|rust.TOTAL                                        |   129861445478.89ns|      129861445.48µs|    129861.45ms|        129.86s|
+|rust.TOTAL                                        |   129864295126.31ns|      129864295.13µs|    129864.30ms|        129.86s|
 |python.TOTAL                                      |       54507439.09ns|          54507.44µs|        54.51ms|          0.05s|
 <tend></tend>
 
