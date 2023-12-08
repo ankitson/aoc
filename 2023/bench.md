@@ -33,8 +33,9 @@
 |rust.day06.part2.realinput/part2_other.nosum      |            377.77ns|              0.38µs|         0.00ms|          0.00s|
 |python.day06.soln1.realinput/part1                |          19273.52ns|             19.27µs|         0.02ms|          0.00s|
 |python.day06.soln1.realinput/part2                |           4731.52ns|              4.73µs|         0.00ms|          0.00s|
-|rust.day07.parse.nosum.realinput/parse            |          95691.60ns|             95.69µs|         0.10ms|          0.00s|
-|rust.day07.part1.realinput/part1                  |        4070354.86ns|           4070.35µs|         4.07ms|          0.00s|
-|rust.day07.part2.realinput/part2                  |        4422366.65ns|           4422.37µs|         4.42ms|          0.00s|
-|rust.TOTAL                                        |   129869906297.23ns|      129869906.30µs|    129869.91ms|        129.87s|
-|python.TOTAL                                      |       35133883.09ns|          35133.88µs|        35.13ms|          0.04s|
+|rust.day07.baselines.realinput/read_all           |           2488.84ns|              2.49µs|         0.00ms|          0.00s|
+|rust.day07.baselines.realinput/sort_10k_str       |          29414.33ns|             29.41µs|         0.03ms|          0.00s|
+|python.day08.soln1.realinput/part1                |        2911814.50ns|           2911.81µs|         2.91ms|          0.00s|
+|python.day08.soln1.realinput/part2                |       16461741.50ns|          16461.74µs|        16.46ms|          0.02s|
+|rust.TOTAL                                        |   129861445478.89ns|      129861445.48µs|    129861.45ms|        129.86s|
+|python.TOTAL                                      |       54507439.09ns|          54507.44µs|        54.51ms|          0.05s|
