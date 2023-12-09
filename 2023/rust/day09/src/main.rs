@@ -1,3 +1,5 @@
+#![feature(iter_map_windows)]
+
 mod shared;
 mod soln1;
 
@@ -17,18 +19,22 @@ pub fn main() {
     let input: &str = include_str!("../../inputs/sample09.txt");
     let part1 = soln1::part1(input);
     println!("part1/sample1 = {:?}", part1);
+    assert_eq!(part1, 114);
 
     let input: &str = include_str!("../../inputs/day09.txt");
     let part1 = soln1::part1(input);
     println!("part1/day09 = {:?}", part1);
+    assert_eq!(part1, 1916822650);
 
     let input: &str = include_str!("../../inputs/sample09.txt");
     let part2 = soln1::part2(input);
     println!("part2/sample09 = {:?}", part2);
+    assert_eq!(part2, 2);
 
     let input: &str = include_str!("../../inputs/day09.txt");
     let part2 = soln1::part2(input);
     println!("part2/day09 = {:?}", part2);
+    assert_eq!(part2, 966);
 }
 
 #[cfg(test)]
