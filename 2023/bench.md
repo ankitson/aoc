@@ -43,12 +43,8 @@
 |rust.day08.part2.realinput/part2                  |        2380844.85ns|           2380.84µs|         2.38ms|          0.00s|
 |python.day08.soln1.realinput/part1                |        2911814.50ns|           2911.81µs|         2.91ms|          0.00s|
 |python.day08.soln1.realinput/part2                |       16461741.50ns|          16461.74µs|        16.46ms|          0.02s|
-<<<<<<< HEAD
-|rust.day09.parse.nosum.realinput/parse            |          87887.61ns|             87.89µs|         0.09ms|          0.00s|
-|rust.day09.part1.realinput/part1                  |         227903.14ns|            227.90µs|         0.23ms|          0.00s|
-|rust.day09.part2.realinput/part2                  |         223933.85ns|            223.93µs|         0.22ms|          0.00s|
-|rust.TOTAL                                        |   129864746963.30ns|      129864746.96µs|    129864.75ms|        129.86s|
-=======
-|rust.TOTAL                                        |   129872618049.53ns|      129872618.05µs|    129872.62ms|        129.87s|
->>>>>>> main
+|rust.day09.parse.nosum.realinput/parse            |          83605.55ns|             83.61µs|         0.08ms|          0.00s|
+|rust.day09.part1.realinput/part1                  |         103455.34ns|            103.46µs|         0.10ms|          0.00s|
+|rust.day09.part2.realinput/part2                  |         221471.77ns|            221.47µs|         0.22ms|          0.00s|
+|rust.TOTAL                                        |   129872942976.64ns|      129872942.98µs|    129872.94ms|        129.87s|
 |python.TOTAL                                      |       54507439.09ns|          54507.44µs|        54.51ms|          0.05s|
