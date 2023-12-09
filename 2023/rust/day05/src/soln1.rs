@@ -28,7 +28,7 @@ impl Soln1 {
         }
         depth_maps.push(current_map);
 
-        let mut min_idx2: usize = usize::MAX;
+        let min_idx2: usize = usize::MAX;
         let mins = depth_maps.iter().map(|dm| dm.iter().map(|x| x.0).min().unwrap() as i64).collect_vec();
         let maxs = depth_maps.iter().map(|dm| dm.iter().map(|x| x.0 + x.2).max().unwrap() as i64).collect_vec();
 
@@ -147,17 +147,19 @@ impl Soln1 {
                 let parts = line.split_ascii_whitespace().map(|x| x.parse::<usize>().unwrap()).collect_vec();
                 current_map.push((parts[1], parts[0], parts[2]))
             } else {
-                current_map.sort_unstable_by_key(|(s, d, r)| d);
+                current_map.sort_unstable_by_key(|(s, d, r)| d.clone());
                 depth_maps.push(current_map);
                 current_map = vec![];
             }
         }
-        current_map.sort_unstable_by_key(|(s, d, r)| d);
+        current_map.sort_unstable_by_key(|(s, d, r)| d.clone());
         depth_maps.push(current_map);
 
-        let mut dmi = depth_maps.len() - 1;
-        let mut dm = depth_maps[dmi];
+        // let mut dmi = depth_maps.len() - 1;
+        // let mut dm = depth_maps[dmi];
+
+        todo!()
         // let next
-        for (src, dst, rnglen) in dm {}
+        // for (src, dst, rnglen) in dm {}
     }
 }

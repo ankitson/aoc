@@ -18,10 +18,7 @@ impl Soln1 {
             if (input_lines[i].len() < 2) {
                 continue;
             }
-            let digits = input_lines[i]
-                .chars()
-                .filter(|x| x.is_ascii_digit())
-                .collect_vec();
+            let digits = input_lines[i].chars().filter(|x| x.is_ascii_digit()).collect_vec();
             let first = digits[0].to_digit(10).unwrap() as usize;
             let last = digits[digits.len() - 1].to_digit(10).unwrap() as usize;
             current += last + (10 * first);
@@ -37,10 +34,8 @@ impl Soln1 {
     pub fn part2_core(input: &Input) -> Output {
         let input_lines: Vec<&str> = input.split('\n').collect();
         let mut current = 0;
-        let digit_regex =
-            Regex::new(r"1|2|3|4|5|6|7|8|9|one|two|three|four|five|six|seven|eight|nine").unwrap();
-        let rev_regex =
-            Regex::new(r"1|2|3|4|5|6|7|8|9|eno|owt|eerht|ruof|evif|xis|neves|thgie|enin").unwrap();
+        let digit_regex = Regex::new(r"1|2|3|4|5|6|7|8|9|one|two|three|four|five|six|seven|eight|nine").unwrap();
+        let rev_regex = Regex::new(r"1|2|3|4|5|6|7|8|9|eno|owt|eerht|ruof|evif|xis|neves|thgie|enin").unwrap();
         for i in 0..input_lines.len() {
             if input_lines[i].len() < 2 {
                 continue;
@@ -86,11 +81,11 @@ impl Soln1 {
     }
 
     pub fn part1_memchr_core(input: &mut Input) -> Output {
-        let mut input_lines: Vec<&str> = input.split('\n').collect();
+        let input_lines: Vec<&str> = input.split('\n').collect();
         let mut current = 0;
         for i in 0..input_lines.len() {
-            let mut line: &str = input_lines[i];
-            let mut line_bytes = line.as_bytes();
+            let line: &str = input_lines[i];
+            let line_bytes = line.as_bytes();
             if line.len() < 2 {
                 continue;
             }
