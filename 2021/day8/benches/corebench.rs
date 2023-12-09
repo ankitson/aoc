@@ -1,4 +1,4 @@
-#![feature(drain_filter)]
+#![feature(extract_if)]
 use criterion::{criterion_group, criterion_main, Criterion};
 use day8::soln1;
 use day8::soln2;

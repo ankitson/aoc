@@ -3,11 +3,7 @@ use std::collections::HashMap;
 pub struct Soln1 {}
 impl Soln1 {
     fn parse(input: &str) -> Vec<i32> {
-        let nums = input
-            .trim()
-            .split(',')
-            .map(|x| x.parse::<i32>().expect("illegal int"))
-            .collect::<Vec<i32>>();
+        let nums = input.trim().split(',').map(|x| x.parse::<i32>().expect("illegal int")).collect::<Vec<i32>>();
         nums
     }
 
@@ -46,12 +42,12 @@ impl Soln1 {
             return nums[0];
         }
 
-        // note below does not work, because the drain_filter may remove or mutate nums[0]
-        // let less = nums.drain_filter(|x| x <= &mut nums[0]);
+        // note below does not work, because the extract_if may remove or mutate nums[0]
+        // let less = nums.extract_if(|x| x <= &mut nums[0]);
         let pivot = &mut nums[0].clone();
 
-        let less = nums.drain_filter(|x| x < pivot).collect::<Vec<i32>>();
-        let eq = nums.drain_filter(|x| x == pivot).collect::<Vec<i32>>();
+        let less = nums.extract_if(|x| x < pivot).collect::<Vec<i32>>();
+        let eq = nums.extract_if(|x| x == pivot).collect::<Vec<i32>>();
         let eqlen = eq.len();
         let greater = nums;
 

@@ -1,4 +1,4 @@
-#![feature(drain_filter)]
+#![feature(extract_if)]
 use criterion::{criterion_group, criterion_main, Criterion};
 use day9::soln1;
 
@@ -19,9 +19,7 @@ pub fn part2(c: &mut Criterion) {
 pub fn part2_mut(c: &mut Criterion) {
     let contents: &str = include_str!("../inputs/day9.txt");
     let mut group = c.benchmark_group("day9.part2.mut.realinput");
-    group.bench_function("part2_mut", |b| {
-        b.iter(|| soln1::Soln1::part2_mut(contents))
-    });
+    group.bench_function("part2_mut", |b| b.iter(|| soln1::Soln1::part2_mut(contents)));
     group.finish();
 }
 

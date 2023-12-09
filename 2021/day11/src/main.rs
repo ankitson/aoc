@@ -1,4 +1,4 @@
-#![feature(array_zip)]
+// #![feature(array_zip)]
 mod shared;
 mod soln1;
 

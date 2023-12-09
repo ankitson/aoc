@@ -1,4 +1,4 @@
-#![feature(array_zip)]
+// #![feature(array_zip)]
 use criterion::{criterion_group, criterion_main, Criterion};
 use day11::soln1;
 
