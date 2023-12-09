@@ -22,14 +22,9 @@ bench target *ARGS:
   mkdir -p benchmark_results
   cargo criterion -p {{target}} --message-format=json -- {{ARGS}} 1>benchmark_results/{{target}}.json
 
-# To get the flamegraph to work, we have to pass in profile-time, and i don't know how to get
-# that argument passed in with the above way of running benchmarks to get JSON outputs as well
-# So for now, you have to run this to get flamegraphs, and the above `bench` command for JSON
-# benchmark results.
-
 benchflame target *ARGS:
   @echo 'running cargo criterion on {{target}}..'
-  cargo criterion -p {{target}} --bench corebench -- --profile-time=5 {{ARGS}}
+  cargo +nightly -Zbuild-std criterion -p {{target}} --bench corebench -- --profile-time=5 {{ARGS}}
 
 flamegraph target:
   cargo flamegraph --profile release -p {{target}} -o benchmark_results/flame_{{target}}.svg

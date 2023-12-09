@@ -1,5 +1,3 @@
-use std::arch::asm;
-
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use day07::shared;
 use day07::soln1;
@@ -29,6 +27,7 @@ pub fn read_all() -> u32 {
 pub fn sort_10k_str(vec: &mut Vec<String>) {
     // we can use a NOP sled to mark where our code is in the decompiled assembly
     // - but inline(never) works too :)
+    // use std::arch::asm;
     // unsafe {
     // asm!("99:"); //the label is renamed in the ASM so search for NOP
     // asm!("NOP");
@@ -70,6 +69,6 @@ pub fn part2(c: &mut Criterion) {
 
 criterion_group!(
     name=benches;
-    config=Criterion::default().with_profiler(PProfProfiler::new(100, Output::Flamegraph(None)));
+    config=Criterion::default().with_profiler(PProfProfiler::new(100, Output::Protobuf));
     targets=parse, baselines, part1, part2,);
 criterion_main!(benches);
