@@ -24,7 +24,7 @@ bench target *ARGS:
 
 benchflame target *ARGS:
   @echo 'running cargo criterion on {{target}}..'
-  cargo +nightly -Zbuild-std criterion -p {{target}} --bench corebench -- --profile-time=5 {{ARGS}}
+  cargo criterion -p {{target}} --bench corebench -- --profile-time=5 {{ARGS}}
 
 flamegraph target:
   cargo flamegraph --profile release -p {{target}} -o benchmark_results/flame_{{target}}.svg
