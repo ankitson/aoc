@@ -13,7 +13,7 @@ pub fn main() {
     #[cfg(feature = "heapprofile")]
     let _profiler = dhat::Profiler::new_heap();
 
-    // println!("Hello Day 07!");
+    println!("Hello Day 07!");
     let input: &str = include_str!("../../inputs/sample07.txt");
     let part1 = soln1::Soln1::part1(input);
     println!("part1/sample1 = {:?}", part1);
