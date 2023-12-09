@@ -2,7 +2,9 @@
 rustflags = [
   "-C", "target-cpu=native", #For SIMD support
 ]
-target = "x86_64-unknown-linux-gnu" #required for build-std used below
 
-[unstable]
-build-std = ["core", "std", "alloc", "proc_macro"]
+# These are needed to use -Zbuild-std, which builds the std lib as part of your compile
+# pprof needs these options to use "frame-pointer", but enabing all 3 seems to produce empty profiles
+# target = "x86_64-unknown-linux-gnu" #required for build-std used below
+# [unstable]
+# build-std = ["core", "std", "alloc", "proc_macro"]
