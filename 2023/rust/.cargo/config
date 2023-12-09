@@ -1,2 +1,8 @@
 [build]
-rustflags = ["-C", "target-cpu=native"] #For SIMD support
+rustflags = [
+  "-C", "target-cpu=native", #For SIMD support
+]
+target = "x86_64-unknown-linux-gnu" #required for build-std used below
+
+[unstable]
+build-std = ["core", "std", "alloc", "proc_macro"]
