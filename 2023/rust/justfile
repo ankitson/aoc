@@ -1,3 +1,4 @@
+alias g := genday
 genday target:
   ./genday.sh {{target}}
 
@@ -9,7 +10,13 @@ check target:
   @echo 'running cargo check on {{target}}..'
   cargo check -p {{target}}
 
+alias r := run
 run target:
+  @echo 'running {{target}}..'
+  cargo run -p {{target}}
+
+alias rr := run_release
+run_release target:
   @echo 'running {{target}}..'
   cargo run --release -p {{target}}
 
@@ -17,25 +24,28 @@ clean:
   @echo 'running cargo clean..'
   cargo clean
 
+alias b := bench
 bench target *ARGS:
   @echo 'running cargo criterion on {{target}}..'
   mkdir -p benchmark_results
   cargo criterion -p {{target}} --message-format=json -- {{ARGS}} 1>benchmark_results/{{target}}.json
 
-benchflame target *ARGS:
+alias bp := benchprof
+benchprof target *ARGS:
   @echo 'running cargo criterion on {{target}}..'
   cargo criterion -p {{target}} --bench corebench -- --profile-time=5 {{ARGS}}
 
 flamegraph target:
   cargo flamegraph --profile release -p {{target}} -o benchmark_results/flame_{{target}}.svg
 
+alias hp := heapprofile
 heapprofile target:
   cargo run --features heapprofile -p {{target}}
   mv dhat-heap.json benchmark_results/dhat_{{target}}.json
 
 profile target: 
-  just flamegraph {{target}}
   just bench {{target}}
+  just benchprof {{target}}
   just heapprofile {{target}}
 
 asm target *ARGS:
