@@ -27,10 +27,14 @@ We use `Justfiles` liberally to perform common tasks. You can run commands from 
 |rust.day06.part2.realinput/part2                  |            361.12ns|              0.36µs|         0.00ms|          0.00s|
 |python.day06.soln1.realinput/part1                |          19273.52ns|             19.27µs|         0.02ms|          0.00s|
 |python.day06.soln1.realinput/part2                |           4731.52ns|              4.73µs|         0.00ms|          0.00s|
-|rust.day07.part1.realinput/part1                  |        4070354.86ns|           4070.35µs|         4.07ms|          0.00s|
-|rust.day07.part2.realinput/part2                  |        4422366.65ns|           4422.37µs|         4.42ms|          0.00s|
-|rust.TOTAL                                        |   129869906297.23ns|      129869906.30µs|    129869.91ms|        129.87s|
-|python.TOTAL                                      |       35133883.09ns|          35133.88µs|        35.13ms|          0.04s|
+|rust.day07.part1.realinput/part1                  |        3940912.37ns|           3940.91µs|         3.94ms|          0.00s|
+|rust.day07.part2.realinput/part2                  |        4413914.03ns|           4413.91µs|         4.41ms|          0.00s|
+|rust.day08.part1.realinput/part1                  |         468802.57ns|            468.80µs|         0.47ms|          0.00s|
+|rust.day08.part2.realinput/part2                  |        2380844.85ns|           2380.84µs|         2.38ms|          0.00s|
+|python.day08.soln1.realinput/part1                |        2911814.50ns|           2911.81µs|         2.91ms|          0.00s|
+|python.day08.soln1.realinput/part2                |       16461741.50ns|          16461.74µs|        16.46ms|          0.02s|
+|rust.TOTAL                                        |   129872618049.53ns|      129872618.05µs|    129872.62ms|        129.87s|
+|python.TOTAL                                      |       54507439.09ns|          54507.44µs|        54.51ms|          0.05s|
 <tend></tend>
 
 ## Fetching Puzzles
