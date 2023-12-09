@@ -7,13 +7,12 @@ pub fn parse(c: &mut Criterion) {
     let contents: &str = include_str!("../../inputs/day{DAY_NUM}.txt");
     let mut group = c.benchmark_group("day{DAY_NUM}.parse.nosum.realinput");
 
-    group.bench_function("parse", |b| b.iter(|| shared::parse(black_box(contents))));
+    group.bench_function("parse", |b| b.iter(|| soln1::parse(black_box(contents))));
     group.finish();
 }
 
 pub fn part1(c: &mut Criterion) {
     let contents: &str = include_str!("../../inputs/day{DAY_NUM}.txt");
-    let parsed = shared::parse(contents);
     let mut group = c.benchmark_group("day{DAY_NUM}.part1.realinput");
 
     group.bench_function("part1", |b| b.iter(|| soln1::part1(black_box(contents))));
@@ -22,7 +21,6 @@ pub fn part1(c: &mut Criterion) {
 
 pub fn part2(c: &mut Criterion) {
     let contents: &str = include_str!("../../inputs/day{DAY_NUM}.txt");
-    let parsed = shared::parse(contents);
     let mut group = c.benchmark_group("day{DAY_NUM}.part2.realinput");
 
     group.bench_function("part2", |b| b.iter(|| soln1::part2(black_box(contents))));
