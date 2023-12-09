@@ -26,6 +26,11 @@ pub fn main() {
     println!("part1/day09 = {:?}", part1);
     assert_eq!(part1, 1916822650);
 
+    let input: &str = include_str!("../../inputs/day09.txt");
+    let part1 = soln1::part1_noalloc(input);
+    println!("part1_noalloc/day09 = {:?}", part1);
+    assert_eq!(part1, 1916822650);
+
     let input: &str = include_str!("../../inputs/sample09.txt");
     let part2 = soln1::part2(input);
     println!("part2/sample09 = {:?}", part2);
@@ -34,6 +39,10 @@ pub fn main() {
     let input: &str = include_str!("../../inputs/day09.txt");
     let part2 = soln1::part2(input);
     println!("part2/day09 = {:?}", part2);
+    assert_eq!(part2, 966);
+
+    let part2 = soln1::part2_noalloc(input);
+    println!("part2_noalloc/day09 = {:?}", part2);
     assert_eq!(part2, 966);
 }
 
