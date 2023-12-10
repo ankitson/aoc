@@ -91,8 +91,22 @@ def run_day9():
 
 def run_day10():
   sample = open(util.sample_input(10),'r').read()
-  input1 = open(util.real_input(10),'r').read()
-  day10.soln1.main(sample, input1)
+  sample2 = open(util.input_file('sample10_2.txt'),'r').read()
+  sample3 = open(util.input_file('sample10_3.txt'),'r').read()
+  sample4 = open(util.input_file('sample10_4.txt'),'r').read()
+  sample5 = open(util.input_file('sample10_5.txt'),'r').read()
+  sample6 = open(util.input_file('sample10_6.txt'),'r').read()
+  input1 = open(util.real_input(10),'r').read()  
+
+  if len(sys.argv) < 3:
+    day10.soln1.main(sample, sample2, sample3, sample4, sample5, sample6, input1)
+  else:
+    try:
+      curses.wrapper(functools.partial(day10.soln1.anim_main,sample,sample2, input1))
+    except curses.error as e:
+      print("Curses error. Likely your terminal is too small to display the grid")
+      import traceback
+      traceback.print_exc()
 
 if __name__ == '__main__':
   main()
