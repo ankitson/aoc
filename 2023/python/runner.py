@@ -11,6 +11,7 @@ import day06
 import day07
 import day08
 import day09
+import day10
 import util
 
 def main():
@@ -37,6 +38,8 @@ def main():
     run_day8()
   elif day == 9:
     run_day9()
+  elif day == 10:
+    run_day10()
   else:
     raise Exception(f"Day {day} not implemented")
 
@@ -85,6 +88,11 @@ def run_day9():
   sample = open(util.sample_input(9),'r').read()
   input1 = open(util.real_input(9),'r').read()
   day09.soln1.main(sample, input1)
+
+def run_day10():
+  sample = open(util.sample_input(10),'r').read()
+  input1 = open(util.real_input(10),'r').read()
+  day10.soln1.main(sample, input1)
 
 if __name__ == '__main__':
   main()
