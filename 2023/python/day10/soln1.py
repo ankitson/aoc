@@ -183,43 +183,84 @@ def part1(input):
   return dist // 2
 
 def part2(input):
-  input,start_idx = parse(input)
-  (dist,path) = stack_dfs(input, start_idx)
+  grid,start_idx = parse(input)
+  (dist,path) = stack_dfs(grid, start_idx)
+  points_x = defaultdict(list)
+  for (x,y) in path:
+    points_x[x].append(y)
+  for row in range(len(grid)):
+    points_x[row].sort()
   
-  (sx,sy) = start_idx
-  (odx,ody) = (path[1][0]-sx,path[1][1]-sy)
-  # (nx,ny) = path[1]
+  for row in range(len(grid)):
+    for col in range(len(grid[row])):
+      if (row,col) in path:
+        print('X', end='')
+      else:
+        print(grid[row][col], end='')
+    print("")
+
+  area = 0
+  for row in range(len(grid)):
+    area_row = 0
+    # print(f"points {row} = {points_x[row]}")
+    inside = True
+    for (y1,y2) in itertools.pairwise(points_x[row]):
+      print(f"\t {y1}-{y2} {inside}")
+      # print(f"inside = {inside}")
+      if inside:
+        #FJL7L7LJLJ||LJIL-7OO
+        #01234567890123456789
+        dots = len([grid[row][y] for y in range(y1+1,y2) if grid[row][y] == '.'])
+        # print(f"{dots} points between ({y1}, {y2})")
+        area_row += dots
+      inside = not inside
+    area += area_row
+    print(f"{row}: {area_row}")
+  return area
 
 
-  print(f"path = {path}")
-  #(below us means (1,0))
-  in_the_thing = set()
-  for i in range(1,len(path)): #ssuming it loops around on our left    
-    x,y = path[i]
-    thing = input[x][y]
-    if thing == 'L':
-      (odx,ody) = ()
-    (px,py) = path[i-1]
-    dx = px - x
-    dy = py - y
-    print(f"dx,dy = {dx},{dy}")
-    if dx == 0 and dy == 1:
-      (ldx,ldy) = (-1,0)
-    elif dx == 1 and dy == 0:
-      (ldx,ldy) = (0,1)
-    elif dx == 0 and dy == -1:
-      (ldx,ldy) = (1,0)
-    elif dx == -1 and dy == 0:
-      (ldx,ldy) = (0,-1)
-    else:
-      raise Exception("wat")
-    # (ldx,ldy) = (dx,dy-1)
-    (lx,ly) = (x+ldx,y+ldy)
-    print(f"im at {x},{y} and left is {lx},{ly}")
-    if input[lx][ly] == '.':
-      print(f"adding left {lx},{ly}")
-      in_the_thing.add((lx,ly))
-  return len(in_the_thing)
+  
+
+
+
+# def part2(input):
+#   input,start_idx = parse(input)
+#   (dist,path) = stack_dfs(input, start_idx)
+  
+#   (sx,sy) = start_idx
+#   (odx,ody) = (path[1][0]-sx,path[1][1]-sy)
+#   # (nx,ny) = path[1]
+
+
+#   print(f"path = {path}")
+#   #(below us means (1,0))
+#   in_the_thing = set()
+#   for i in range(1,len(path)): #ssuming it loops around on our left    
+#     x,y = path[i]
+#     thing = input[x][y]
+#     if thing == 'L':
+#       (odx,ody) = ()
+#     (px,py) = path[i-1]
+#     dx = px - x
+#     dy = py - y
+#     print(f"dx,dy = {dx},{dy}")
+#     if dx == 0 and dy == 1:
+#       (ldx,ldy) = (-1,0)
+#     elif dx == 1 and dy == 0:
+#       (ldx,ldy) = (0,1)
+#     elif dx == 0 and dy == -1:
+#       (ldx,ldy) = (1,0)
+#     elif dx == -1 and dy == 0:
+#       (ldx,ldy) = (0,-1)
+#     else:
+#       raise Exception("wat")
+#     # (ldx,ldy) = (dx,dy-1)
+#     (lx,ly) = (x+ldx,y+ldy)
+#     print(f"im at {x},{y} and left is {lx},{ly}")
+#     if input[lx][ly] == '.':
+#       print(f"adding left {lx},{ly}")
+#       in_the_thing.add((lx,ly))
+#   return len(in_the_thing)
 
 
     
@@ -227,7 +268,7 @@ def part2(input):
 
   raise Exception("not implemented!")
 
-def main(sample, sample2, sample3, sample4, sample5, sample6, input1):
+def main(sample, sample2, sample3, sample4, sample5, sample6, sample7, input1):
   print(f"Hello Day 10!")
 
   soln = part1(sample)
@@ -241,8 +282,10 @@ def main(sample, sample2, sample3, sample4, sample5, sample6, input1):
 
   soln = part2(sample5)
   print(f"Part 2 (sample5) = {soln}")
-  # soln = part2(sample6)
-  # print(f"Part 2 (sample6) = {soln}")
+  soln = part2(sample6)
+  print(f"Part 2 (sample6) = {soln}")
+  soln = part2(sample7)
+  print(f"Part 2 (sample7) = {soln}")
 
   # soln = part2(input1)
   # print(f"Part 2 (realinput) = {soln}")

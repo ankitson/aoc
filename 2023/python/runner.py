@@ -96,10 +96,11 @@ def run_day10():
   sample4 = open(util.input_file('sample10_4.txt'),'r').read()
   sample5 = open(util.input_file('sample10_5.txt'),'r').read()
   sample6 = open(util.input_file('sample10_6.txt'),'r').read()
+  sample7 = open(util.input_file('sample10_7.txt'),'r').read()
   input1 = open(util.real_input(10),'r').read()  
 
   if len(sys.argv) < 3:
-    day10.soln1.main(sample, sample2, sample3, sample4, sample5, sample6, input1)
+    day10.soln1.main(sample, sample2, sample3, sample4, sample5, sample6, sample7, input1)
   else:
     try:
       curses.wrapper(functools.partial(day10.soln1.anim_main,sample,sample2, input1))
