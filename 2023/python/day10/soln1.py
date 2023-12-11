@@ -59,12 +59,10 @@ def nbrs(grid, x, y):
 
 def bfs(nodes, start, stdscr, fps_cap, fps):
   to_visit = deque([(start,0)])
-  # to_visit = deque([(next(iter(nodes.keys())),0)])
   next_layer = deque([])
   seen = set()
   dseen = {}
   grid = nodes
-  # cdepth = 0
   while len(to_visit) > 0:
     ((vx,vy), depth) = to_visit.popleft()
     if stdscr is not None:
@@ -112,19 +110,11 @@ def bfs(nodes, start, stdscr, fps_cap, fps):
     dseen[(vx,vy)] = depth
     # print(f"Visit {visit}")
     this_nbrs = nbrs(nodes, vx,vy)
-
-    # annotated = [(nx,ny,nodes[nx][ny]) for ((dx,dy),(nx,ny)) in this_nbrs]
-    # if (vx,vy) == (52,98):
-      # print(f"NBRS OF THIS ONE = {annotated}")
-    # print(f"nbrs: = {annotated}")
     for ((dx,dy),(nx,ny)) in this_nbrs:
-      if not (nx,ny) in seen and not (nx,ny) in [t[0] for t in next_layer]:
+      if not (nx,ny) in seen and not (nx,ny) in next_layer:
         next_layer.append(((nx,ny),depth+1))
     
     if len(to_visit) == 0:
-      # annotated_next = [(nx,ny,nodes[nx][ny]) for ((nx,ny),depth) in next_layer]
-      # stdscr.addstr(f"Next layer  at depth {depth+1 }= {next_layer}")
-      # print(f"layer at depth {depth+1} = {annotated_next}")
       to_visit = next_layer
       next_layer = deque([])
   return (seen,dseen)
@@ -180,11 +170,13 @@ def parse(raw_input):
 def part1(input):
   input,start_idx = parse(input)
   # print(f"Part 1 input = {input}")
-  # (seen,dseen) = bfs(input, start_idx, None, None, None)
+  (seen,dseen) = bfs(input, start_idx, None, None, None)
+  print(f"BFS Value: {max(dseen.values())}")
 
   (dist,path) = stack_dfs(input, start_idx)
-  print(path)
-  return dist // 2
+  return dist//2
+  # print(path)
+  # return dist // 2
 
 def part2_picks(input):
   grid,start_idx = parse(input)
