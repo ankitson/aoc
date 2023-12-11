@@ -19,6 +19,12 @@ pub fn main() {
     println!("part1/sample1 = {:?}", part1);
     assert_eq!(part1, 374);
 
+    let part1 = soln1::part1_fast(input);
+    println!("part1_fast/sample1 = {:?}", part1);
+    assert_eq!(part1, 374);
+
+    panic!();
+
     let input: &str = include_str!("../../inputs/day11.txt");
     let part1 = soln1::part1(input);
     println!("part1/day11 = {:?}", part1);
