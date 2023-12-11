@@ -48,5 +48,8 @@
 |rust.day09.part1.realinput/part1_noalloc          |         114911.34ns|            114.91µs|         0.11ms|          0.00s|
 |rust.day09.part2.realinput/part2.nosum            |         221183.04ns|            221.18µs|         0.22ms|          0.00s|
 |rust.day09.part2.realinput/part2_noalloac         |         117004.17ns|            117.00µs|         0.12ms|          0.00s|
-|rust.TOTAL                                        |   129872849965.04ns|      129872849.97µs|    129872.85ms|        129.87s|
+|rust.day11.parse.nosum.realinput/parse            |          49899.11ns|             49.90µs|         0.05ms|          0.00s|
+|rust.day11.part1.realinput/part1                  |     3858575555.30ns|        3858575.56µs|      3858.58ms|          3.86s|
+|rust.day11.part2.realinput/part2                  |     3851994270.40ns|        3851994.27µs|      3851.99ms|          3.85s|
+|rust.TOTAL                                        |   137583419790.74ns|      137583419.79µs|    137583.42ms|        137.58s|
 |python.TOTAL                                      |       54507439.09ns|          54507.44µs|        54.51ms|          0.05s|
