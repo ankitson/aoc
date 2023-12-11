@@ -1,6 +1,7 @@
 fetch day:
   aoc --session-file .adventofcode.session --input-file "inputs/day{{day}}.txt" --puzzle-file "puzzles/day{{day}}.md" --day {{day}} --year 2023 download
 
+alias sb := summarize_bench
 summarize_bench:
   #!/usr/bin/env python3
   from subprocess import run
