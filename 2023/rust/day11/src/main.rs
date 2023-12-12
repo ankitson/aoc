@@ -21,6 +21,10 @@ pub fn main() {
 
     let part1 = soln1::part1_fast(input);
     println!("part1_fast/sample1 = {:?}", part1);
+    // assert_eq!(part1, 374);
+
+    let part1 = soln1::solve_faster(input);
+    println!("part1_faster/sample1 = {:?}", part1);
     assert_eq!(part1, 374);
 
     panic!();

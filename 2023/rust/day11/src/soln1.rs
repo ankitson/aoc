@@ -1,5 +1,5 @@
 use itertools::Itertools;
-use std::{collections::HashMap, fmt::Display};
+use std::fmt::Display;
 
 pub type Input = (Vec<Vec<char>>, Vec<(usize, usize)>, Vec<usize>, Vec<usize>);
 pub type Output = usize;
@@ -103,6 +103,62 @@ pub fn solve(raw_input: &str, part2: bool) -> Output {
     sum
 }
 
+pub fn solve_faster(raw_input: &str) -> Output {
+    /*
+    Distance along 1 dimension:
+
+    contribution from point xi:
+    = abs(xi-x0) + abs(xi-x0) + ... absolute value is hard to work with
+
+    $d(x_i) = (x_i-x_0) + (x_i-x_1) + ... (x_i-x_i) + (x_{i+1} - x_i) + (x_{i+2} - x_{i}) + ...$
+    $d(x_0) = (x_1-x_0) + (x_2-x_0) + (x_3-x_0) + ...$
+    $d(x_1) =    0.   + (x_2-x_1) + (x_3-x_1) + ...$
+    $d(x_2) =    0.   +.   0.   + (x_3-x_2) + ...$
+
+    $sum(d(x_i)) = (x1-x0) + (x2-(x0+x1)) + (x3-(x0+x1+x2)) + (x4-(x0+x1+x2+x3)) ...$
+    $sum(d(x_i)) = sum(x_i) - (N*x_0 + (N-1)*x_1 + ... 1*x_n)$
+     */
+    let (grid, mut galaxies, empty_rows, empty_cols) = parse(raw_input);
+    let g = galaxies.len();
+    galaxies.sort_by_key(|(y, x)| *x);
+    println!("galaxies: {:?}", galaxies);
+
+    let mut total = 0;
+    let mut prev = galaxies.last().unwrap().1;
+    let mut add = 0;
+    for i in (0..galaxies.len()).rev() {
+        let curr = galaxies[i].1;
+        add += prev-curr;
+        println!("Add {add} for galaxy {i} = {curr}");
+        total += add;
+        prev = curr;
+    }
+    println!("X sum: {}", total);
+
+    galaxies.sort_by_key(|(y, x)| *y);
+    let mut total = 0;
+    let mut prev = galaxies.last().unwrap().0;
+    let mut add = 0;
+    for i in (0..galaxies.len()).rev() {
+        let curr = galaxies[i].0;
+        add += prev-curr;
+        total += add;
+        prev = curr;
+    }
+    println!("Y sum: {}", total);
+
+
+    let xi = galaxies.iter().map(|(y, x)| *x).collect_vec();
+
+    let add = xi.iter().enumerate().map(|(i,x)| i * x).sum::<usize>();
+    let subtract = xi.iter().enumerate().map(|(i,x)| (g-i) * x).sum::<usize>();
+    println!("X add: {} sub: {}", add, subtract);
+    let sum = add - subtract;
+    println!("X sum: {}", sum);
+
+    todo!()
+}
+
 fn solve_fast(raw_input: &str) -> Output {
     /* 
     d(a,b) = |x1-x2| + |y1-y2| 
@@ -110,6 +166,15 @@ fn solve_fast(raw_input: &str) -> Output {
     dc(a,b) = |y1-y2|
     D = sum(d(a,b)) = sum(dr(a,b)) + sum(dc(a,b)) we can compute X & Y distances separately
     dc(yi) = (y9-yi) + (y8-yi) + (y7-yi) + (y6-yi) + (yi-yi-1) + (yi - yi-2) = (NCOLS - i) * (-yi) + i * yi + suffix[i:] - prefix[:i]
+
+    R = numrows
+    dc(yi) = (R-1-i) * (-yi) + i*yi + suffix[i+1:] - prefix[:i-1]
+    dc(y0) = (R-1) * (-y0) + 0*y0 + suffix[1:] - prefix[:0] = (R-1)*(-yo) + suffix[1:]
+    dc(y1) = (R-2) * (-y1) + 1*y1 + suffix[2:] - prefix[:1] 
+    dc(y2) = (R-3) * (-y2) + 2*y2 + suffix[3:] - prefix[:2]
+
+sum()      = -1*((R-1)yo + (R-2)y1) + ..) + (y1 + 2y2 + 3y3 ...) + y1 + 2y2 + 3y3 + ... - ()  
+    
     */
     let (grid, mut galaxies, empty_rows, empty_cols) = parse(raw_input);
     
