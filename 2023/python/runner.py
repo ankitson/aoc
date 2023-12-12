@@ -11,6 +11,7 @@ import day06
 import day07
 import day08
 import day09
+import day10
 import util
 
 def main():
@@ -37,6 +38,8 @@ def main():
     run_day8()
   elif day == 9:
     run_day9()
+  elif day == 10:
+    run_day10()
   else:
     raise Exception(f"Day {day} not implemented")
 
@@ -85,6 +88,27 @@ def run_day9():
   sample = open(util.sample_input(9),'r').read()
   input1 = open(util.real_input(9),'r').read()
   day09.soln1.main(sample, input1)
+
+def run_day10():
+  sample = open(util.sample_input(10),'r').read()
+  sample2 = open(util.input_file('sample10_2.txt'),'r').read()
+  sample3 = open(util.input_file('sample10_3.txt'),'r').read()
+  sample4 = open(util.input_file('sample10_4.txt'),'r').read()
+  sample5 = open(util.input_file('sample10_5.txt'),'r').read()
+  sample6 = open(util.input_file('sample10_6.txt'),'r').read()
+  # sample7 = open(util.input_file('sample10_7.txt'),'r').read()
+  # sample8 = open(util.input_file('sample10_8.txt'),'r').read()
+  input1 = open(util.real_input(10),'r').read()  
+
+  if len(sys.argv) < 3:
+    day10.soln1.main(sample, sample2, sample3, sample4, sample5, sample6, input1)
+  else:
+    try:
+      curses.wrapper(functools.partial(day10.soln1.anim_main,sample,sample2, input1))
+    except curses.error as e:
+      print("Curses error. Likely your terminal is too small to display the grid")
+      import traceback
+      traceback.print_exc()
 
 if __name__ == '__main__':
   main()
