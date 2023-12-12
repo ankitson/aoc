@@ -29,6 +29,6 @@ pub fn part1(raw_input: &str) -> Output {
 pub fn part2(raw_input: &str) -> Output {
     let (grid, start) = parse(raw_input);
 
-    println!("P1 Input = {input:?}");
+    println!("P1 Input = {raw_input:?}");
     todo!()
 }
