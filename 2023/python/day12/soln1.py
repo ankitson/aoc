@@ -69,12 +69,15 @@ def part1(raw_input):
 
 
 def solve(row, runs, conds, trace, taken):
+  # print(f"SOLVE {row} {runs} {conds} {taken}")
   trace.append(f"solve {''.join(row)} {runs} {conds}")
   # print(f"solve {runs} {conds}")
   hashes = [i for i in range(len(row)) if row[i] == '#']
   if len(conds) == 0:
-    taken_str = ''.join([str(x) for x in taken])
+    taken_str = ''.join([str(x) for x in sorted(taken)])
     if taken_str in seen: #we have already covered this path
+      trace.append(f"already covered path {taken_str}")
+      # print(trace)
       return 0
     #all hashes must be used
     row_print = copy.deepcopy(row)
@@ -90,7 +93,7 @@ def solve(row, runs, conds, trace, taken):
     #     taken_all.append(j)
     unused_hashes = [i for i in hashes if not i in taken]
     if len(unused_hashes) > 0:
-      trace = []
+      # trace = []
       trace.append(f"unused {unused_hashes}")
       # print(trace)
       return 0
@@ -107,7 +110,7 @@ def solve(row, runs, conds, trace, taken):
       row_print[i] = "#"
     rowstr = ''.join(row_print)
 
-    trace = []
+    # trace = []
     trace.append(f"row: {rowstr}")
     trace.append(f"taken: {taken}")
     trace.append(f"returning 0")
@@ -116,33 +119,37 @@ def solve(row, runs, conds, trace, taken):
   
   (run_start, run_len) = runs[0]
 
+  if len(runs) == 1 and run_start == 9:
+    # print("consider run start 9")
+    trace.append(f"consider run start 9: {runs[0]}")
+  
   nways_without = 0
   if not all([ch == '#' for ch in row[run_start:run_start+run_len]]):
     # we can skip ? runs but not "#" runs
     nways_without = solve(row, runs[1:], conds, trace + ["skip run"], taken)
 
+  if len(runs) == 1 and run_start ==9:
+    # print("consider 9 without skip")
+    
+    trace.append(f"consider run start 9 after skip: {runs[0]}")
+
   # or use it - we can use part of it and split, or all of it
   cond = conds[0]
   nways_with = 0
+
   for start_idx in range(0,run_len-cond+1):  #[0,3-1+1-1] = [0,2]
     abs_start = run_start + start_idx
-    if abs_start > 0 and row[abs_start-1] == '#': #can't split with a "#" before
+    if abs_start < 0  or (abs_start-1) in taken: #row[abs_start-1] == '#': #can't split with a "#" before
       continue
     (remain_start, remain_len) = (run_start + start_idx + cond + 1,run_len-start_idx- cond - 1) # we have to skip 1 for spacing
-
-    #we cant split with a "#" after our split -
-    if remain_start < len(row) and row[remain_start-1] == '#':
-      continue
     next_runs = runs[1:]
     if remain_len > 0:
-      next_runs.insert(0, (remain_start, remain_len))
-    # print(f"next runs = {next_runs}")
+      if not remain_start -1 in taken:
+        next_runs.insert(0, (remain_start, remain_len))
     next_taken = copy.deepcopy(taken)
     for j in range(abs_start, abs_start+cond):
-      # print(f"add {j} to taken")
       next_taken.add(j)
     nways_with += solve(row, next_runs, conds[1:], trace + [f"take run idx {start_idx + run_start}", f"taken: {next_taken}"], next_taken)
-    # taken = old_taken
   
   #or we can merge this run and the next run if they are adjacent
   nways_merge = 0
@@ -152,7 +159,7 @@ def solve(row, runs, conds, trace, taken):
       next_runs = runs[1:]
       next_runs[0] =  (run_start, run_len + nrl)
       nways_merge += solve(row, next_runs, conds, trace + [f"merge runs"], taken)
-      
+  
   return nways_without + nways_with + nways_merge
 
 def part2(input):
@@ -172,5 +179,3 @@ def main(sample, input1):
 
   # soln = part2(input1)
   # print(f"Part 2 (realinput) = {soln}")
-
-
