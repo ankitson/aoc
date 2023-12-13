@@ -1,6 +1,3 @@
-
-import copy
-
 def parse(raw_input):
   grids = raw_input.split("\n\n")
   ret = []
@@ -9,12 +6,6 @@ def parse(raw_input):
     gridp = [list(line) for line in lines if len(line) > 2]
     ret.append(gridp)
   return ret
-
-def pgrid(grid):
-  for row in grid:
-    for col in row:
-      print(col,end="")
-    print()
 
 def solve(grid):
   width = len(grid[0])
@@ -41,7 +32,6 @@ def solve(grid):
 
 def part1(input):
   grids = parse(input)
-  print(len(grids))
   total = 0
   for grid in grids:
     
@@ -109,7 +99,7 @@ def part2(input):
           total += (100*reflect_horiz)
         else:
           done = False
-    print(f" total = {total}")
+    # print(f" total = {total}")
   return total
 
 def main(sample, input1):
