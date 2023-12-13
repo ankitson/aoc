@@ -10,24 +10,16 @@ def parse(raw_input):
 def solve(grid):
   width = len(grid[0])
   candidates = set(list(range(1,width)))
-  reflect_sizes = {}
-  for (ri,row) in enumerate(grid):
-    reflect_sizes[ri] = {}
-    for i in range(1,len(row)): #mirror is before position i
-      fwd = i
-      bwd = i -1
-      if row[fwd] != row[bwd]:
-        if i in candidates:
-          candidates.remove(i)
-      reflect_size = 1
-      while fwd < width and bwd >= 0 and row[fwd] == row[bwd]:
-        reflect_size += 1
+  for row in grid:
+    for ci in range(1,len(row)): #mirror is before position i
+      fwd,bwd = ci,ci-1
+      while fwd < width and bwd >= 0:
+        if row[fwd] != row[bwd]:
+          if ci in candidates:
+            candidates.remove(ci)
+          break
         fwd += 1
         bwd -= 1
-        if fwd < width and bwd >=0 and row[fwd] != row[bwd]:
-          if i in candidates:
-            candidates.remove(i)
-      reflect_sizes[ri][i] = reflect_size 
   return candidates
 
 def part1(input):
@@ -36,12 +28,10 @@ def part1(input):
   for grid in grids:
     
     reflect_vertical = solve(grid)
-
     transpose = [[0 for i in range(len(grid))] for j in range(len(grid[0]))]
     for i in range(len(grid)):
       for j in range(len(grid[0])):
         transpose[j][i] = grid[i][j]
-
     reflect_horiz = solve(transpose)
 
     reflect_vertical = list(reflect_vertical)[0] if reflect_vertical and len(reflect_vertical) > 0 else None
@@ -99,7 +89,6 @@ def part2(input):
           total += (100*reflect_horiz)
         else:
           done = False
-    # print(f" total = {total}")
   return total
 
 def main(sample, input1):
@@ -120,4 +109,3 @@ def main(sample, input1):
   soln = part2(input1)
   print(f"Part 2 (realinput) = {soln}")
   assert(soln == 32497)
-

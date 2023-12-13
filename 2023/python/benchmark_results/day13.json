@@ -1,2 +1,2 @@
-{"reason": "benchmark-complete", "id": "day13.soln1.realinput/part1", "typical": {"unit": "ns", "lower_bound": 11729134.730252396, "estimate": 12184881.462114086, "upper_bound": 12640628.193975776}}
-{"reason": "benchmark-complete", "id": "day13.soln1.realinput/part2", "typical": {"unit": "ns", "lower_bound": 820409444.4859493, "estimate": 834026051.8093904, "upper_bound": 847642659.1328316}}
+{"reason": "benchmark-complete", "id": "day13.soln1.realinput/part1", "typical": {"unit": "ns", "lower_bound": 7233652.585283974, "estimate": 7569023.7994422205, "upper_bound": 7904395.013600467}}
+{"reason": "benchmark-complete", "id": "day13.soln1.realinput/part2", "typical": {"unit": "ns", "lower_bound": 506058310.03120327, "estimate": 515729019.37179273, "upper_bound": 525399728.7123822}}
