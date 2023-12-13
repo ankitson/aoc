@@ -57,20 +57,13 @@ def part1(input):
     reflect_vertical = list(reflect_vertical)[0] if reflect_vertical and len(reflect_vertical) > 0 else None
     reflect_horiz = list(reflect_horiz)[0] if reflect_horiz and len(reflect_horiz) > 0 else None
 
-    if reflect_vertical and reflect_horiz:
-      if reflect_vertical > reflect_horiz:
-        print(f"v {reflect_vertical} for grid")
-        total += reflect_vertical
-      else:
-        print(f"h {reflect_horiz} for grid")
-        total += (100*reflect_horiz)
-    elif reflect_vertical is not None or reflect_horiz is not None:
-      if reflect_vertical is not None:
-        total += reflect_vertical
-      else:
-        total += (100*reflect_horiz) # type: ignore
+    if reflect_vertical is not None:
+      total += reflect_vertical
+    elif reflect_horiz is not None:
+      total += (100*reflect_horiz)
     else:
-      print(f"no refles")
+      print("UH OH")
+
   return total
 
 def part2(input):
@@ -93,43 +86,29 @@ def part2(input):
       for smudge_col in range(len(grid[0])):
         if done:
           break
-        new = "#" if grid[smudge_row][smudge_col] == '.' else '.'
-        new_grid = copy.deepcopy(grid)
-        new_grid[smudge_row][smudge_col] = new
+        
+        grid[smudge_row][smudge_col] =  "#" if grid[smudge_row][smudge_col] == '.' else '.'
 
-        reflect_vertical = solve(new_grid) - found_v
+        reflect_vertical = solve(grid) - found_v
         reflect_vertical = list(reflect_vertical)[0] if len(reflect_vertical) > 0 else None
 
-        transpose = [[0 for i in range(len(new_grid))] for j in range(len(new_grid[0]))]
+        transpose = [[0 for i in range(len(grid))] for j in range(len(grid[0]))]
         for i in range(len(grid)):
           for j in range(len(grid[0])):
-            transpose[j][i] = new_grid[i][j]
+            transpose[j][i] = grid[i][j]
 
         reflect_horiz = solve(transpose) - found_h
         reflect_horiz = list(reflect_horiz)[0] if reflect_horiz and len(reflect_horiz) > 0 else None
 
-        if reflect_vertical and reflect_horiz:
-          if reflect_vertical > reflect_horiz and not reflect_vertical in found_v:
-            print(f"v={reflect_vertical}",end="")
-            total += reflect_vertical
-            found_v.add(reflect_vertical)
-          elif reflect_horiz and not reflect_horiz in found_h:
-            print(f"h={reflect_horiz}",end="")
-            total += (100*reflect_horiz)
-            found_h.add(reflect_horiz)
-          done = True
-        elif reflect_vertical is not None or reflect_horiz is not None:
-          if reflect_vertical is not None and not reflect_vertical in found_v:
-            print(f"v={reflect_vertical}",end="")
-            total += reflect_vertical
-            found_v.add(reflect_vertical)
-          elif reflect_horiz and (not found_h or not reflect_horiz in found_h):
-            print(f"h={reflect_horiz}",end="")
-            total += (100*reflect_horiz)
-            found_h.add(reflect_horiz)
-          done = True
+        grid[smudge_row][smudge_col] = "#" if grid[smudge_row][smudge_col] == '.' else '.'
+        
+        done = True
+        if reflect_vertical is not None:
+          total += reflect_vertical
+        elif reflect_horiz is not None:
+          total += (100*reflect_horiz)
         else:
-          pass
+          done = False
     print(f" total = {total}")
   return total
 
