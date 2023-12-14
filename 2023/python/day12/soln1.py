@@ -162,8 +162,30 @@ def solve(row, runs, conds, trace, taken):
   
   return nways_without + nways_with + nways_merge
 
-def part2(input):
-  raise Exception("not implemented!")
+def part2(raw_input):
+  global seen
+  (grid, conds) = parse(raw_input)
+  # print(f"Conds = {conds}")
+  total = 0
+  for i in range(len(grid)):
+    print(f"orig row: {grid[i]}")
+    new_row = []
+    for j in range(5):
+      new_row.extend(grid[i])
+      if j != 4:
+        new_row.append("?")
+    row = new_row
+    # row = grid[i] * 5
+    N = len(row)
+    runs = genruns(row)
+    cond = conds[i] * 5#[x for cs in conds[i] * 5 for x in cs]
+    print(f"row: {row} conds: {cond}")
+    # print(f"Runs for row {''.join(row)} , cond {conds[i]} = {runs}")
+    seen = {}
+    soln = solve(row, runs, cond, [], set())
+    print(f"{soln}")
+    total += soln
+  return total
 
 def main(sample, input1):
   print(f"Hello Day 12!")
@@ -171,11 +193,11 @@ def main(sample, input1):
   # soln = part1(sample)
   # print(f"Part 1 (sample) = {soln}")
 
-  soln = part1(input1)
-  print(f"Part 1 (realinput) = {soln}")
+  # soln = part1(input1)
+  # print(f"Part 1 (realinput) = {soln}")
 
-  # soln = part2(sample)
-  # print(f"Part 2 (sample) = {soln}")
+  soln = part2(sample)
+  print(f"Part 2 (sample) = {soln}")
 
   # soln = part2(input1)
   # print(f"Part 2 (realinput) = {soln}")
