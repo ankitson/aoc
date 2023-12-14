@@ -12,6 +12,7 @@ import day07
 import day08
 import day09
 import day10
+import day14
 import util
 
 def main():
@@ -40,6 +41,8 @@ def main():
     run_day9()
   elif day == 10:
     run_day10()
+  elif day == 14:
+    run_day14()
   else:
     raise Exception(f"Day {day} not implemented")
 
@@ -109,6 +112,11 @@ def run_day10():
       print("Curses error. Likely your terminal is too small to display the grid")
       import traceback
       traceback.print_exc()
+
+def run_day14():
+  sample = open(util.sample_input(14),'r').read()
+  input1 = open(util.real_input(14),'r').read()
+  day14.soln1.main(sample, input1)
 
 if __name__ == '__main__':
   main()
