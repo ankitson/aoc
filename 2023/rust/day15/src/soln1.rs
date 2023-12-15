@@ -1,7 +1,6 @@
-use std::collections::{BTreeSet, HashMap};
+use std::hash::Hasher;
 
 use itertools::Itertools;
-use regex::Regex;
 
 pub type Input = Vec<&'static [u8]>;
 pub type Output = usize;
@@ -20,15 +19,28 @@ pub fn parse(input: &'static str) -> std::slice::Split<'_, u8, impl FnMut(&u8) -
 fn hash(str: &[u8]) -> u8 {
     let mut hash = 0u8;
     for c in str {
-        hash = hash.wrapping_add(*c); // as u16;
+        hash = hash.wrapping_add(*c);
         hash = hash.wrapping_mul(17);
-        // hash = hash % 256;
+        hash = hash & 255;
+    }
+    hash as u8
+}
+
+#[allow(unused)]
+fn hash_dual(str: &[u8], hasher: &mut dyn Hasher) -> u8 {
+    let mut hash = 0u8;
+    for c in str {
+        hasher.write_u8(*c);
+        hash = hash.wrapping_add(*c);
+        hash = hash.wrapping_mul(17);
+        hash = hash & 255;
     }
     hash as u8
 }
 
 pub fn part1(raw_input: &'static str) -> Output {
     let input = parse(raw_input);
+
     let mut total = 0;
     for str in input {
         let hashs = hash(str);
@@ -39,47 +51,32 @@ pub fn part1(raw_input: &'static str) -> Output {
 
 pub fn part2(raw_input: &'static str) -> Output {
     let input = parse(raw_input);
-    // let mut hashmap: Vec<Vec<(u8, u8, u8, &[u8])>> = vec![vec![]; 256]; //each bucket has list of (power,label) lenses
-    const EMPTY_VEC: Vec<(u8, u8, u8, &[u8])> = Vec::new();
+    const EMPTY_VEC: Vec<(u8, &[u8])> = Vec::new();
     let mut hashmap = [EMPTY_VEC; 256];
-    let mut insertion_time = 0u8;
-    // let mut total = 0;
     for str in input {
-        // let strchars = String::from_utf8(str.to_vec());
         let (sep_idx, sep) = str.iter().find_position(|c| **c == b'-' || **c == b'=').unwrap();
         let label = &str[0..sep_idx];
         let boxnum = hash(label) as usize;
+        let entry = &mut hashmap[boxnum];
         if *sep == b'=' {
             let pwr = (str[sep_idx + 1] - b'0') as u8;
-            let entry = &mut hashmap[boxnum];
-            let idx_in = entry.len() as u8;
-            entry.push((insertion_time, idx_in, pwr, &label)); //later entries are authoritative
-                                                               // total += (boxnum + 1) * (idx_in as usize + 1) * (pwr as usize);
+            let posm = entry.iter().find_position(|t| t.1 == label).map(|x| x.0);
+            if let Some(pos) = posm {
+                entry[pos] = (pwr, label);
+            } else {
+                entry.push((pwr, &label));
+            }
         } else {
-            let entry = &mut hashmap[boxnum];
-            entry.push((insertion_time, entry.len() as u8, 0, &label));
+            entry.retain(|e| e.1 != label);
         }
-        insertion_time += 1;
     }
-
-    println!("FINAL HASHMAP: {hashmap:?}");
     let mut total = 0;
-    // let mut seen = BTreeSet::new();
+    for bucket in 0..256 {
+        let entries = &hashmap[bucket];
+        for eidx in 0..entries.len() {
+            let (pwr, _) = &entries[eidx];
+            total += (bucket + 1) * (eidx as usize + 1) * (*pwr as usize)
+        }
+    }
     total
-    // for bucket in 0..256 {
-    //     // let (bef, aft) = hashmap.split_at_mut(bucket);
-    //     let entries = &mut hashmap[bucket];
-    //     // let entries = &mut hashmap[bucket];
-    //     entries.sort();
-    //     for eidx in (0..entries.len()).rev() {
-    //         let (insert_time, insert_idx, pwr, lbl) = &entries[eidx];
-    //         if !seen.contains(lbl) {
-    //             // last_idx.insert(lbl, eidx);
-    //             total += (bucket + 1) * (*insert_idx as usize + 1) * (*pwr as usize);
-    //             seen.insert(lbl);
-    //         }
-    //     }
-    //     seen.clear()
-    // }
-    // total
 }

@@ -29,5 +29,5 @@ pub fn part2(c: &mut Criterion) {
 criterion_group!(
     name=benches;
     config=Criterion::default().with_profiler(PProfProfiler::new(100, Output::Protobuf));
-    targets=parse, part1,);
+    targets=parse, part1,part2);
 criterion_main!(benches);
