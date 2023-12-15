@@ -23,3 +23,38 @@ pub fn nbrs8(x: usize, y: usize, max_x: usize, max_y: usize) -> Vec<(usize, usiz
 
     neighbors
 }
+
+fn print_grid(grid: &Vec<Vec<char>>) {
+    for i in 0..grid.len() {
+        for j in 0..grid[0].len() {
+            print!("{}", grid[i][j]);
+        }
+        println!("");
+    }
+}
+
+fn transpose(grid: Vec<Vec<char>>) -> Vec<Vec<char>> {
+    let mut t = vec![vec!['0'; grid.len()]; grid[0].len()];
+    for i in 0..grid.len() {
+        for j in 0..grid[0].len() {
+            t[j][i] = grid[i][j]
+        }
+    }
+    t
+}
+
+fn rotate(grid: Vec<Vec<char>>, cw: bool) -> Vec<Vec<char>> {
+    let nrows = grid.len();
+    let ncols = grid[0].len();
+    let mut rotated = vec![vec!['X'; nrows]; ncols];
+    for i in 0..nrows {
+        for j in 0..ncols {
+            if cw {
+                rotated[j][nrows - 1 - i] = grid[i][j];
+            } else {
+                rotated[ncols - 1 - j][i] = grid[i][j];
+            }
+        }
+    }
+    rotated
+}
