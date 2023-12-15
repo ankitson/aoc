@@ -1,5 +1,4 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use day15::shared;
 use day15::soln1;
 use pprof::criterion::{Output, PProfProfiler};
 
@@ -29,6 +28,6 @@ pub fn part2(c: &mut Criterion) {
 
 criterion_group!(
     name=benches;
-    config=Criterion::default().with_profiler(PProfProfiler::new(100, Output::Flamegraph(None)));
-    targets=parse, part1, );
+    config=Criterion::default().with_profiler(PProfProfiler::new(100, Output::Protobuf));
+    targets=parse, part1,);
 criterion_main!(benches);
