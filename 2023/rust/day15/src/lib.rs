@@ -1,2 +1,3 @@
-pub mod soln1;
+#![feature(ascii_char)]
 pub mod shared;
+pub mod soln1;

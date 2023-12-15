@@ -1,7 +1,10 @@
 def parse(raw_input):
-  raise Exception("not implemented!")
+  lines = [line for line in raw_input.split("\n") if len(line) > 1]
+  return lines
 
 def part1(input):
+  parsed = parse(input)
+  print(f"Parsed P1 = {parsed}")
   raise Exception("not implemented!")
 
 def part2(input):
@@ -21,4 +24,3 @@ def main(sample, input1):
 
   soln = part2(input1)
   print(f"Part 2 (realinput) = {soln}")
-
