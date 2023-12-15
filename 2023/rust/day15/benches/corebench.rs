@@ -30,5 +30,5 @@ pub fn part2(c: &mut Criterion) {
 criterion_group!(
     name=benches;
     config=Criterion::default().with_profiler(PProfProfiler::new(100, Output::Flamegraph(None)));
-    targets=parse, part1, part2,);
+    targets=parse, part1, );
 criterion_main!(benches);
