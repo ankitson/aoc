@@ -27,64 +27,36 @@ fn rot(dx: isize, dy: isize, cw: bool) -> (isize, isize) {
     }
 }
 
-// /   up goes right => cw 90deg
-// / down goes left => cw 90
-
 pub fn part1(raw_input: &'static str) -> Output {
     let grid = parse(raw_input);
-    // let mut seen = vec![vec![false; grid[0].len()]; grid.len()];
     let mut seen = HashMap::new();
     let mut to_visit = VecDeque::new();
     to_visit.push_back((0isize, 0isize, (0isize, 1isize)));
     while to_visit.len() > 0 {
         let (vx, vy, (dx, dy)) = to_visit.pop_front().unwrap();
 
-        if (vx < 0 || vx >= grid.len() as isize || vy < 0 || vy >= grid[0].len() as isize) {
+        if vx < 0 || vx >= grid.len() as isize || vy < 0 || vy >= grid[0].len() as isize {
             continue;
         }
-        println!("VX = {vx} VY = {vy} dx = {dx} dy = {dy}");
         seen.insert((vx, vy, dx, dy), true);
-        // seen[vx as usize][vy as usize] = true;
-        // if (vx as isize + dx) >= grid.len() as isize
-        //     || (vy as isize + dy) >= grid[0].len() as isize
-        //     || (vx as isize + dx) < 0
-        //     || (vy as isize + dy) < 0
-        // {
-        //     //todo
-        //     continue;
-        // }
-        // let nbr = grid[((vx as isize) + dx) as usize][((vy as isize) + dy) as usize];
-        // let vx = vx as isize;
-        // let vy = vy as isize;
         match (grid[vx as usize][vy as usize], (dx, dy)) {
             ('.', (_, _)) => {
                 if !seen.contains_key(&(vx + dx, vy + dy, dx, dy)) {
                     to_visit.push_back((vx + dx, vy + dy, (dx, dy)))
                 }
             }
-            // ('/', ()) //UP GOES CW, RIGhT GOES ANTICW, LEFT GOES ANTICW, DOWN GOES CW
             ('/', (a, b)) => {
-                let (mut ndx, mut ndy) = (0, 0);
-                (ndx, ndy) = match (a, b) {
-                    (0, 1) => (-1, 0), //BEAM GOING RIGHT GOES UP
-                    (0, -1) => (1, 0), //BEAM GOING LEFT GOES DOWN
+                let (ndx, ndy) = match (a, b) {
+                    (0, 1) => (-1, 0),
+                    (0, -1) => (1, 0),
                     (1, 0) => (0, -1),
                     (-1, 0) => (0, 1),
                     _ => panic!("illegal"),
                 };
-                // if a != 0 {
-                //     //GOING UP OR DOWN
-                //     (ndx, ndy) = rot(dx, dy, true);
-                // } else {
-                //     (ndx, ndy) = rot(dx, dy, false);
-                // }
-                println!("dx after rot at right mirror = {ndx} {ndy}");
-
                 if !seen.contains_key(&(vx + ndx, vy + ndy, ndx, ndy)) {
                     to_visit.push_back((vx + ndx, vy + ndy, (ndx, ndy)));
                 }
             }
-            //UP OGES ANTICW, DOWN GOES ANTI CW
             ('\\', (a, b)) => {
                 let (ndx, ndy) = match (a, b) {
                     (0, 1) => (1, 0),
@@ -93,15 +65,6 @@ pub fn part1(raw_input: &'static str) -> Output {
                     (-1, 0) => (0, -1),
                     _ => panic!("illegal"),
                 };
-
-                println!("SAW \\ at {vx} {vy} going {ndx} {ndy}");
-                // if b != 0 {
-                // (ndx, ndy) = rot(dx, dy, true);
-                // } else {
-                // (ndx, ndy) = rot(dx, dy, false);
-                // }
-
-                // let (ndx, ndy) = rot(dx, dy, false);
                 if !seen.contains_key(&(vx + ndx, vy + ndy, ndx, ndy)) {
                     to_visit.push_back((vx + ndx, vy + ndy, (ndx, ndy)));
                 }
@@ -132,32 +95,22 @@ pub fn part1(raw_input: &'static str) -> Output {
         }
     }
 
-    // println!("FINISHED SEEN\n={seen:?}");
     let mut total = 0;
 
-    println!("seen\n{seen:?}");
     let mut seen2 = vec![vec![false; grid[0].len()]; grid.len()];
     for ((x, y, dx, dy), b) in seen {
         if b {
             seen2[x as usize][y as usize] = true;
         }
     }
-    grid::print_grid(&seen2);
     for row in seen2 {
         for item in row {
             if item {
-                print!("#");
                 total += 1;
-            } else {
-                print!(".")
             }
-            // if item {
-            // }
         }
-        println!();
     }
     total
-    // println!("Part 1 Input = {input:?}");
 }
 
 pub fn part2(raw_input: &'static str) -> Output {
@@ -168,9 +121,6 @@ pub fn part2(raw_input: &'static str) -> Output {
     for i in 0..grid.len() {
         start_pos.push((i, 0));
         start_pos.push((i, grid[0].len() - 1))
-        // for j in 0..grid[0].len() {
-        //
-        //    /     }
     }
     for j in 0..grid[0].len() {
         start_pos.push((0, j));
@@ -192,8 +142,6 @@ pub fn part2(raw_input: &'static str) -> Output {
             dirs.push((0, -1))
         }
 
-        println!("will try dirs = {dirs:?} for pos = {pos:?}");
-
         for (sdx, sdy) in dirs {
             let mut to_visit = VecDeque::new();
             let mut seen = HashMap::new();
@@ -204,49 +152,25 @@ pub fn part2(raw_input: &'static str) -> Output {
                 if (vx < 0 || vx >= grid.len() as isize || vy < 0 || vy >= grid[0].len() as isize) {
                     continue;
                 }
-                // println!("VX = {vx} VY = {vy} dx = {dx} dy = {dy}");
                 seen.insert((vx, vy, dx, dy), true);
-                // seen[vx as usize][vy as usize] = true;
-                // if (vx as isize + dx) >= grid.len() as isize
-                //     || (vy as isize + dy) >= grid[0].len() as isize
-                //     || (vx as isize + dx) < 0
-                //     || (vy as isize + dy) < 0
-                // {
-                //     //todo
-                //     continue;
-                // }
-                // let nbr = grid[((vx as isize) + dx) as usize][((vy as isize) + dy) as usize];
-                // let vx = vx as isize;
-                // let vy = vy as isize;
                 match (grid[vx as usize][vy as usize], (dx, dy)) {
                     ('.', (_, _)) => {
                         if !seen.contains_key(&(vx + dx, vy + dy, dx, dy)) {
                             to_visit.push_back((vx + dx, vy + dy, (dx, dy)))
                         }
                     }
-                    // ('/', ()) //UP GOES CW, RIGhT GOES ANTICW, LEFT GOES ANTICW, DOWN GOES CW
                     ('/', (a, b)) => {
-                        let (mut ndx, mut ndy) = (0, 0);
-                        (ndx, ndy) = match (a, b) {
-                            (0, 1) => (-1, 0), //BEAM GOING RIGHT GOES UP
-                            (0, -1) => (1, 0), //BEAM GOING LEFT GOES DOWN
+                        let (ndx, ndy) = match (a, b) {
+                            (0, 1) => (-1, 0),
+                            (0, -1) => (1, 0),
                             (1, 0) => (0, -1),
                             (-1, 0) => (0, 1),
                             _ => panic!("illegal"),
                         };
-                        // if a != 0 {
-                        //     //GOING UP OR DOWN
-                        //     (ndx, ndy) = rot(dx, dy, true);
-                        // } else {
-                        //     (ndx, ndy) = rot(dx, dy, false);
-                        // }
-                        println!("dx after rot at right mirror = {ndx} {ndy}");
-
                         if !seen.contains_key(&(vx + ndx, vy + ndy, ndx, ndy)) {
                             to_visit.push_back((vx + ndx, vy + ndy, (ndx, ndy)));
                         }
                     }
-                    //UP OGES ANTICW, DOWN GOES ANTI CW
                     ('\\', (a, b)) => {
                         let (ndx, ndy) = match (a, b) {
                             (0, 1) => (1, 0),
@@ -255,15 +179,6 @@ pub fn part2(raw_input: &'static str) -> Output {
                             (-1, 0) => (0, -1),
                             _ => panic!("illegal"),
                         };
-
-                        println!("SAW \\ at {vx} {vy} going {ndx} {ndy}");
-                        // if b != 0 {
-                        // (ndx, ndy) = rot(dx, dy, true);
-                        // } else {
-                        // (ndx, ndy) = rot(dx, dy, false);
-                        // }
-
-                        // let (ndx, ndy) = rot(dx, dy, false);
                         if !seen.contains_key(&(vx + ndx, vy + ndy, ndx, ndy)) {
                             to_visit.push_back((vx + ndx, vy + ndy, (ndx, ndy)));
                         }
@@ -294,37 +209,22 @@ pub fn part2(raw_input: &'static str) -> Output {
                 }
             }
 
-            // println!("FINISHED SEEN\n={seen:?}");
             let mut total = 0;
-
-            // println!("seen\n{seen:?}");
             let mut seen2 = vec![vec![false; grid[0].len()]; grid.len()];
             for ((x, y, dx, dy), b) in seen {
                 if b {
                     seen2[x as usize][y as usize] = true;
                 }
             }
-            // grid::print_grid(&seen2);
             for row in seen2 {
                 for item in row {
                     if item {
-                        // print!("#");
                         total += 1;
-                    } else {
-                        // print!(".")
                     }
-                    // if item {
-                    // }
                 }
-                // println!();
             }
             best = best.max(total);
         }
-
-        println!("Best so far = {best}");
     }
-
     best
-
-    // todo!()
 }
