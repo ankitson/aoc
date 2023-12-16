@@ -1,6 +1,7 @@
-use std::hash::Hasher;
+use std::{collections::HashMap, hash::Hasher};
 
 use itertools::Itertools;
+use rayon::{iter::ParallelIterator, slice::ParallelSlice};
 
 pub type Input = Vec<&'static [u8]>;
 pub type Output = usize;
@@ -9,6 +10,14 @@ pub fn parse(input: &'static str) -> std::slice::Split<'_, u8, impl FnMut(&u8) -
     let bytes = input.as_bytes();
     let skip_last = &bytes[0..bytes.len() - 1];
     let seqs = skip_last.split(|x| *x == b'\n' || *x == b',');
+    seqs
+}
+
+pub fn parse_par(input: &'static str) -> rayon::slice::Split<'_, u8, impl Fn(&u8) -> bool> {
+    let bytes = input.as_bytes();
+    let skip_last = &bytes[0..bytes.len() - 1];
+
+    let seqs = skip_last.par_split(|x| *x == b'\n' || *x == b',');
     seqs
 }
 
@@ -47,6 +56,11 @@ pub fn part1(raw_input: &'static str) -> Output {
         total += hashs as usize;
     }
     total
+}
+
+pub fn part1_rayon(raw_input: &'static str) -> Output {
+    let input = parse_par(raw_input);
+    input.map(|str| hash(str) as usize).sum()
 }
 
 pub fn part2(raw_input: &'static str) -> Output {

@@ -1,3 +1,5 @@
+use std::time::{Instant, SystemTime, UNIX_EPOCH};
+
 mod shared;
 mod soln1;
 
@@ -14,22 +16,29 @@ pub fn main() {
     let _profiler = dhat::Profiler::new_heap();
 
     println!("Hello Day 15!");
-    let input: &str = include_str!("../../inputs/sample15.txt");
-    let part1 = soln1::part1(input);
+    let sample: &str = include_str!("../../inputs/sample15.txt");
+    let input: &str = include_str!("../../inputs/day15.txt");
+
+    let part1 = soln1::part1(sample);
     println!("part1/sample1 = {:?}", part1);
     assert_eq!(part1, 1320);
 
-    let input: &str = include_str!("../../inputs/day15.txt");
+    let start = Instant::now();
     let part1 = soln1::part1(input);
-    println!("part1/day15 = {:?}", part1);
+    let elapsed = start.elapsed().as_micros();
+    println!("{elapsed}μs part1/day15 = {:?}", part1);
     assert_eq!(part1, 520500);
 
-    let input: &str = include_str!("../../inputs/sample15.txt");
-    let part2 = soln1::part2(input);
+    let start = Instant::now();
+    let part1 = soln1::part1_rayon(input);
+    let elapsed = start.elapsed().as_micros();
+    println!("{elapsed}μs: part1_rayon/day15 = {:?}", part1);
+    assert_eq!(part1, 520500);
+
+    let part2 = soln1::part2(sample);
     println!("part2/sample15 = {:?}", part2);
     assert_eq!(part2, 145);
 
-    let input: &str = include_str!("../../inputs/day15.txt");
     let part2 = soln1::part2(input);
     println!("part2/day15 = {:?}", part2);
     assert_eq!(part2, 213097);

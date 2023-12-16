@@ -41,9 +41,9 @@ We use `Justfiles` liberally to perform common tasks. You can run commands from 
 |python.day13.soln1.realinput/part2                |      515729019.37ns|         515729.02µs|       515.73ms|          0.52s|
 |rust.day14.part1.realinput/part1                  |         150950.06ns|            150.95µs|         0.15ms|          0.00s|
 |rust.day14.part2.realinput/part2                  |       91259454.43ns|          91259.45µs|        91.26ms|          0.09s|
-|rust.day15.part1.realinput/part1                  |          34740.26ns|             34.74µs|         0.03ms|          0.00s|
-|rust.day15.part2.realinput/part2                  |         123508.08ns|            123.51µs|         0.12ms|          0.00s|
-|rust.TOTAL                                        |   130037056637.93ns|      130037056.64µs|    130037.06ms|        130.04s|
+|rust.day15.part1.realinput/part1                  |          35355.90ns|             35.36µs|         0.04ms|          0.00s|
+|rust.day15.part2.realinput/part2                  |         122060.35ns|            122.06µs|         0.12ms|          0.00s|
+|rust.TOTAL                                        |   130037055805.85ns|      130037055.81µs|    130037.06ms|        130.04s|
 |python.TOTAL                                      |      577805482.26ns|         577805.48µs|       577.81ms|          0.58s|
 <tend></tend>
 
@@ -70,3 +70,4 @@ After running the benchmarks from the language folder, you can run `just summari
 ## Other
 
 The rust folder has many other actions to e.g watch source files and rebuild, generate memory profiles, generate flamegraphs, run linters etc. Run `just --list` to view available actions.
+iles and rebuild, generate memory profiles, generate flamegraphs, run linters etc. Run `just --list` to view available actions.

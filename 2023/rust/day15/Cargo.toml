@@ -16,6 +16,7 @@ itertools = "*"
 scan_fmt = "*"
 regex = "*"
 util = { path = "../util" }
+rayon = "*"
 
 [[bench]]
 name = "corebench"

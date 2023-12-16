@@ -15,6 +15,7 @@ pub fn part1(c: &mut Criterion) {
     let mut group = c.benchmark_group("day15.part1.realinput");
 
     group.bench_function("part1", |b| b.iter(|| soln1::part1(black_box(contents))));
+    group.bench_function("part1_rayon.nosum", |b| b.iter(|| soln1::part1_rayon(black_box(contents))));
     group.finish();
 }
 
