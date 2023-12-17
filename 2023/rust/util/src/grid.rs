@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 pub fn nbrs8(x: usize, y: usize, max_x: usize, max_y: usize) -> Vec<(usize, usize)> {
     let mut neighbors = Vec::new();
 
@@ -24,7 +26,7 @@ pub fn nbrs8(x: usize, y: usize, max_x: usize, max_y: usize) -> Vec<(usize, usiz
     neighbors
 }
 
-fn print_grid(grid: &Vec<Vec<char>>) {
+pub fn print_grid<T: Display>(grid: &Vec<Vec<T>>) {
     for i in 0..grid.len() {
         for j in 0..grid[0].len() {
             print!("{}", grid[i][j]);
@@ -33,7 +35,7 @@ fn print_grid(grid: &Vec<Vec<char>>) {
     }
 }
 
-fn transpose(grid: Vec<Vec<char>>) -> Vec<Vec<char>> {
+pub fn transpose(grid: Vec<Vec<char>>) -> Vec<Vec<char>> {
     let mut t = vec![vec!['0'; grid.len()]; grid[0].len()];
     for i in 0..grid.len() {
         for j in 0..grid[0].len() {
@@ -43,7 +45,7 @@ fn transpose(grid: Vec<Vec<char>>) -> Vec<Vec<char>> {
     t
 }
 
-fn rotate(grid: Vec<Vec<char>>, cw: bool) -> Vec<Vec<char>> {
+pub fn rotate(grid: Vec<Vec<char>>, cw: bool) -> Vec<Vec<char>> {
     let nrows = grid.len();
     let ncols = grid[0].len();
     let mut rotated = vec![vec!['X'; nrows]; ncols];
