@@ -463,6 +463,7 @@ dependencies = [
 name = "day16"
 version = "0.1.0"
 dependencies = [
+ "bitset-core",
  "criterion",
  "dhat",
  "itertools 0.10.5",

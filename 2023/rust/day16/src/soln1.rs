@@ -3,7 +3,7 @@ use std::collections::{HashMap, VecDeque};
 use itertools::Itertools;
 use regex::Regex;
 
-use util::grid;
+use bitset_core::BitSet;
 
 pub type Input = Vec<Vec<char>>;
 pub type Output = usize;
@@ -32,12 +32,19 @@ pub fn part1(raw_input: &'static str) -> Output {
     let mut seen = HashMap::new();
     let mut to_visit = VecDeque::new();
     to_visit.push_back((0isize, 0isize, (0isize, 1isize)));
+
+    const nrows: usize = 110; //grid.len();
+    const ncols: usize = 110; //grid[0].len();
+    let seenb = [[0u32; (ncols * 4 / 32)]; nrows];
+
     while to_visit.len() > 0 {
         let (vx, vy, (dx, dy)) = to_visit.pop_front().unwrap();
 
         if vx < 0 || vx >= grid.len() as isize || vy < 0 || vy >= grid[0].len() as isize {
             continue;
         }
+        let bsidx = (dy << 1 | dx); //dx =0, dy =1 => 2
+
         seen.insert((vx, vy, dx, dy), true);
         match (grid[vx as usize][vy as usize], (dx, dy)) {
             ('.', (_, _)) => {
