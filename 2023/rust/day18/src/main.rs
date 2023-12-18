@@ -14,13 +14,13 @@ pub fn main() {
     let _profiler = dhat::Profiler::new_heap();
 
     println!("Hello Day 18!");
-    let input: &str = include_str!("../../inputs/sample18.txt");
-    let part1 = soln1::part1(input);
-    println!("part1/sample1 = {:?}", part1);
+    // let input: &str = include_str!("../../inputs/sample18.txt");
+    // let part1 = soln1::part1(input);
+    // println!("part1/sample1 = {:?}", part1);
 
-    let input: &str = include_str!("../../inputs/day18.txt");
-    let part1 = soln1::part1(input);
-    println!("part1/day18 = {:?}", part1);
+    // let input: &str = include_str!("../../inputs/day18.txt");
+    // let part1 = soln1::part1(input);
+    // println!("part1/day18 = {:?}", part1);
 
     let input: &str = include_str!("../../inputs/sample18.txt");
     let part2 = soln1::part2(input);

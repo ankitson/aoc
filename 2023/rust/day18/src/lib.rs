@@ -1,2 +1,2 @@
-pub mod soln1;
 pub mod shared;
+pub mod soln1;
