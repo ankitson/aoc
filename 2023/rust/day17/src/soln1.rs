@@ -1,4 +1,7 @@
-use std::collections::HashSet;
+use std::{
+    cmp::Reverse,
+    collections::{BinaryHeap, HashMap, HashSet},
+};
 
 use itertools::Itertools;
 use regex::Regex;
@@ -15,10 +18,67 @@ pub fn parse(input: &str) -> Input {
 
 pub fn part1(raw_input: &str) -> Output {
     let input = parse(raw_input);
-    dfs(&input, vec![], (0, 0), 0, &HashSet::new())
+    // dfs(&input, vec![], (0, 0), 0, &HashSet::new());
     // todo!()
+    let out = djikstra(&input);
+    println!("Output from djikstra = {out:?}");
+    out.unwrap()
 }
 
+fn djikstra(grid: &Vec<Vec<usize>>) -> Option<usize> {
+    let mut seen = HashSet::new();
+    let mut heap = BinaryHeap::new();
+    heap.push((Reverse(0usize), (0usize, 0usize), 0, (0, 0))); //dist, coord, num consec, last_dir
+
+    let mut reached_from = HashMap::new();
+    reached_from.insert((0, 0), (-1isize, -1isize));
+    while !heap.is_empty() {
+        let (dist, (vr, vc), num_consec, last_dir) = heap.pop().unwrap();
+        if !seen.insert(((vr, vc), last_dir, num_consec)) {
+            continue;
+        }
+        if !reached_from.contains_key(&(vr, vc)) {
+            reached_from.insert((vr, vc), ((vr as isize) - last_dir.0, (vc as isize) - last_dir.1));
+        }
+        println!("Visit {vr}, {vc} at dist {dist:?} nc {num_consec} last {last_dir:?}");
+        if vr == 1 && vc == 6 {
+            println!("REACHED MAP  = {reached_from:?}");
+            let mut path: Vec<(isize, isize)> = vec![];
+            let mut node = (vr as isize, vc as isize);
+            path.push((vr as isize, vc as isize));
+            while node != (0, 0) {
+                let (vr, vc) = node;
+                let mut parent = reached_from.get(&(vr as usize, vc as usize)).unwrap();
+                path.push(*parent);
+                node = *parent;
+                // println!("node = {node:?}");
+            }
+            path.reverse();
+            println!("PATH TO DEST = {path:?}");
+            //grid.len() - 1 && vc == grid[0].len() - 1 {
+            return Some(dist.0);
+        }
+        let dirs: Vec<(isize, isize)> = vec![(0, 1), (0, -1), (1, 0), (-1, 0)];
+        for dir in dirs {
+            if num_consec == 3 && dir == last_dir {
+                continue;
+            }
+            let next_consec = if dir == last_dir { num_consec + 1 } else { 1 };
+            let (nr, nc) = (vr as isize + dir.0, vc as isize + dir.1);
+            if nr >= 0 && nr < grid.len() as isize && nc >= 0 && nc < grid[0].len() as isize {
+                let ndist = dist.0 + grid[nr as usize][nc as usize];
+                println!("pushing {nr} {nc} at dist {ndist}");
+                heap.push((
+                    Reverse(dist.0 + grid[nr as usize][nc as usize]),
+                    (nr as usize, nc as usize),
+                    next_consec,
+                    dir,
+                ));
+            }
+        }
+    }
+    return None;
+}
 fn dfs(
     grid: &Vec<Vec<usize>>,
     last3: Vec<(isize, isize)>,
