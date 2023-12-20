@@ -1,3 +1,4 @@
+use core::num;
 use std::{
     cmp::Reverse,
     collections::{BinaryHeap, HashMap, HashSet},
@@ -19,8 +20,6 @@ pub fn parse(input: &str) -> Input {
 
 pub fn part1(raw_input: &str) -> Output {
     let input = parse(raw_input);
-    // dfs(&input, vec![], (0, 0), 0, &HashSet::new());
-    // todo!()
     let out = dj2(&input);
     println!("Output from djikstra = {out:?}");
     out.unwrap()
@@ -45,85 +44,61 @@ fn dj2(grid: &Vec<Vec<usize>>) -> Option<usize> {
     let start = Visit { dist: Reverse(0), node: (0, 0), num_consec: 0, last_dir: (0, 0) };
     to_visit.push(start);
     while let Some(visit) = to_visit.pop() {
-        if (visit.node == (1, 4) || visit.node == (1, 3)) {
-            println!("Visit = {visit:?} ");
-            let n = visit.node;
-            let d = distances.get(&(visit.node, visit.last_dir));
-            println!("distance for {n:?} = {d:?}");
+        //TODO: And why is this needed?
+        if distances.contains_key(&(visit.node, visit.last_dir, visit.num_consec)) {
+            continue;
         }
-        // if distances.contains_key(&visit.node) {
-        // continue;
-        // }
-        distances.entry((visit.node, visit.last_dir)).and_modify(|e| *e = visit.dist.max(*e)).or_insert(visit.dist);
-        if (visit.node == (1, 4) || visit.node == (1, 3)) {
-            let n = visit.node;
-            let d = distances.get(&(visit.node, visit.last_dir));
-            println!("after distance for {n:?} = {d:?}");
-        }
+        distances
+            .entry((visit.node, visit.last_dir, visit.num_consec))
+            .and_modify(|e| *e = visit.dist.0.min(*e))
+            .or_insert(visit.dist.0); //dist[0,0,(0,0),0] = 0
 
-        let end = (grid.len() - 1, grid[0].len() - 1);
-        let d1 = distances.get(&(end, (0, 1))).map(|z| z.0);
-        let d2 = distances.get(&(end, (1, 0))).map(|z| z.0);
-        let dx = d1.map_or_else(|| d2, |x| Some(x.min(d2.unwrap_or(usize::MAX))));
-        if let Some(dist_to_end) = dx
-        // distances.get(&(end, (0, 1))).map(|d| distances.get((&(end, (1, 0)))).unwrap_or(usize::MAX))
-        {
-            // for i in 0..grid.len() {
-            //     for j in 0..grid[0].len() {
-            //         print!("{}   ", distances.get(&(i, j)).map(|x| x.0 as isize).unwrap_or(-1));
-            //     }
-            //     println!("")
-            // }
-            return Some(dist_to_end);
-        }
         for (dr, dc) in [(0, 1), (1, 0), (0, -1), (-1, 0)] {
             let same_dir = (dr, dc) == visit.last_dir;
-            let can_go = !(same_dir && visit.num_consec == 3);
-            if !can_go {
-                continue;
-            }
-            if (-dr, -dc) == visit.last_dir {
-                continue;
-            }
-
+            let next_count = if same_dir { visit.num_consec + 1 } else { 1 };
+            let rev_dir = (-dr, -dc) == visit.last_dir;
+            let can_go = !rev_dir && next_count <= 3;
             let nr = visit.node.0 as isize + dr;
             let nc = visit.node.1 as isize + dc;
-            if nr.min(nc) >= 0 && nr < grid.len() as isize && nc < grid[0].len() as isize {
-                let current_dist = distances.get(&(nr as usize, nc as usize)).map(|x| x.0).unwrap_or(usize::MAX);
-                let new_dist = visit.dist.0 + grid[nr as usize][nc as usize];
-                let wins = new_dist < current_dist;
-                println!("current dist to {nr},{nc}= {current_dist} new = {new_dist} new better? {wins}");
-            }
-            if nr.min(nc) >= 0
-                && nr < grid.len() as isize
-                && nc < grid[0].len() as isize
-                && (visit.dist.0 + grid[nr as usize][nc as usize])
-                    < distances.get(&(nr as usize, nc as usize)).map(|x| x.0).unwrap_or(usize::MAX)
-            {
-                let new_dist = (visit.dist.0 + grid[nr as usize][nc as usize]);
-                distances
-                    .entry((nr as usize, nc as usize))
-                    .and_modify(|e| *e = Reverse(new_dist))
-                    .or_insert(Reverse(new_dist));
-                let nr = nr as usize;
-                let nc = nc as usize;
-                let next_count = if same_dir { visit.num_consec + 1 } else { 1 };
+            if nr.min(nc) >= 0 && nr < grid.len() as isize && nc < grid[0].len() as isize && can_go {
+                // TODO: THIS IS IT, the line that fucks it up
+                // let new_dist = visit.dist.0 + grid[nr as usize][nc as usize];
+                // distances
+                // .entry(((nr as usize, nc as usize), (dr, dc), visit.num_consec))
+                // .and_modify(|e| *e = new_dist.min(*e))
+                // .or_insert(new_dist);
+
                 let next_visit = Visit {
-                    dist: Reverse(visit.dist.0 + grid[nr][nc]),
-                    node: (nr, nc),
+                    dist: Reverse(visit.dist.0 + grid[nr as usize][nc as usize]),
+                    node: (nr as usize, nc as usize),
                     num_consec: next_count,
                     last_dir: (dr, dc),
                 };
-                if (visit.node == (1, 4) || visit.node == (1, 3)) {
-                    println!("add {next_visit:?}");
+                if distances.get(&((nr as usize, nc as usize), (dr, dc), next_count)).is_none() {
+                    to_visit.push(next_visit);
                 }
-                to_visit.push(next_visit);
             }
         }
-
-        // distances.insert(visit.node, distances.get(visit.node));
     }
-    None
+    let end = (grid.len() - 1, grid[0].len() - 1);
+    let mut best: Option<usize> = None;
+    for i in 0..grid.len() {
+        for j in 0..grid[0].len() {
+            let mut dist = 1000;
+            for dir in [(0, 1), (1, 0)] {
+                for num_consec in 0..4 {
+                    dist = dist.min(*distances.get(&((i, j), dir, num_consec)).unwrap_or(&usize::MAX));
+                    if (i, j) == end {
+                        best = best.map(|b| b.min(dist)).or(Some(dist));
+                        //best.min(dist);
+                    }
+                }
+            }
+            print!("{dist}  ");
+        }
+        println!();
+    }
+    best
 }
 fn djikstra(grid: &Vec<Vec<usize>>) -> Option<usize> {
     let mut seen = HashSet::new();
