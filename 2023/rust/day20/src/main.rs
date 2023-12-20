@@ -1,3 +1,4 @@
+#![feature(let_chains)]
 mod shared;
 mod soln1;
 
@@ -14,25 +15,29 @@ pub fn main() {
     let _profiler = dhat::Profiler::new_heap();
 
     println!("Hello Day 20!");
-    // let input: &str = include_str!("../../inputs/sample20.txt");
-    // let part1 = soln1::part1(input);
-    // println!("part1/sample1 = {:?}", part1);
+    let input: &str = include_str!("../../inputs/sample20.txt");
+    let part1 = soln1::part1(input);
+    print!("part1/sample1 = {:?}", part1);
+    assert_eq!(part1, 32000000);
+    println!("    ✅");
 
-    // let input: &str = include_str!("../../inputs/sample20_2.txt");
-    // let part1 = soln1::part1(input);
-    // println!("part1/sample2 = {:?}", part1);
+    let input: &str = include_str!("../../inputs/sample20_2.txt");
+    let part1 = soln1::part1(input);
+    print!("part1/sample2 = {:?}", part1);
+    assert_eq!(part1, 11687500);
+    println!("    ✅");
 
-    // let input: &str = include_str!("../../inputs/day20.txt");
-    // let part1 = soln1::part1(input);
-    // println!("part1/day20 = {:?}", part1);
-
-    // let input: &str = include_str!("../../inputs/sample20.txt");
-    // let part2 = soln1::part2(input);
-    // println!("part2/sample20 = {:?}", part2);
+    let input: &str = include_str!("../../inputs/day20.txt");
+    let part1 = soln1::part1(input);
+    print!("part1/day20 = {:?}", part1);
+    assert_eq!(part1, 834323022);
+    println!("     ✅");
 
     let input: &str = include_str!("../../inputs/day20.txt");
     let part2 = soln1::part2(input);
-    println!("part2/day20 = {:?}", part2);
+    print!("part2/day20 = {:?}", part2);
+    assert_eq!(part2, 225386464601017);
+    println!("    ✅");
 }
 
 #[cfg(test)]

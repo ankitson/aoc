@@ -1,6 +1,7 @@
 use std::collections::{HashMap, HashSet, VecDeque};
 
 use itertools::Itertools;
+use num::Integer;
 use regex::Regex;
 
 pub type Input = HashMap<String, Module>;
@@ -49,67 +50,43 @@ pub fn parse(input: &str) -> Input {
 fn step(
     modmap: &Input,
     states: &mut HashMap<String, bool>,
-    subcyclesets: &Vec<(String, HashSet<String>)>,
     part2: bool,
     step_no: usize,
     prev_true: &mut HashMap<String, Vec<usize>>,
-) -> (i32, i32) {
+    cycle_lens: &mut HashMap<String, usize>,
+) -> (usize, usize) {
     //& is conjunction, % is flip flop, b is broadcast and o is output
-    //flip flop - high - do nothing. low - flips between on and off, and sends high if turned on, low if turned off
-    //conjunction - rememgers low from all inputs. on receive, update. i all memory = high, send low. else send high
+    //% = flip flop - high - do nothing. low - flips between on and off, and sends high if turned on, low if turned off
+    //& = conjunction - remembers low from all inputs. on receive, update. if all inputs = high, send low. else send high
     let mut to_visit = VecDeque::from(vec![("roadcaster".to_string(), false)]);
     let mut next = VecDeque::new();
 
     let mut los = 0;
     let mut his = 0;
 
-    // let mut prev_substates = vec![vec![]; subcyclesets.len()];
-    // for i in 0..subcyclesets.len() {
-    // prev_substates.push()
-    // }/
-
     while to_visit.len() > 0 {
         let (gate, input) = to_visit.pop_front().unwrap();
 
-        // Inspection of my input shows these 4 gates lead to a conjunction that leads to rx.
-        if gate == "bt" || gate == "dl" || gate == "fr" || gate == "rv" {
-            if *states.get(&gate).unwrap() {
-                prev_true.entry(gate.clone()).and_modify(|v| v.push(step_no)).or_insert(vec![step_no]);
-                let prevs = prev_true.get(&gate).unwrap();
-                println!("{gate} prevs = {prevs:?}");
-                if prevs.len() > 3 {
-                    let d1 = prevs[3] - prevs[2];
-                    let d2 = prevs[2] - prevs[1];
-                    let d3 = prevs[1] - prevs[0];
-                    let cycle_len = d1;
-                    if d1 == d2 && d2 == d3 {
-                        println!("Cycle length for {gate} is probably {cycle_len}");
-                    }
+        if part2
+            && let Some(true) = states.get(&gate)
+            && let Some(previous_steps) = prev_true.get_mut(&gate)
+        {
+            if !previous_steps.contains(&step_no) {
+                previous_steps.push(step_no);
+            }
+            if previous_steps.len() > 3 {
+                let diffs = previous_steps.windows(2).map(|win| win[1] - win[0]).rev().take(3).collect_vec();
+                if diffs.iter().all_equal() {
+                    let cycle_len = diffs[0];
+                    cycle_lens.insert(gate.clone(), cycle_len);
+                    println!("Cycle length for gate {gate} is {cycle_len}");
                 }
-                // println!("prevs = {prevs}")
-                // println!("{gate} true at {step_no}");
+            }
+            if cycle_lens.len() == prev_true.len() {
+                return (cycle_lens.values().fold(1, |acc, e| acc.lcm(e)), 0);
             }
         }
-        // if part2 {
-        //     for (i, (gate, cycle_set_gates)) in subcyclesets.iter().enumerate() {
-        //         let states_clone = states.clone();
-        //         let substate = states_clone.into_iter().filter(|(k, v)| cycle_set_gates.contains(k)).collect_vec();
-        //         if let Some((psno, z)) = prev_substates[i].iter().find_position(|&(_, z)| z == substate) {
-        //             let cycle_len = step_no - psno;
-        //             println!("cycle for {gate} between {step_no} and {psno} = {cycle_len}");
-        //         }
-        //         prev_substates[i].push((step_no, substate.clone()));
-        //     }
-        // }
-        //    &bt -> rs
-        //    &dl -> rs
-        //    &fr -> rs
-        //    &rv -> rs
-        // if gate == "bt" && input == true {
-        // println!("bt on")
-        // }
 
-        // println!("{gate} receives {input}");
         if input == false {
             los += 1;
         } else {
@@ -170,7 +147,6 @@ fn step(
 
 pub fn part1(raw_input: &str) -> Output {
     let modmap = parse(raw_input);
-    println!("Modules: {modmap:?}");
     let mut states = HashMap::new();
     for (k, v) in modmap.iter() {
         if v.typ == '%' || v.typ == '&' {
@@ -180,10 +156,9 @@ pub fn part1(raw_input: &str) -> Output {
     let mut los = 0usize;
     let mut his = 0usize;
     for i in 0..1000 {
-        let (lo, hi) = step(&modmap, &mut states, &vec![], false, i, &mut HashMap::new());
+        let (lo, hi) = step(&modmap, &mut states, false, i, &mut HashMap::new(), &mut HashMap::new());
         los += lo as usize;
         his += hi as usize;
-        // println!("Lo = {lo} hi = {hi}");
     }
     println!("{los} Lo {his} Hi");
     los * his
@@ -197,55 +172,31 @@ pub fn part2(raw_input: &str) -> Output {
             states.insert(k.clone(), false);
         }
     }
-    println!("states = {states:?}");
 
-    // println!("Lead to BT = {lead_to_bt:?}");
-    // let mut statesclone = states.clone();
-    // let mut bt_states = statesclone.iter().filter(|(k, v)| lead_to_bt.contains(*k)).collect_vec();
-    // bt_states.sort();
-    // let mut prev_bt_states = vec![bt_states];
-
-    // let mut bt_cycle_start = 0;
-    // let mut bt_cycle_end = 0;
-
-    let mut subcyclesets = vec![];
-    for state in ["bt", "dl", "fr", "rv"] {
-        let mut lead_to = HashSet::new();
-        lead_to.insert(state.to_string());
-        for i in 0..1000 {
-            for (gate, module) in modmap.iter() {
-                if module.outputs.iter().filter(|z| lead_to.contains(*z)).next().is_some() {
-                    lead_to.insert(gate.clone());
-                }
-            }
-        }
-        subcyclesets.push((state.to_string(), lead_to));
-    }
-    // let mut prev_state_bt = vec![states];
-
-    let mut prev_states = vec![states.clone()];
-    let mut prev_true: HashMap<String, Vec<usize>> = HashMap::new();
-    for i in 0..1000000 {
-        let (lo, hi) = step(&modmap, &mut states, &subcyclesets, true, i + 1, &mut prev_true);
-        // let statesclon = states.clone();
-        // let bt_states = statesclon.iter().filter(|(k, v)| lead_to_bt.contains(*k)).collect_vec();
-        // if prev_bt_states.contains(&bt_states) {
-        // println!("Found BT cycle at i = {i}");
-        // }
-        // if prev_states.contains(&states) {
-        // println!("Found cycle at i = {i}");
-        // }
-        // prev_states.push(states.clone());
-        // if *states.get("bt").unwrap() == true {
-        // println!("BT is true at i = {i}");
-        // }
-    }
-    0
     /*
        &rs -> rx
        &bt -> rs
        &dl -> rs
        &fr -> rs
        &rv -> rs
+       In my input, rx has a single incoming edge from a conjunction, we check to ensure this and solve the problem for this special case
     */
+    let rx_inputs = &modmap.iter().filter(|(k, v)| (*v).outputs.len() == 1 && (*v).outputs[0] == "rx").collect_vec();
+    assert!(rx_inputs.len() == 1);
+    let rx_input = rx_inputs[0].1;
+    assert!(rx_input.typ == '&');
+    let prev_inputs = &rx_input.inputs;
+
+    let mut prev_true: HashMap<String, Vec<usize>> = HashMap::new();
+    prev_inputs.iter().for_each(|gate| {
+        prev_true.insert(gate.clone(), vec![]);
+    });
+    let mut cycle_lens = HashMap::new();
+    for i in 0..1000000 {
+        let (lo, hi) = step(&modmap, &mut states, true, i + 1, &mut prev_true, &mut cycle_lens);
+        if hi == 0 {
+            return lo;
+        }
+    }
+    unreachable!()
 }
