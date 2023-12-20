@@ -64,5 +64,5 @@ def solve(part2):
   #print(len(D))
   return ans
 
-print(solve(False))
+# print(solve(False))
 print(solve(True))

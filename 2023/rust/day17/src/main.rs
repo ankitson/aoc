@@ -17,18 +17,22 @@ pub fn main() {
     let input: &str = include_str!("../../inputs/sample17.txt");
     let part1 = soln1::part1(input);
     println!("part1/sample1 = {:?}", part1);
+    assert_eq!(part1, 102);
 
     let input: &str = include_str!("../../inputs/day17.txt");
     let part1 = soln1::part1(input);
     println!("part1/day17 = {:?}", part1);
+    assert_eq!(part1, 814);
 
     let input: &str = include_str!("../../inputs/sample17.txt");
     let part2 = soln1::part2(input);
     println!("part2/sample17 = {:?}", part2);
+    assert_eq!(part2, 94);
 
     let input: &str = include_str!("../../inputs/day17.txt");
     let part2 = soln1::part2(input);
     println!("part2/day17 = {:?}", part2);
+    assert_eq!(part2, 974);
 }
 
 #[cfg(test)]
