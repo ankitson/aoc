@@ -1,0 +1,25 @@
+[package]
+name = "day20"
+version = "0.1.0"
+authors = ["Ankit Soni <dev@ankitson.com>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dev-dependencies]
+criterion = { version = "0.5.1", features = ["html_reports"] }
+pprof = { version = "0.13.0", features = ["flamegraph", "criterion", "protobuf-codec"] }
+
+[dependencies]
+dhat = "*"
+itertools = "*"
+scan_fmt = "*"
+regex = "*"
+util = { path = "../util" }
+
+[[bench]]
+name = "corebench"
+harness = false
+
+[features]
+heapprofile = []
