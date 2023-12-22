@@ -21,6 +21,7 @@ import day15
 import day16
 import day17
 import day18
+import day21
 import util
 
 def str_result(result, tag):
@@ -110,6 +111,9 @@ def main():
   elif day == 18:
     bench_it('day18.soln1.realinput/part1', day18.soln1.part1,input1)
     bench_it('day18.soln1.realinput/part2', day18.soln1.part2,input1)
+  elif day == 21:
+    bench_it('day21.soln1.realinput/part1', day21.soln1.part1,input1)
+    bench_it('day21.soln1.realinput/part2', day21.soln1.part2,input1)
   else:
     raise Exception(f"No benchmarks defined for day {day}")
 

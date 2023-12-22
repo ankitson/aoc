@@ -19,6 +19,7 @@ import day15
 import day16
 import day17
 import day18
+import day21
 import util
 
 def main():
@@ -61,6 +62,8 @@ def main():
     run_day17()
   elif day == 18:
     run_day18()
+  elif day == 21:
+    run_day21()
   else:
     raise Exception(f"Day {day} not implemented")
 
@@ -164,6 +167,11 @@ def run_day18():
   sample = open(util.sample_input(18),'r').read()
   input1 = open(util.real_input(18),'r').read()
   day18.soln1.main(sample, input1)
+
+def run_day21():
+  sample = open(util.sample_input(21),'r').read()
+  input1 = open(util.real_input(21),'r').read()
+  day21.soln1.main(sample, input1)
 
 if __name__ == '__main__':
   main()
