@@ -13,17 +13,20 @@ pub fn main() {
     #[cfg(feature = "heapprofile")]
     let _profiler = dhat::Profiler::new_heap();
 
-    println!("Hello Day 24!");
-    let input: &str = include_str!("../../inputs/sample24.txt");
-    let part1 = soln1::part1(input, ((7, 7, 0), (27, 27, 0)));
-    println!("part1/sample1 = {:?}", part1);
-
+    let sample: &str = include_str!("../../inputs/sample24.txt");
     let input: &str = include_str!("../../inputs/day24.txt");
+
+    println!("Hello Day 24!");
+    let part1 = soln1::part1(sample, ((7, 7, 0), (27, 27, 0)));
+    println!("part1/sample1 = {:?}", part1);
+    assert_eq!(part1, 2);
+
     let part1 = soln1::part1(input, ((200000000000000, 200000000000000, 0), (400000000000000, 400000000000000, 0)));
     println!("part1/day24 = {:?}", part1);
+    assert_eq!(part1, 12783);
 
     let input: &str = include_str!("../../inputs/sample24.txt");
-    let part2 = soln1::part2(input);
+    let part2 = soln1::part2(sample);
     println!("part2/sample24 = {:?}", part2);
 
     let input: &str = include_str!("../../inputs/day24.txt");

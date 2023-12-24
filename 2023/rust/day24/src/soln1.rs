@@ -19,7 +19,6 @@ pub fn parse(input: &str) -> Vec<(P3, P3)> {
 
 pub fn part1(raw_input: &str, bounds: (P3, P3)) -> Output {
     let stones = parse(raw_input);
-
     let mut count = 0;
     for comb in stones.iter().combinations(2) {
         let (((p1x, p1y, _), (v1x, v1y, _)), ((p2x, p2y, _), (v2x, v2y, _))) = (comb[0], comb[1]);
@@ -31,42 +30,22 @@ pub fn part1(raw_input: &str, bounds: (P3, P3)) -> Output {
         if m1 == m2 {
             continue;
         }
-
         let x_intsct = ((c2 - c1) / (m1 - m2)) as isize;
         let y_instct = (m1 * x_intsct as f64 + c1) as isize;
-        print!("stones: {:?}, {:?}, x_intsct: {} y_instct: {} ", comb[0], comb[1], x_intsct, y_instct);
-        if x_intsct >= bounds.0 .0
-            && x_intsct <= bounds.1 .0
-            && y_instct >= bounds.0 .1
-            && y_instct <= bounds.1 .1
-            && (*v1x >= 0 && x_intsct >= *p1x || *v1x < 0 && x_intsct <= *p1x)
-            && (*v2x >= 0 && x_intsct >= *p2x || *v2x < 0 && x_intsct <= *p2x)
-        {
-            println!("\t +1");
-            count += 1;
-        } else {
-            println!("");
-        }
 
-        // if x_intsct >= min_x && x_intsct <= max_x {
-        // count += 1;
-        // }
+        let in_bounds =
+            x_intsct >= bounds.0 .0 && x_intsct <= bounds.1 .0 && y_instct >= bounds.0 .1 && y_instct <= bounds.1 .1;
+        let direction = (*v1x >= 0 && x_intsct >= *p1x || *v1x < 0 && x_intsct <= *p1x)
+            && (*v2x >= 0 && x_intsct >= *p2x || *v2x < 0 && x_intsct <= *p2x);
+        if in_bounds && direction {
+            count += 1;
+        }
     }
     count
-    //p1x_t = p1x_0 + v_1x*t
-    //p2x_t = p2x_0 + v_2x*t
-    //p1x_t = p2x_t
-    //p1x_0 + v_1x*A = p2x_0 + v_2x*B (they can cross at different times)
-
-    // pos = 0 , 0
-    // vel = 15, 20
-    // p1 = 15, 20
-    // p2 = 30, 40..
-
-    //px lies on line y = vy*x + px_0
 }
 
 pub fn part2(raw_input: &str) -> Output {
-    let input = parse(raw_input);
+    let stones = parse(raw_input);
+
     todo!()
 }
