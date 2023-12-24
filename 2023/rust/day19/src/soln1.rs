@@ -117,43 +117,34 @@ fn range_union(r1: Range<usize>, r2: Range<usize>) -> Vec<Range<usize>> {
 }
 
 pub fn part2(raw_input: &str) -> Output {
-    let (instrs, parts) = parse(raw_input);
+    let (mut instrs, parts) = parse(raw_input);
 
     let mut left = 0;
     let mut right = 0;
     let mut instr = instrs.get("in").unwrap();
 
-    // let mut counts = HashMap::new();
-    // counts.insert("in", 4000u64 * 4000u64 * 4000u64 * 4000u64);
-    // counts.insert("A", 0);
-    // counts.insert("R", 0);
     let mut process = VecDeque::from([("in", vec![1..4001, 1..4001, 1..4001, 1..4001])]);
-    // let mut ranges = vec![vec![(1, 4001)]; 4];
-    // let mut ranges = HashMap::new();
-    // ranges.insert("in", vec![vec![1..4001], vec![1..4001], vec![1..4001], vec![1..4001]]);
 
     let charmap = HashMap::from([('x', 0), ('m', 1), ('a', 2), ('s', 3)]);
     let mut count = 0usize;
+    instrs.insert("A".to_string(), vec!["A".to_string()]);
+    instrs.insert("R".to_string(), vec!["R".to_string()]);
     while process.len() > 0 {
         let (instr_label, mut ranges_per_symbol) = process.pop_front().unwrap();
+        println!("process instr: {instr_label} ranges: {ranges_per_symbol:?}");
         let instr_parts = instrs.get(instr_label).unwrap();
-        // let mut my_ranges = ranges.get(instr_label).unwrap().clone();
-        println!("instr parts: {instr_parts:?}");
         for part in instr_parts {
-            if 
-            // let my_ranges = my_ranges.clone();
-            // let my_ranges = ranges.get(&instr_label).unwrap().clone();
+            println!("\tpart: {part:?} ranges {ranges_per_symbol:?}");
             let branches = part.split(":").collect_vec();
-            match branches[..] {
-                [dest] if dest == "A" => {
-                    count += ranges_per_symbol.iter().map(|range| range.end - range.start).sum::<usize>();
+            match &branches[..] {
+                [dest] if *dest == "A" => {
+                    count += ranges_per_symbol.iter().map(|range| range.end - range.start).product::<usize>();
                 }
-                [dest] if dest == "R" => (),
-                // [dest] => {
-                    // todo!()
-                // }
+                [dest] if *dest == "R" => (),
+                [dest] => {
+                    process.push_back((dest, ranges_per_symbol.clone()));
+                }
                 [cond, dest] => {
-                    //dest if true
                     let cb = cond.as_bytes();
                     let operand = cb[0] as char;
                     let comp = cb[1] as char;
@@ -165,54 +156,25 @@ pub fn part2(raw_input: &str) -> Output {
                         let gteq = n..range.end;
                         let mut new_ranges = ranges_per_symbol.clone();
                         new_ranges[*charmap.get(&operand).unwrap()] = lt;
-                        process.push_back((dest, new_ranges))
-                        ranges_per_symbol
+                        process.push_back((dest, new_ranges));
+                        ranges_per_symbol[*charmap.get(&operand).unwrap()] = gteq;
                     } else if comp == '>' {
                         let n = Ord::clamp(valu + 1, range.start, range.end);
                         let lteq = range.start..n;
                         let gt = n..range.end;
+                        let mut new_ranges = ranges_per_symbol.clone();
+                        new_ranges[*charmap.get(&operand).unwrap()] = gt;
+                        process.push_back((dest, new_ranges));
+                        ranges_per_symbol[*charmap.get(&operand).unwrap()] = lteq;
                     } else {
                         panic!();
                     }
-
-                    todo!()
                 }
-                _ => panic!(),
+                other => (),
             }
-
-            // if branches.len() == 1 {
-            //     //A, R or jump
-            //     let dest = branches[0];
-            //     ranges.entry(&dest).counts.entry(&dest).and_modify(|v| *v += incoming).or_insert(incoming);
-            //     counts.entry(instr_label).and_modify(|v| *v -= incoming);
-            //     incoming = 0;
-            // } else if branches.len() == 2 {
-            //     let cond = branches[0];
-            //     let dest_label = branches[1];
-            //     let cond_chars = &mut cond.chars();
-            //     let operand = cond_chars.next().unwrap();
-            //     let comp = cond_chars.next().unwrap();
-            //     let valu = cond_chars.collect_vec();
-            //     let valus = valu.iter().cloned().collect::<String>();
-            //     let valun = valus.parse::<u64>().unwrap();
-            //     let mut num_going_into_branch = 0u64;
-            //     if comp == '<' {
-            //         num_going_into_branch = (valun - 1) as u64;
-            //     } else if comp == '>' {
-            //         num_going_into_branch = 4000u64 - (valun - 1u64);
-            //     }
-            //     incoming -= num_going_into_branch;
-            //     counts.entry(&dest_label).and_modify(|v| *v += num_going_into_branch).or_insert(num_going_into_branch);
-            // }
         }
-        println!("instr parts = {instr_parts:?}");
-        // let parts = instr_part.split(":").collect_vec();
-        // if parts.len() == 1 {
-        // let dest = parts[0];
-        // counts.entry(dest)
-        // }
     }
-    todo!()
+    count
 }
 
 // for instr_part in instr {
