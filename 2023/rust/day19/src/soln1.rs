@@ -9,7 +9,7 @@ use regex::Regex;
 pub type Input = (HashMap<String, Vec<String>>, Vec<Vec<(char, usize)>>);
 pub type Output = usize;
 
-pub fn parse(input: &str) -> (HashMap<String, Vec<String>>, Vec<Vec<(char, usize)>>) {
+pub fn parse(input: &str) -> Input {
     let (p1, p2) = input.split_once("\n\n").unwrap();
     let mut instrs = HashMap::new();
     let mut parts = vec![];
@@ -46,7 +46,6 @@ fn apply(instr: &Vec<String>, part: &Vec<(char, usize)>) -> String {
         let parts = instr_part.split(":").collect_vec();
         if parts.len() == 1 {
             return parts[0].to_string();
-            // todo!() //A , R or jump
         } else {
             let cond = parts[0];
             let label = parts[1];
@@ -80,9 +79,8 @@ pub fn part1(raw_input: &str) -> Output {
     let mut accepted_total: usize = 0;
     for part in parts {
         let mut instr: &Vec<String> = instrs.get("in").unwrap();
-        let mut next_label = "in".to_string();
         loop {
-            next_label = apply(instr, &part);
+            let next_label = apply(instr, &part);
             if next_label == "A" {
                 let part_value = part.iter().map(|x| x.1);
                 let part_sum = part_value.sum::<usize>();
@@ -98,31 +96,8 @@ pub fn part1(raw_input: &str) -> Output {
     accepted_total
 }
 
-fn order(r1: Range<usize>, r2: Range<usize>) -> (Range<usize>, Range<usize>) {
-    if r1.start <= r2.start {
-        return (r1, r2);
-    } else {
-        return (r2, r1);
-    }
-}
-fn range_union(r1: Range<usize>, r2: Range<usize>) -> Vec<Range<usize>> {
-    let (rs, rb) = order(r1, r2);
-    if rs.end <= rb.start {
-        //disjoint ranges
-        return vec![rs, rb];
-    } else {
-        //intersect or rb is wholly contained in rs
-        return vec![Range { start: rs.start, end: rb.end.max(rs.end) }];
-    }
-}
-
 pub fn part2(raw_input: &str) -> Output {
-    let (mut instrs, parts) = parse(raw_input);
-
-    let mut left = 0;
-    let mut right = 0;
-    let mut instr = instrs.get("in").unwrap();
-
+    let (mut instrs, _) = parse(raw_input);
     let mut process = VecDeque::from([("in", vec![1..4001, 1..4001, 1..4001, 1..4001])]);
 
     let charmap = HashMap::from([('x', 0), ('m', 1), ('a', 2), ('s', 3)]);
@@ -131,10 +106,8 @@ pub fn part2(raw_input: &str) -> Output {
     instrs.insert("R".to_string(), vec!["R".to_string()]);
     while process.len() > 0 {
         let (instr_label, mut ranges_per_symbol) = process.pop_front().unwrap();
-        println!("process instr: {instr_label} ranges: {ranges_per_symbol:?}");
         let instr_parts = instrs.get(instr_label).unwrap();
         for part in instr_parts {
-            println!("\tpart: {part:?} ranges {ranges_per_symbol:?}");
             let branches = part.split(":").collect_vec();
             match &branches[..] {
                 [dest] if *dest == "A" => {
@@ -170,44 +143,9 @@ pub fn part2(raw_input: &str) -> Output {
                         panic!();
                     }
                 }
-                other => (),
+                _ => panic!("illegal instruction?"),
             }
         }
     }
     count
 }
-
-// for instr_part in instr {
-//     let parts = instr_part.split(":").collect_vec();
-//     if parts.len() == 1 {
-//         right =
-//         // todo!() //A , R or jump
-//     } else {
-//         let cond = parts[0];
-//         let label = parts[1];
-//         if cond.contains("<") {
-//             let pts = cond.split("<").collect_vec();
-//             let cmpwith = pts[0];
-//             let cmpvalu = pts[1].parse::<usize>().unwrap();
-//             let part_valu = part.iter().filter(|(a, b)| a.to_string() == cmpwith).map(|(a, b)| b).collect_vec()[0];
-//             if part_valu < &cmpvalu {
-//                 return label.to_string();
-//             }
-//         } else if cond.contains(">") {
-//             let pts = cond.split(">").collect_vec();
-//             let cmpwith = pts[0];
-//             let cmpvalu = pts[1].parse::<usize>().unwrap();
-//             let part_valu = part.iter().filter(|(a, b)| a.to_string() == cmpwith).map(|(a, b)| b).collect_vec()[0];
-//             if part_valu > &cmpvalu {
-//                 return label.to_string();
-//             }
-//         } else {
-//             panic!()
-//         }
-//     }
-
-// px -> A
-//    -> rfg
-
-// rfg -> gd (all p such that s < 537 i.e 536 * 4000 * 4000 * 4000)
-//     -> R (all p such that s>= 537 and x>2440 i.e (4000-536) *
