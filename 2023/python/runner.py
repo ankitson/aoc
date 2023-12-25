@@ -155,7 +155,7 @@ def run_day15():
   day15.soln1.main(sample, input1)
 
 def run_day16():
-  sample = open(util.sample_input(16),'r').read()
+  sample = open(util.sample_input(16),'r').read()                       
   input1 = open(util.real_input(16),'r').read()
   day16.soln1.main(sample, input1)
 

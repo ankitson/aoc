@@ -63,5 +63,11 @@
 |rust.day16.parse.nosum.realinput/parse            |          21947.72ns|             21.95µs|         0.02ms|          0.00s|
 |rust.day16.part1.realinput/part1                  |        1362955.17ns|           1362.96µs|         1.36ms|          0.00s|
 |rust.day16.part2.realinput/part2                  |      325412274.97ns|         325412.27µs|       325.41ms|          0.33s|
-|rust.TOTAL                                        |   130363831035.99ns|      130363831.04µs|    130363.83ms|        130.36s|
+|rust.day19.parse.nosum.realinput/parse            |         301833.05ns|            301.83µs|         0.30ms|          0.00s|
+|rust.day19.part1.realinput/part1                  |         684850.08ns|            684.85µs|         0.68ms|          0.00s|
+|rust.day19.part2.realinput/part2                  |         533139.11ns|            533.14µs|         0.53ms|          0.00s|
+|rust.day22.parse.nosum.realinput/parse            |         183502.28ns|            183.50µs|         0.18ms|          0.00s|
+|rust.day22.part1.realinput/part1                  |      200757058.15ns|         200757.06µs|       200.76ms|          0.20s|
+|rust.day22.part2.realinput/part2                  |      201071477.60ns|         201071.48µs|       201.07ms|          0.20s|
+|rust.TOTAL                                        |   130766877560.93ns|      130766877.56µs|    130766.88ms|        130.77s|
 |python.TOTAL                                      |      577805482.26ns|         577805.48µs|       577.81ms|          0.58s|
