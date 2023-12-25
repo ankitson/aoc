@@ -254,6 +254,17 @@ pub fn part1(raw_input: &str) -> Output {
 // }
 
 pub fn part2(raw_input: &str) -> Output {
-    let input = parse(raw_input);
-    todo!()
+    let mut bricks = parse(raw_input);
+    bricks.sort_by_key(|((a, b, c), (d, e, f))| *c);
+
+    fall_all(&mut bricks);
+
+    let mut total = 0;
+    for i in 0..bricks.len() {
+        let mut bricks_without = bricks.clone();
+        bricks_without.remove(i);
+        let nfalls = fall_all(&mut bricks_without);
+        total += nfalls;
+    }
+    total
 }

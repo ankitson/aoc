@@ -26,9 +26,11 @@ pub fn main() {
 
     let part2 = soln1::part2(sample);
     println!("part2/sample22 = {:?}", part2);
+    assert_eq!(part2, 7);
 
     let part2 = soln1::part2(input);
     println!("part2/day22 = {:?}", part2);
+    assert_eq!(part2, 61097);
 }
 
 #[cfg(test)]
