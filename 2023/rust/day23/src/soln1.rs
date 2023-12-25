@@ -189,19 +189,14 @@ pub fn part1(raw_input: &str) -> Output {
 }
 
 pub fn part1_new(raw_input: &str) -> Output {
+    // Do a DFS, each branch has its own copy of seen, terminate on reaching dest or no nbrs
     let grid = parse(raw_input);
     let sc = grid[0].iter().position(|c| *c == '.').unwrap();
     let ec = grid[grid.len() - 1].iter().position(|c| *c == '.').unwrap();
     let mut reached = vec![];
     let mut seen = HashSet::new();
-    dfs(&grid, (0, sc), (grid.len() - 1, ec), 0, &mut seen, &mut reached);
+    dfs(&grid, (0, sc), (grid.len() - 1, ec), 0, &mut seen, &mut reached, false);
     *reached.iter().max().unwrap()
-    // println!("reached: {reached:?}");
-    // DO a DFS, each branch has its own copy of seen, terminate on reaching dest
-    // or no nbrs
-    //
-
-    // todo!()
 }
 
 fn dfs(
@@ -211,6 +206,7 @@ fn dfs(
     depth: usize,
     seen: &mut HashSet<(usize, usize)>,
     reached: &mut Vec<usize>,
+    part2: bool,
 ) -> bool {
     if (r, c) == (dest_r, dest_c) {
         reached.push(depth);
@@ -221,7 +217,7 @@ fn dfs(
     }
     seen.insert((r, c));
 
-    //TODO: can you enter a node on direction against its slope ? assume yes.
+    //We assume no restrictions on ENTERING slopes, only exiting.
     let dirs = [(1, 0, 'v'), (-1, 0, '^'), (0, 1, '>'), (0, -1, '<')];
     for (dr, dc, dchar) in &dirs {
         let nr = r as isize + dr;
@@ -230,19 +226,33 @@ fn dfs(
         if in_bounds {
             let nr = nr as usize;
             let nc = nc as usize;
-            let direction = grid[r][c] == '.' || grid[r][c] == *dchar;
+            let direction = grid[r][c] == '.' || grid[r][c] == *dchar || part2;
             let valid_nbr = grid[nr][nc] != '#';
             if direction && valid_nbr && !seen.contains(&(nr, nc)) {
                 let mut branch_seen = seen.clone();
-                dfs(&grid, (nr, nc), (dest_r, dest_c), depth + 1, &mut branch_seen, reached);
+                dfs(&grid, (nr, nc), (dest_r, dest_c), depth + 1, &mut branch_seen, reached, part2);
             }
         }
     }
     true
-    // todo!()
+}
+
+pub fn part2_slow(raw_input: &str) -> Output {
+    let grid = parse(raw_input);
+    let sc = grid[0].iter().position(|c| *c == '.').unwrap();
+    let ec = grid[grid.len() - 1].iter().position(|c| *c == '.').unwrap();
+    let mut reached = vec![];
+    let mut seen = HashSet::new();
+    dfs(&grid, (0, sc), (grid.len() - 1, ec), 0, &mut seen, &mut reached, true);
+    *reached.iter().max().unwrap()
 }
 
 pub fn part2(raw_input: &str) -> Output {
-    let input = parse(raw_input);
-    todo!()
+    let grid = parse(raw_input);
+    let sc = grid[0].iter().position(|c| *c == '.').unwrap();
+    let ec = grid[grid.len() - 1].iter().position(|c| *c == '.').unwrap();
+    let mut reached = vec![];
+    let mut seen = HashSet::new();
+    dfs(&grid, (0, sc), (grid.len() - 1, ec), 0, &mut seen, &mut reached, true);
+    *reached.iter().max().unwrap()
 }

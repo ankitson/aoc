@@ -24,8 +24,9 @@ pub fn main() {
     println!("part1/day23 = {:?}", part1);
     assert_eq!(part1, 2130);
 
-    let part2 = soln1::part2(input);
+    let part2 = soln1::part2_slow(sample);
     println!("part2/sample23 = {:?}", part2);
+    assert_eq!(part2, 154);
 
     let input: &str = include_str!("../../inputs/day23.txt");
     let part2 = soln1::part2(input);
