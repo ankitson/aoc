@@ -188,6 +188,60 @@ pub fn part1(raw_input: &str) -> Output {
     // }
 }
 
+pub fn part1_new(raw_input: &str) -> Output {
+    let grid = parse(raw_input);
+    let sc = grid[0].iter().position(|c| *c == '.').unwrap();
+    let ec = grid[grid.len() - 1].iter().position(|c| *c == '.').unwrap();
+    let mut reached = vec![];
+    let mut seen = HashSet::new();
+    dfs(&grid, (0, sc), (grid.len() - 1, ec), 0, &mut seen, &mut reached);
+    *reached.iter().max().unwrap()
+    // println!("reached: {reached:?}");
+    // DO a DFS, each branch has its own copy of seen, terminate on reaching dest
+    // or no nbrs
+    //
+
+    // todo!()
+}
+
+fn dfs(
+    grid: &Input,
+    (r, c): (usize, usize),
+    (dest_r, dest_c): (usize, usize),
+    depth: usize,
+    seen: &mut HashSet<(usize, usize)>,
+    reached: &mut Vec<usize>,
+) -> bool {
+    if (r, c) == (dest_r, dest_c) {
+        reached.push(depth);
+        return true;
+    }
+    if grid[r][c] == '#' {
+        return false;
+    }
+    seen.insert((r, c));
+
+    //TODO: can you enter a node on direction against its slope ? assume yes.
+    let dirs = [(1, 0, 'v'), (-1, 0, '^'), (0, 1, '>'), (0, -1, '<')];
+    for (dr, dc, dchar) in &dirs {
+        let nr = r as isize + dr;
+        let nc = c as isize + dc;
+        let in_bounds = nr >= 0 && nc >= 0 && nr < grid.len() as isize && nc < grid[0].len() as isize;
+        if in_bounds {
+            let nr = nr as usize;
+            let nc = nc as usize;
+            let direction = grid[r][c] == '.' || grid[r][c] == *dchar;
+            let valid_nbr = grid[nr][nc] != '#';
+            if direction && valid_nbr && !seen.contains(&(nr, nc)) {
+                let mut branch_seen = seen.clone();
+                dfs(&grid, (nr, nc), (dest_r, dest_c), depth + 1, &mut branch_seen, reached);
+            }
+        }
+    }
+    true
+    // todo!()
+}
+
 pub fn part2(raw_input: &str) -> Output {
     let input = parse(raw_input);
     todo!()

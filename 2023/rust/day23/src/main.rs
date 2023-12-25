@@ -12,17 +12,18 @@ static ALLOC: dhat::Alloc = dhat::Alloc;
 pub fn main() {
     #[cfg(feature = "heapprofile")]
     let _profiler = dhat::Profiler::new_heap();
+    let sample: &str = include_str!("../../inputs/sample23.txt");
+    let input: &str = include_str!("../../inputs/day23.txt");
 
     println!("Hello Day 23!");
-    let input: &str = include_str!("../../inputs/sample23.txt");
-    let part1 = soln1::part1(input);
+    let part1 = soln1::part1_new(sample);
     println!("part1/sample1 = {:?}", part1);
+    assert_eq!(part1, 94);
 
-    // let input: &str = include_str!("../../inputs/day23.txt");
-    // let part1 = soln1::part1(input);
-    // println!("part1/day23 = {:?}", part1);
+    let part1 = soln1::part1_new(input);
+    println!("part1/day23 = {:?}", part1);
+    assert_eq!(part1, 2130);
 
-    let input: &str = include_str!("../../inputs/sample23.txt");
     let part2 = soln1::part2(input);
     println!("part2/sample23 = {:?}", part2);
 
