@@ -487,34 +487,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "day20"
-version = "0.1.0"
-dependencies = [
- "criterion",
- "dhat",
- "itertools 0.12.0",
- "num",
- "pprof",
- "regex",
- "scan_fmt",
- "util",
-]
-
-[[package]]
 name = "day18"
-version = "0.1.0"
-dependencies = [
- "criterion",
- "dhat",
- "itertools 0.10.5",
- "pprof",
- "regex",
- "scan_fmt",
- "util",
-]
-
-[[package]]
-name = "day21"
 version = "0.1.0"
 dependencies = [
  "criterion",
@@ -540,7 +513,21 @@ dependencies = [
 ]
 
 [[package]]
-name = "day22"
+name = "day20"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "dhat",
+ "itertools 0.12.0",
+ "num",
+ "pprof",
+ "regex",
+ "scan_fmt",
+ "util",
+]
+
+[[package]]
+name = "day21"
 version = "0.1.0"
 dependencies = [
  "criterion",
