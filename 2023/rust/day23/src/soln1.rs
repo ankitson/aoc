@@ -207,17 +207,19 @@ fn dfs(
     seen: &mut HashSet<(usize, usize)>,
     reached: &mut Vec<usize>,
     part2: bool,
-) -> bool {
+) -> Option<usize> {
+    // println!("visit {r} {c} at depth {depth}");
     if (r, c) == (dest_r, dest_c) {
         reached.push(depth);
-        return true;
+        return Some(depth);
     }
     if grid[r][c] == '#' {
-        return false;
+        return None;
     }
     seen.insert((r, c));
 
     //We assume no restrictions on ENTERING slopes, only exiting.
+    let mut best = None;
     let dirs = [(1, 0, 'v'), (-1, 0, '^'), (0, 1, '>'), (0, -1, '<')];
     for (dr, dc, dchar) in &dirs {
         let nr = r as isize + dr;
@@ -230,11 +232,12 @@ fn dfs(
             let valid_nbr = grid[nr][nc] != '#';
             if direction && valid_nbr && !seen.contains(&(nr, nc)) {
                 let mut branch_seen = seen.clone();
-                dfs(&grid, (nr, nc), (dest_r, dest_c), depth + 1, &mut branch_seen, reached, part2);
+                let best_here = dfs(&grid, (nr, nc), (dest_r, dest_c), depth + 1, &mut branch_seen, reached, part2);
+                best = best.min(best_here)
             }
         }
     }
-    true
+    best
 }
 
 pub fn part2_slow(raw_input: &str) -> Output {
@@ -251,8 +254,62 @@ pub fn part2(raw_input: &str) -> Output {
     let grid = parse(raw_input);
     let sc = grid[0].iter().position(|c| *c == '.').unwrap();
     let ec = grid[grid.len() - 1].iter().position(|c| *c == '.').unwrap();
-    let mut reached = vec![];
+    let mut adj: HashMap<(usize, usize), Vec<((usize, usize), usize)>> = HashMap::new();
+    adj.insert((0, sc), vec![]);
+
+    // let mut reached = vec![];
     let mut seen = HashSet::new();
-    dfs(&grid, (0, sc), (grid.len() - 1, ec), 0, &mut seen, &mut reached, true);
-    *reached.iter().max().unwrap()
+    dfs2(&grid, &mut adj, (grid.len() - 1, ec), 0, &mut seen, (grid.len() - 1, ec));
+    for (k, v) in adj.iter().sorted() {
+        for vn in v.iter().sorted() {
+            println!("\"{:?}\" -> \"{:?}\" [label={:?}]", *k, vn.0, vn.1)
+        }
+    }
+    // println!("adj = {adj:?}");
+    // println!("{}", adj.len());
+    0
+}
+
+//DFS starting from X
+// see F. last_fork_node = "X"
+// dist[F] = dist
+// see A. last_fork_node = "F"
+// dist[A] =
+//      | ------- A
+// X--- F
+//      |---------B
+
+fn dfs2(
+    grid: &Input,
+    adj: &mut HashMap<(usize, usize), Vec<((usize, usize), usize)>>,
+    (r, c): (usize, usize),
+    depth: usize,
+    seen: &mut HashSet<(usize, usize)>,
+    last_fork_node: (usize, usize),
+) -> usize {
+    if seen.contains(&(r, c)) {
+        return depth;
+    }
+    seen.insert((r, c));
+
+    let dirs = [(1, 0), (-1isize, 0), (0, 1), (0, -1isize)];
+    let ncrds = dirs
+        .iter()
+        .map(|(dr, dc)| (r as isize + dr, c as isize + dc))
+        .filter(|(nr, nc)| *nr >= 0 && *nc >= 0 && *nr < grid.len() as isize && *nc < grid[0].len() as isize)
+        .map(|(nr, nc)| (nr as usize, nc as usize))
+        .filter(|(nr, nc)| !seen.contains(&(*nr, *nc)))
+        .filter(|(nr, nc)| grid[*nr][*nc] != '#')
+        .collect_vec();
+    if ncrds.len() == 1 {
+        let mut seen_branch = seen.clone();
+        return dfs2(grid, adj, ncrds[0], depth + 1, &mut seen_branch, last_fork_node);
+    } else if ncrds.len() > 1 {
+        adj.entry((r, c)).and_modify(|v| v.push((last_fork_node, depth))).or_insert(vec![(last_fork_node, depth)]);
+        ncrds.iter().for_each(|nbr| {
+            let mut seen_branch = seen.clone();
+            dfs2(grid, adj, *nbr, depth + 1, &mut seen_branch, (r, c));
+        })
+    }
+    return depth;
 }
