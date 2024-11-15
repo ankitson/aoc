@@ -16,6 +16,7 @@ itertools = "*"
 scan_fmt = "*"
 regex = "*"
 util = { path = "../util" }
+z3 = {version = "*", features = ["arbitrary-size-numeral", "static-link-z3"] }
 
 [[bench]]
 name = "corebench"

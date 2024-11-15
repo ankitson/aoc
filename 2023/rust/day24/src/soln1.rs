@@ -1,5 +1,7 @@
 use itertools::Itertools;
 use regex::Regex;
+use z3::ast::*;
+use z3::*;
 
 pub type P3 = (isize, isize, isize);
 pub type Input = Vec<(P3, P3)>;
@@ -44,8 +46,82 @@ pub fn part1(raw_input: &str, bounds: (P3, P3)) -> Output {
     count
 }
 
+pub fn z3_experiment() {
+    // Create a Z3 context
+    let cfg = Config::new();
+    let ctx = Context::new(&cfg);
+
+    // Create a solver
+    let solver = Solver::new(&ctx);
+
+    // Create a variable x
+    let x = ast::Int::new_const(&ctx, "x");
+
+    // Add constraint: x + 2 = 5
+    let two = ast::Int::from_i64(&ctx, 2);
+    let five = ast::Int::from_i64(&ctx, 5);
+    // First create the left side of the equation (x + 2)
+    let left_side = &x + &two;
+    // Then create the equality comparison
+    let equation = left_side._eq(&five);
+
+    solver.assert(&equation);
+
+    // Check if the equation is satisfiable
+    match solver.check() {
+        z3::SatResult::Sat => {
+            // Get the model
+            let model = solver.get_model().unwrap();
+            println!("x = {}", model.eval(&x, true).unwrap());
+        }
+        z3::SatResult::Unsat => println!("No solution exists"),
+        z3::SatResult::Unknown => println!("Failed to solve"),
+    }
+
+    solver.reset();
+
+    // Create variables x and y
+    let x = ast::Int::new_const(&ctx, "x");
+    let y = ast::Int::new_const(&ctx, "y");
+
+    // Add constraints:
+    // x + y = 10
+    // x > 0
+    // y > 0
+    let ten = ast::Int::from_i64(&ctx, 10);
+    let zero = ast::Int::from_i64(&ctx, 0);
+    let three = ast::Int::from_i64(&ctx, 3);
+
+    solver.assert(&(&x + &y)._eq(&ten));
+    solver.assert(&x.gt(&three));
+    solver.assert(&y.gt(&zero));
+
+    match solver.check() {
+        z3::SatResult::Sat => {
+            let model = solver.get_model().unwrap();
+            println!("x = {}", model.eval(&x, true).unwrap());
+            println!("y = {}", model.eval(&y, true).unwrap());
+        }
+        z3::SatResult::Unsat => println!("No solution exists"),
+        z3::SatResult::Unknown => println!("Failed to solve"),
+    }
+}
+
 pub fn part2(raw_input: &str) -> Output {
     let stones = parse(raw_input);
-
-    todo!()
+    let ctx = z3::Context::new(&z3::Config::new());
+    let s = z3::Solver::new(&ctx);
+    let [fx, fy, fz, fdx, fdy, fdz] = ["fx", "fy", "fz", "fdx", "fdy", "fdz"].map(|v| Real::new_const(&ctx, v));
+    let zero = Int::from_i64(&ctx, 0).to_real();
+    for (i, &((x, y, z), (dx, dy, dz))) in stones[..3].iter().enumerate() {
+        let [x, y, z, dx, dy, dz] = [x, y, z, dx, dy, dz].map(|v| Int::from_i64(&ctx, v as _).to_real());
+        let t = Real::new_const(&ctx, format!("t{i}"));
+        s.assert(&t.ge(&zero));
+        s.assert(&((&x + &dx * &t)._eq(&(&fx + &fdx * &t))));
+        s.assert(&((&y + &dy * &t)._eq(&(&fy + &fdy * &t))));
+        s.assert(&((&z + &dz * &t)._eq(&(&fz + &fdz * &t))));
+    }
+    assert_eq!(s.check(), z3::SatResult::Sat);
+    let res = s.get_model().unwrap().eval(&(&fx + &fy + &fz), true).unwrap();
+    res.to_string().strip_suffix(".0").unwrap().parse().unwrap()
 }

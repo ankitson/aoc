@@ -25,13 +25,16 @@ pub fn main() {
     println!("part1/day24 = {:?}", part1);
     assert_eq!(part1, 12783);
 
-    let input: &str = include_str!("../../inputs/sample24.txt");
+    soln1::z3_experiment();
+
     let part2 = soln1::part2(sample);
     println!("part2/sample24 = {:?}", part2);
+    assert_eq!(part2, 47);
 
     let input: &str = include_str!("../../inputs/day24.txt");
     let part2 = soln1::part2(input);
     println!("part2/day24 = {:?}", part2);
+    assert_eq!(part2, 948485822969419);
 }
 
 #[cfg(test)]
