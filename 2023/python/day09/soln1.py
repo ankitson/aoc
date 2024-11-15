@@ -151,4 +151,3 @@ def main(sample, input1):
 
   soln = part2(input1)
   print(f"Part 2 (realinput) = {soln}")
-

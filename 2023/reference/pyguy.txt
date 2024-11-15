@@ -1,0 +1,56 @@
+From here: https://old.reddit.com/r/adventofcode/comments/18qbsxs/2023_day_25_solutions/ketzp94/?context=3
+
+[LANGUAGE: Python] [Code (16 lines, no libraries)](https://topaz.github.io/paste/#XQAAAQD7AQAAAAAAAAA0m0pnuFI8c+fPp4HB1KcPPbowzAlXKU78/7+Ll1vN6lN+gyBHiPQc61Ut+/AwRa41T6pNTeOhjTl7mER4BYg5OpiosIdtDDCYJcAREctI65VPOcQSmzdxZbKLZlKtjQ+q9U8ZZGTd6k9vyy7USXTMmoWcs2/ewOQG9ElpcUfkZsUmQZrXj9v6VZ0aM7jsaI/0q0p4dy8dg2rSH36AqojTuqq1bngMEj5O78Or36XuczZglTAf3/N8R4Uxxb6NfnWENK9QTcaDa7NVR3PcMmCY9p+TcbMMuwjuL68wdMQVCBVept7xDThWgVe3eNCryt/oM5uVuKYhsRyEaU98iRUcAi+zyCQjRjlCC10Iduc9NnJGTb/4Vo7PA8XuKApjaGOH6BkMZVZiMD/8xz+/RFxEQkCs1J1uJcfZsoTpc08Bf/4xvxc=)
+
+This is my attempt at [Karger's algorithm](https://en.wikipedia.org/wiki/Karger%27s_algorithm), adapted to today's puzzle.
+
+For my leaderboard attempt, I used [igraph](https://igraph.org) to write [this (just 3 lines)](https://topaz.github.io/paste/#XQAAAQC6AAAAAAAAAAAzHIoib6qOhkKVB6+O3fm4OMH1Ce1dXOxecw8ipM1w22HHj6zez6rvRMkzXWS2fqZQXnjDL0jja7y3JMdv4nmh+FJCTBcDApL1rhBx97GRYOqufv+RiUHQr7odndFRFkCtGVtioPwOgwF5zBYZ1EdovC87lQCC153KL2JfEbNpN7gu7Re0gLr/qJQ20jQd1QDe/DH1wA==).
+
+---
+
+Lots of people have been asking for a link to my code repository.
+I don't have one, but here's a list of my main solution posts for each day:
+
+[1 (digit detection)](https://www.reddit.com/r/adventofcode/comments/1883ibu/2023_day_1_solutions/kbigj6k/),
+[2 (colored cubes)](https://www.reddit.com/r/adventofcode/comments/188w447/2023_day_2_solutions/kbni15j/),
+[3 (part numbers)](https://www.reddit.com/r/adventofcode/comments/189m3qw/2023_day_3_solutions/kbs9g3g/),
+[4 (scratch cards)](https://www.reddit.com/r/adventofcode/comments/18actmy/2023_day_4_solutions/kbxb2fc/),
+[5 (seed mappings)](https://www.reddit.com/r/adventofcode/comments/18b4b0r/2023_day_5_solutions/kc2au1l/),
+
+
+[6 (boat race)](https://www.reddit.com/r/adventofcode/comments/18bwe6t/2023_day_6_solutions/kc6zsko/),
+[7 (camel poker)](https://www.reddit.com/r/adventofcode/comments/18cnzbm/2023_day_7_solutions/kcc4azi/),
+[8 (ghost maze)](https://www.reddit.com/r/adventofcode/comments/18df7px/2023_day_8_solutions/kcguu6a/),
+[9 (sequence extrapolation)](https://www.reddit.com/r/adventofcode/comments/18e5ytd/2023_day_9_solutions/kclmji9/),
+[10 (pipe maze)](https://www.reddit.com/r/adventofcode/comments/18evyu9/2023_day_10_solutions/kcrhxwc/),
+
+
+[11 (expanding galaxies)](https://www.reddit.com/r/adventofcode/comments/18fmrjk/2023_day_11_solutions/kcvfed8/),
+[12 (nonograms)](https://www.reddit.com/r/adventofcode/comments/18ge41g/2023_day_12_solutions/kd0ki5t/),
+[13 (smudged mirrors)](https://www.reddit.com/r/adventofcode/comments/18h940b/2023_day_13_solutions/kd5baa8/),
+[14 (reflector dish)](https://www.reddit.com/r/adventofcode/comments/18i0xtn/2023_day_14_solutions/kdact5r/),
+[15 (lens hashmap)](https://www.reddit.com/r/adventofcode/comments/18isayp/2023_day_15_solutions/kdffyec/),
+
+
+[16 (mirror maze)](https://www.reddit.com/r/adventofcode/comments/18jjpfk/2023_day_16_solutions/kdkz6lc/),
+[17 (hot crucible)](https://www.reddit.com/r/adventofcode/comments/18k9ne5/2023_day_17_solutions/kdqp7jx/),
+[18 (dig plan)](https://www.reddit.com/r/adventofcode/comments/18l0qtr/2023_day_18_solutions/kdv18dn/),
+[19 (nested workflows)](https://www.reddit.com/r/adventofcode/comments/18ltr8m/2023_day_19_solutions/ke02q84/),
+[20 (signal modules)](https://www.reddit.com/r/adventofcode/comments/18mmfxb/2023_day_20_solutions/ke5m940/),
+
+
+[21 (infinite map)](https://www.reddit.com/r/adventofcode/comments/18nevo3/2023_day_21_solutions/keao4q8/),
+[22 (brick stacking)](https://www.reddit.com/r/adventofcode/comments/18o7014/2023_day_22_solutions/kegg6n0/),
+[23 (longest path)](https://www.reddit.com/r/adventofcode/comments/18oy4pc/2023_day_23_solutions/kelin3v/),
+[24 (hailstone intersection)](https://www.reddit.com/r/adventofcode/comments/18pnycy/2023_day_24_solutions/ket7ajw/),
+[25 (minimum cut)](https://www.reddit.com/r/adventofcode/comments/18qbsxs/2023_day_25_solutions/keuboqf/).
+
+I'll be around for a few days to answer any questions, comments, etc.
+
+Thanks to /u/topaz2078 for creating these great puzzles (and the fun story), I've really enjoyed it!
+
+Thanks to /u/pred, /u/xelf, and /u/badr for their fancy ideas,
+/u/kaa-the-wise for their crazy one-liners, 
+and to /u/asgardian28, /u/fquiver, /u/mebeim and many others for their feedback.
+
+Hope to see you again next year!
