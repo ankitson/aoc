@@ -1,6 +1,10 @@
-use std::collections::{BinaryHeap, HashMap, HashSet, VecDeque};
+use std::{
+    collections::{BinaryHeap, HashMap, HashSet, VecDeque},
+    hash::Hash,
+};
 
 use itertools::Itertools;
+use pprint::{Doc, Printer, PRINTER};
 use regex::Regex;
 use util::grid;
 
@@ -233,7 +237,7 @@ fn dfs(
             if direction && valid_nbr && !seen.contains(&(nr, nc)) {
                 let mut branch_seen = seen.clone();
                 let best_here = dfs(&grid, (nr, nc), (dest_r, dest_c), depth + 1, &mut branch_seen, reached, part2);
-                best = best.min(best_here)
+                best = best.max(best_here)
             }
         }
     }
@@ -254,20 +258,193 @@ pub fn part2(raw_input: &str) -> Output {
     let grid = parse(raw_input);
     let sc = grid[0].iter().position(|c| *c == '.').unwrap();
     let ec = grid[grid.len() - 1].iter().position(|c| *c == '.').unwrap();
-    let mut adj: HashMap<(usize, usize), Vec<((usize, usize), usize)>> = HashMap::new();
-    adj.insert((0, sc), vec![]);
+    // let mut adj: HashMap<(usize, usize), Vec<((usize, usize), usize)>> = HashMap::new();
+    // adj.insert((0, sc), vec![]);
+
+    //     let grid = parse(raw_input);
+    // let sc = grid[0].iter().position(|c| *c == '.').unwrap();
+    // let ec = grid[grid.len() - 1].iter().position(|c| *c == '.').unwrap();
+    // let mut reached = vec![];
+    // let mut seen = HashSet::new();
+    // dfs(&grid, (0, sc), (grid.len() - 1, ec), 0, &mut seen, &mut reached, false);
+    // *reached.iter().max().unwrap()
+
+    let mut reached = vec![];
+    let mut seen = HashSet::new();
+    dfs(&grid, (0, sc), (grid.len() - 1, ec), 0, &mut seen, &mut reached, true);
+    *reached.iter().max().unwrap()
 
     // let mut reached = vec![];
-    let mut seen = HashSet::new();
-    dfs2(&grid, &mut adj, (grid.len() - 1, ec), 0, &mut seen, (grid.len() - 1, ec));
-    for (k, v) in adj.iter().sorted() {
-        for vn in v.iter().sorted() {
-            println!("\"{:?}\" -> \"{:?}\" [label={:?}]", *k, vn.0, vn.1)
-        }
-    }
+    // let mut seen = HashSet::new();
+    // dfs2(&grid, &mut adj, (grid.len() - 1, ec), 0, &mut seen, (grid.len() - 1, ec));
+    // for (k, v) in adj.iter().sorted() {
+    //     for vn in v.iter().sorted() {
+    //         println!("\"{:?}\" -> \"{:?}\" [label={:?}]", *k, vn.0, vn.1)
+    //     }
+    // }
     // println!("adj = {adj:?}");
     // println!("{}", adj.len());
-    0
+    // 0
+}
+
+pub fn find_junctions(grid: &Input) -> Vec<(usize, usize)> {
+    let mut junctions: Vec<(usize, usize)> = vec![];
+    for r in 0..grid.len() {
+        for c in 0..grid[0].len() {
+            if grid[r][c] == '#' {
+                continue;
+            }
+            let dirs = [(1, 0), (-1isize, 0), (0, 1), (0, -1isize)];
+            let ncrds = dirs
+                .iter()
+                .map(|(dr, dc)| (r as isize + dr, c as isize + dc))
+                .filter(|(nr, nc)| *nr >= 0 && *nc >= 0 && *nr < grid.len() as isize && *nc < grid[0].len() as isize)
+                .map(|(nr, nc)| (nr as usize, nc as usize));
+            let valid_nbrs = ncrds.filter(|(nr, nc)| grid[*nr][*nc] != '#').count();
+            if valid_nbrs > 2 {
+                junctions.push((r, c));
+            }
+        }
+    }
+    junctions
+}
+
+pub fn part1_real(raw_input: &str) -> usize {
+    let grid = parse(raw_input);
+    let sc = grid[0].iter().position(|c| *c == '.').unwrap();
+    let ec = grid[grid.len() - 1].iter().position(|c| *c == '.').unwrap();
+    let junctions = find_junctions(&grid);
+    let interests = junctions
+        .into_iter()
+        .chain(std::iter::once((0, sc)))
+        .chain(std::iter::once((grid.len() - 1, ec)))
+        .collect_vec();
+    println!("interest {:?}", interests);
+    let mut adj_list: HashMap<(usize, usize), HashMap<(usize, usize), usize>> = HashMap::new();
+    for pt in &interests {
+        adj_list.insert(*pt, HashMap::new());
+    }
+
+    for (r, c) in &interests {
+        let mut stack = vec![(0, *r, *c)];
+        let mut seen = HashSet::new();
+        seen.insert((*r, *c));
+        while stack.len() > 0 {
+            let (d, vr, vc) = stack.pop().unwrap();
+            if d != 0 && interests.contains(&(vr, vc)) {
+                adj_list
+                    .entry((*r, *c))
+                    .and_modify(|v| {
+                        v.insert((vr, vc), d);
+                    })
+                    .or_insert_with(|| {
+                        let mut map = HashMap::new();
+                        map.insert((vr, vc), d);
+                        map
+                    });
+                continue;
+            }
+            let dirs = [(1, 0, 'v'), (-1, 0, '^'), (0, 1, '>'), (0, -1, '<')];
+            for &(dr, dc, dchar) in &dirs {
+                let nr = vr as isize + dr;
+                let nc = vc as isize + dc;
+                let in_bounds = nr >= 0 && nc >= 0 && nr < grid.len() as isize && nc < grid[0].len() as isize;
+                if in_bounds {
+                    let nr = nr as usize;
+                    let nc = nc as usize;
+                    let direction = grid[vr][vc] == '.' || grid[vr][vc] == dchar;
+                    let valid_nbr = grid[nr][nc] != '#';
+                    if direction && valid_nbr && !seen.contains(&(nr, nc)) {
+                        stack.push((d + 1, nr, nc));
+                        seen.insert((nr, nc));
+                    }
+                }
+            }
+        }
+    }
+    println!("{:?}", adj_list);
+
+    let mut seen = HashSet::new();
+    dfs_real(&adj_list, (0, sc), (grid.len() - 1, ec), &mut seen) as usize
+}
+
+fn dfs_real(
+    adj: &HashMap<(usize, usize), HashMap<(usize, usize), usize>>,
+    pt: (usize, usize),
+    end: (usize, usize),
+    seen: &mut HashSet<(usize, usize)>,
+) -> isize {
+    if pt == end {
+        return 0;
+    }
+    let mut d = isize::MIN;
+    for nx in adj.get(&pt).unwrap().keys() {
+        seen.insert(pt);
+        if !seen.contains(nx) {
+            d = d.max(dfs_real(adj, *nx, end, seen) + (*adj.get(&pt).unwrap().get(nx).unwrap() as isize));
+        }
+        seen.remove(&pt);
+    }
+    return d;
+}
+
+pub fn part2_real(raw_input: &str) -> usize {
+    let grid = parse(raw_input);
+    let sc = grid[0].iter().position(|c| *c == '.').unwrap();
+    let ec = grid[grid.len() - 1].iter().position(|c| *c == '.').unwrap();
+    let junctions = find_junctions(&grid);
+    let interests = junctions
+        .into_iter()
+        .chain(std::iter::once((0, sc)))
+        .chain(std::iter::once((grid.len() - 1, ec)))
+        .collect_vec();
+    println!("interest {:?}", interests);
+    let mut adj_list: HashMap<(usize, usize), HashMap<(usize, usize), usize>> = HashMap::new();
+    for pt in &interests {
+        adj_list.insert(*pt, HashMap::new());
+    }
+
+    for (r, c) in &interests {
+        let mut stack = vec![(0, *r, *c)];
+        let mut seen = HashSet::new();
+        seen.insert((*r, *c));
+        while stack.len() > 0 {
+            let (d, vr, vc) = stack.pop().unwrap();
+            if d != 0 && interests.contains(&(vr, vc)) {
+                adj_list
+                    .entry((*r, *c))
+                    .and_modify(|v| {
+                        v.insert((vr, vc), d);
+                    })
+                    .or_insert_with(|| {
+                        let mut map = HashMap::new();
+                        map.insert((vr, vc), d);
+                        map
+                    });
+                continue;
+            }
+            let dirs = [(1, 0, 'v'), (-1, 0, '^'), (0, 1, '>'), (0, -1, '<')];
+            for &(dr, dc, dchar) in &dirs {
+                let nr = vr as isize + dr;
+                let nc = vc as isize + dc;
+                let in_bounds = nr >= 0 && nc >= 0 && nr < grid.len() as isize && nc < grid[0].len() as isize;
+                if in_bounds {
+                    let nr = nr as usize;
+                    let nc = nc as usize;
+                    let direction = true;
+                    let valid_nbr = grid[nr][nc] != '#';
+                    if direction && valid_nbr && !seen.contains(&(nr, nc)) {
+                        stack.push((d + 1, nr, nc));
+                        seen.insert((nr, nc));
+                    }
+                }
+            }
+        }
+    }
+    println!("{:?}", adj_list);
+
+    let mut seen = HashSet::new();
+    dfs_real(&adj_list, (0, sc), (grid.len() - 1, ec), &mut seen) as usize
 }
 
 //DFS starting from X
