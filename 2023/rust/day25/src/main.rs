@@ -5,6 +5,8 @@ mod soln1;
 #[macro_use]
 extern crate scan_fmt;
 
+use std::fs::File;
+use std::io::Write;
 #[cfg(feature = "heapprofile")]
 #[global_allocator]
 static ALLOC: dhat::Alloc = dhat::Alloc;
@@ -20,15 +22,9 @@ pub fn main() {
 
     let input: &str = include_str!("../../inputs/day25.txt");
     let part1 = soln1::part1(input);
-    println!("part1/day25 = {:?}", part1);
-
-    let input: &str = include_str!("../../inputs/sample25.txt");
-    let part2 = soln1::part2(input);
-    println!("part2/sample25 = {:?}", part2);
-
-    let input: &str = include_str!("../../inputs/day25.txt");
-    let part2 = soln1::part2(input);
-    println!("part2/day25 = {:?}", part2);
+    println!("part1/day25 = {}", part1);
+    // let mut file = File::create("output_part1.txt").expect("Unable to create file");
+    // write!(file, "{}", part1).expect("Unable to write data");
 }
 
 #[cfg(test)]
