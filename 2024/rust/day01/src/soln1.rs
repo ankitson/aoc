@@ -1,18 +1,16 @@
 use itertools::Itertools;
 use regex::Regex;
 
-pub type Input = (Vec<u64>, Vec<u64>);
-pub type Output = String;
+pub type Input = (Vec<u32>, Vec<u32>);
+pub type Output = u32;
 
 pub fn parse(input: &str) -> Input {
     let mut l1 = vec![];
     let mut l2 = vec![];
     for line in input.lines() {
-        let parts: Vec<&str> = line.split_ascii_whitespace().collect_vec();
-        let n1: u64 = parts[0].parse().expect("Failed to parse number");
-        let n2: u64 = parts[1].parse().expect("Failed to parse number");
-        l1.push(n1);
-        l2.push(n2);
+        let parts = line.split_ascii_whitespace().map(|x| x.parse().unwrap()).collect_vec();
+        l1.push(parts[0]);
+        l2.push(parts[1])
     }
     return (l1, l2);
 }
@@ -23,10 +21,9 @@ pub fn part1(raw_input: &str) -> Output {
     l2.sort();
     let mut d = 0;
     for i in 0..l1.len() {
-        let dx = (l1[i] as i64 - l2[i] as i64).abs() as u64;
-        d += dx
+        d += l1[i].abs_diff(l2[i]);
     }
-    d.to_string()
+    d
 }
 
 pub fn part2(raw_input: &str) -> Output {
@@ -39,5 +36,5 @@ pub fn part2(raw_input: &str) -> Output {
     for &num in &l1 {
         similarity += &num * freq_map.get(&num).unwrap_or(&0);
     }
-    similarity.to_string()
+    similarity
 }

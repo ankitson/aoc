@@ -1,3 +1,5 @@
+use std::ops::Mul;
+
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use day01::shared;
 use day01::soln1;
