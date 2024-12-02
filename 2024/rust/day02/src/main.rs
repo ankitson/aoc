@@ -1,3 +1,4 @@
+#![feature(array_windows)]
 mod shared;
 mod soln1;
 

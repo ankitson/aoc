@@ -5,38 +5,20 @@ pub type Input = Vec<Vec<isize>>;
 pub type Output = usize;
 
 pub fn parse(input: &str) -> Input {
-    let levels =
-        input.lines().map(|ln| ln.split_ascii_whitespace().map(|x| x.parse().unwrap()).collect_vec()).collect_vec();
-    levels
+    input.lines().map(|ln| ln.split_ascii_whitespace().map(|x| x.parse().unwrap()).collect_vec()).collect_vec()
 }
 
 pub fn part1(raw_input: &str) -> Output {
     let levels = parse(raw_input);
     let mut num_ok = 0;
+    fn check_window(window: &[isize; 2], incr: bool) -> bool {
+        (incr && window[1] > window[0] || !incr && window[1] < window[0])
+            && (window[1].abs_diff(window[0]) >= 1)
+            && (window[1].abs_diff(window[0]) <= 3)
+    }
     for level in levels {
-        let mut ok = true;
-        let mut prev = level[0];
-        let mut incr = true;
-        for i in 1..level.len() {
-            let curr = level[i];
-            if i == 1 && curr < prev {
-                incr = false;
-            }
-            let mut d = curr - prev;
-            if !incr && d > 0 || incr && d < 0 {
-                ok = false;
-                break;
-            }
-            if !incr {
-                d = -d;
-            }
-            if d < 1 || d > 3 {
-                ok = false;
-                break;
-            }
-            prev = curr;
-        }
-        if ok {
+        let incr = level[0] < level[1];
+        if level.array_windows().all(|wdw| check_window(wdw, incr)) {
             num_ok += 1
         }
     }
