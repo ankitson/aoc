@@ -1,8 +1,9 @@
 use itertools::Itertools;
+use rayon::prelude::*;
 use regex::Regex;
 
-pub type Input = (Vec<u32>, Vec<u32>);
-pub type Output = u32;
+pub type Input = (Vec<usize>, Vec<usize>);
+pub type Output = usize;
 
 pub fn parse(input: &str) -> Input {
     let mut l1 = vec![];
@@ -15,10 +16,35 @@ pub fn parse(input: &str) -> Input {
     return (l1, l2);
 }
 
+pub fn parse_par(input: &str) -> Input {
+    let parts: Vec<_> = input
+        .lines()
+        .par_bridge()
+        .map(|line| {
+            let parts: Vec<usize> = line.split_ascii_whitespace().map(|x| x.parse().unwrap()).collect_vec();
+            (parts[0], parts[1])
+        })
+        .collect();
+
+    let (l1, l2): (Vec<_>, Vec<_>) = parts.into_iter().unzip();
+    return (l1, l2);
+}
+
 pub fn part1(raw_input: &str) -> Output {
     let (mut l1, mut l2) = parse(raw_input);
-    l1.sort();
-    l2.sort();
+    l1.sort_unstable();
+    l2.sort_unstable();
+    let mut d = 0;
+    for i in 0..l1.len() {
+        d += l1[i].abs_diff(l2[i]);
+    }
+    d
+}
+
+pub fn part1_par(raw_input: &str) -> Output {
+    let (mut l1, mut l2) = parse_par(raw_input);
+    l1.par_sort_unstable();
+    l2.par_sort_unstable();
     let mut d = 0;
     for i in 0..l1.len() {
         d += l1[i].abs_diff(l2[i]);
@@ -28,6 +54,19 @@ pub fn part1(raw_input: &str) -> Output {
 
 pub fn part2(raw_input: &str) -> Output {
     let (l1, l2) = parse(raw_input);
+    let mut freq_map = std::collections::HashMap::new();
+    for &num in &l2 {
+        *freq_map.entry(num).or_insert(0) += 1;
+    }
+    let mut similarity = 0;
+    for &num in &l1 {
+        similarity += &num * freq_map.get(&num).unwrap_or(&0);
+    }
+    similarity
+}
+
+pub fn part2_par(raw_input: &str) -> Output {
+    let (l1, l2) = parse_par(raw_input);
     let mut freq_map = std::collections::HashMap::new();
     for &num in &l2 {
         *freq_map.entry(num).or_insert(0) += 1;

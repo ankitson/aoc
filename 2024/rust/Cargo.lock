@@ -259,6 +259,7 @@ dependencies = [
  "dhat",
  "itertools 0.13.0",
  "pprof",
+ "rayon",
  "regex",
  "scan_fmt",
  "util",
