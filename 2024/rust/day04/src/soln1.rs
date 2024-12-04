@@ -13,12 +13,12 @@ pub fn parse(input: &str) -> Input {
 
 pub fn part1(raw_input: &str) -> Output {
     let grid = parse(raw_input);
-    let NROWS = grid.len();
-    let NCOLS = grid[0].len();
+    let nrows = grid.len();
+    let ncols = grid[0].len();
     let mut count = 0;
-    for i in 0..NROWS {
+    for i in 0..nrows {
         let row = &grid[i];
-        for j in 0..NCOLS - 3 {
+        for j in 0..ncols - 3 {
             let subs = row[j..j + 4].iter().collect::<String>();
             if subs == "XMAS" {
                 count += 1;
@@ -28,9 +28,8 @@ pub fn part1(raw_input: &str) -> Output {
             }
         }
     }
-    println!("horz: {:?}", count);
-    for j in 0..NCOLS {
-        for i in 0..NROWS - 3 {
+    for j in 0..ncols {
+        for i in 0..nrows - 3 {
             if grid[i][j] == 'X' && grid[i + 1][j] == 'M' && grid[i + 2][j] == 'A' && grid[i + 3][j] == 'S' {
                 count += 1;
             }
@@ -39,12 +38,11 @@ pub fn part1(raw_input: &str) -> Output {
             }
         }
     }
-    println!("vert: {:?}", count);
     let mut d = 0;
-    while d < NROWS + NCOLS {
+    while d < nrows + ncols {
         let mut last_seen = VecDeque::new();
-        for i in 0..NROWS {
-            for j in 0..NCOLS {
+        for i in 0..nrows {
+            for j in 0..ncols {
                 if i + j == d {
                     last_seen.push_back(grid[i][j]);
                     if last_seen.len() == 4 {
@@ -60,15 +58,12 @@ pub fn part1(raw_input: &str) -> Output {
 
         d += 1;
     }
-    println!("diag1: {:?}", count);
-
     let mut d = 0;
-    while d < NROWS + NCOLS {
+    while d < nrows + ncols {
         let mut last_seen = VecDeque::new();
-        for i in 0..NROWS {
-            for j in 0..NCOLS {
-                if i + (NCOLS - 1 - j) == d {
-                    // println!("d = {:?} , i = {:?}, j = {:?}", d, i, j);
+        for i in 0..nrows {
+            for j in 0..ncols {
+                if i + (ncols - 1 - j) == d {
                     last_seen.push_back(grid[i][j]);
                     if last_seen.len() == 4 {
                         let subs = last_seen.iter().collect::<String>();
@@ -82,19 +77,16 @@ pub fn part1(raw_input: &str) -> Output {
         }
         d += 1;
     }
-    println!("diag2: {:?}", count);
-
-    //2526 wrong
     count
 }
 
 pub fn part2(raw_input: &str) -> Output {
     let grid = parse(raw_input);
-    let NROWS = grid.len();
-    let NCOLS = grid[0].len();
+    let nrows = grid.len();
+    let ncols = grid[0].len();
     let mut count = 0;
-    for i in 0..NROWS - 2 {
-        for j in 0..NCOLS - 2 {
+    for i in 0..nrows - 2 {
+        for j in 0..ncols - 2 {
             if grid[i][j] == 'M'
                 && grid[i][j + 2] == 'S'
                 && grid[i + 1][j + 1] == 'A'
