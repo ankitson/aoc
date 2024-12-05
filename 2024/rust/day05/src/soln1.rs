@@ -31,11 +31,11 @@ pub fn part1(raw_input: &str) -> Output {
     let mut result = 0;
     for update in updates {
         let mut invalid = false;
-        for i in 0..update.len() {
+        'outer: for i in 0..update.len() {
             for rule in &rules {
                 if rule.0 == update[i] && update[0..i].contains(&rule.1) {
                     invalid = true;
-                    break;
+                    break 'outer;
                 }
             }
         }
