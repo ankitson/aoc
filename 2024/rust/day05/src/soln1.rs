@@ -33,7 +33,7 @@ pub fn part1(raw_input: &str) -> Output {
         let mut invalid = false;
         for i in 0..update.len() {
             for rule in &rules {
-                if rule.1 == update[i] && update[i..].contains(&rule.0) {
+                if rule.0 == update[i] && update[0..i].contains(&rule.1) {
                     invalid = true;
                     break;
                 }
