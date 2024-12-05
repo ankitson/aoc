@@ -1,7 +1,7 @@
 use itertools::Itertools;
 use rustc_hash::{FxHashMap, FxHashSet};
-pub fn run(input: &str) -> i64 {
-    let mut rules: FxHashMap<i64, FxHashSet<i64>> = FxHashMap::default();
+pub fn run(input: &str) -> usize {
+    let mut rules: FxHashMap<usize, FxHashSet<usize>> = FxHashMap::default();
     let mut updates = vec![];
     let mut parsing_rules = true;
     for line in input.lines() {
@@ -10,10 +10,11 @@ pub fn run(input: &str) -> i64 {
             continue;
         }
         if parsing_rules {
-            let pts = line.split("|").map(|x| x.parse::<i64>().unwrap()).collect_vec();
-            rules.entry(pts[0]).or_default().insert(pts[1]);
+            let pts =
+                line.split_once("|").map(|(x, y)| (x.parse::<usize>().unwrap(), y.parse::<usize>().unwrap())).unwrap();
+            rules.entry(pts.0).or_default().insert(pts.1);
         } else {
-            let update = line.split(",").map(|x| x.parse::<i64>().unwrap()).collect_vec();
+            let update = line.split(",").map(|x| x.parse::<usize>().unwrap()).collect_vec();
             updates.push(update)
         }
     }

@@ -1,5 +1,3 @@
-use std::{collections::HashMap, hash::BuildHasherDefault};
-
 use itertools::Itertools;
 use rustc_hash::*;
 
@@ -16,8 +14,9 @@ pub fn parse(input: &str) -> Input {
             continue;
         }
         if parsing_rules {
-            let pts = line.split("|").map(|x| x.parse::<usize>().unwrap()).collect_vec();
-            rules.entry(pts[0]).or_default().insert(pts[1]);
+            let pts =
+                line.split_once("|").map(|(x, y)| (x.parse::<usize>().unwrap(), y.parse::<usize>().unwrap())).unwrap();
+            rules.entry(pts.0).or_default().insert(pts.1);
         } else {
             let update = line.split(",").map(|x| x.parse::<usize>().unwrap()).collect_vec();
             updates.push(update)
