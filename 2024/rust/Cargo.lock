@@ -313,6 +313,7 @@ dependencies = [
  "itertools 0.10.5",
  "pprof",
  "regex",
+ "rustc-hash",
  "scan_fmt",
  "util",
 ]

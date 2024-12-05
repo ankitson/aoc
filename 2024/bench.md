@@ -14,7 +14,6 @@
 |rust.day04.parse.nosum.realinput/parse            |          32952.31ns|             32.95µs|         0.03ms|          0.00s|
 |rust.day04.part1.realinput/part1                  |        6506761.48ns|           6506.76µs|         6.51ms|          0.01s|
 |rust.day04.part2.realinput/part2                  |         133482.43ns|            133.48µs|         0.13ms|          0.00s|
-|rust.day05.parse.nosum.realinput/parse            |         145212.86ns|            145.21µs|         0.15ms|          0.00s|
-|rust.day05.part1.realinput/part1                  |         741338.05ns|            741.34µs|         0.74ms|          0.00s|
-|rust.day05.part2.realinput/part2                  |        9443341.90ns|           9443.34µs|         9.44ms|          0.01s|
-|rust.TOTAL                                        |       18590987.14ns|          18590.99µs|        18.59ms|          0.02s|
+|rust.day05.parse.nosum.realinput/parse            |         184632.14ns|            184.63µs|         0.18ms|          0.00s|
+|rust.day05.part1.realinput/part1                  |         217258.10ns|            217.26µs|         0.22ms|          0.00s|
+|rust.TOTAL                                        |        8623565.28ns|           8623.57µs|         8.62ms|          0.01s|

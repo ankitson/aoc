@@ -1,3 +1,5 @@
+use day05::ferris_elf_p1;
+
 mod shared;
 mod soln1;
 
@@ -23,6 +25,10 @@ pub fn main() {
     let part1 = soln1::part1(input);
     println!("part1/day05 = {:?}", part1);
     assert_eq!(part1, 4790);
+
+    let input: &str = include_str!("../../inputs/day05.txt");
+    let part1 = ferris_elf_p1::run(input);
+    println!("ferris-elf/part1/day05 = {:?}", part1);
 
     let input: &str = include_str!("../../inputs/sample05.txt");
     let part2 = soln1::part2(input);
