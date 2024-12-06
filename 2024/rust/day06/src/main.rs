@@ -23,11 +23,11 @@ pub fn main() {
     println!("part1/day06 = {:?}", part1);
 
     let input: &str = include_str!("../../inputs/sample06.txt");
-    // let part2 = soln1::part2_bf(input);
-    // println!("part2/sample06 = {:?}", part2);
+    let part2 = soln1::part2(input);
+    println!("part2/sample06 = {:?}", part2);
 
     let input: &str = include_str!("../../inputs/day06.txt");
-    let part2 = soln1::part2_bf(input);
+    let part2 = soln1::part2(input);
     println!("part2/day06 = {:?}", part2);
 }
 
