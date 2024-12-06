@@ -125,12 +125,9 @@ pub fn part2(raw_input: &str) -> Output {
     };
     let (sdr, sdc) = (dr, dc);
 
-    // let mut last_loc = (cr, cc);
     grid_map.entry((cr, cc)).insert_entry('.');
-
     let mut causes_loop = HashSet::new();
     for rownum in 0..numrows.try_into().unwrap() {
-        // println!("start row {:?}", rownum);
         for colnum in 0..numcols.try_into().unwrap() {
             if (rownum, colnum) != (sr, sc) && *grid_map.get(&(rownum, colnum)).unwrap() == '.' {
                 grid_map.entry((rownum, colnum)).insert_entry('#');

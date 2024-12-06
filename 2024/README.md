@@ -20,7 +20,9 @@ We use `Justfiles` liberally to perform common tasks. You can run commands from 
 |rust.day04.part1.realinput/part1                  |        6506761.48ns|           6506.76µs|         6.51ms|          0.01s|
 |rust.day04.part2.realinput/part2                  |         133482.43ns|            133.48µs|         0.13ms|          0.00s|
 |rust.day05.part1.realinput/part1                  |         160490.13ns|            160.49µs|         0.16ms|          0.00s|
-|rust.TOTAL                                        |        8566797.32ns|           8566.80µs|         8.57ms|          0.01s|
+|rust.day06.part1.realinput/part1                  |        2344780.70ns|           2344.78µs|         2.34ms|          0.00s|
+|rust.day06.part2.realinput/part2                  |    12863896562.70ns|       12863896.56µs|     12863.90ms|         12.86s|
+|rust.TOTAL                                        |    12874808140.72ns|       12874808.14µs|     12874.81ms|         12.87s|
 <tend></tend>
 
 ## Fetching Puzzles

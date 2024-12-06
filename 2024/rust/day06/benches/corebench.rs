@@ -23,6 +23,7 @@ pub fn part2(c: &mut Criterion) {
     let contents: &str = include_str!("../../inputs/day06.txt");
     let mut group = c.benchmark_group("day06.part2.realinput");
 
+    group.sample_size(10);
     group.bench_function("part2", |b| b.iter(|| soln1::part2(black_box(contents))));
     group.finish();
 }
