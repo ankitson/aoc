@@ -60,3 +60,18 @@ pub fn rotate(grid: Vec<Vec<char>>, cw: bool) -> Vec<Vec<char>> {
     }
     rotated
 }
+
+#[inline]
+pub fn inbounds1<T: PartialOrd>(x: T, min: T, max: T) -> bool {
+    return x >= min && x < max;
+}
+
+#[inline]
+pub fn inbounds2<T: PartialOrd>((x, y): (T, T), (min1, max1): (T, T), (min2, max2): (T, T)) -> bool {
+    return inbounds1(x, min1, max1) && inbounds1(y, min2, max2);
+}
+
+#[inline]
+pub fn inbounds2z<T: PartialOrd + From<u8>>((x, y): (T, T), max1: T, max2: T) -> bool {
+    return inbounds2((x, y), (T::from(0u8), max1), (T::from(0u8), max2));
+}
