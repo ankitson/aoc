@@ -19,9 +19,9 @@
 |rust.day06.parse.nosum.realinput/parse            |         102382.75ns|            102.38µs|         0.10ms|          0.00s|
 |rust.day06.part1.realinput/part1                  |         398236.93ns|            398.24µs|         0.40ms|          0.00s|
 |rust.day06.part2.realinput/part2                  |     1990815847.60ns|        1990815.85µs|      1990.82ms|          1.99s|
-|rust.day07.parse.nosum.realinput/parse            |         246229.08ns|            246.23µs|         0.25ms|          0.00s|
-|rust.day07.part1.realinput/part1                  |        1945799.27ns|           1945.80µs|         1.95ms|          0.00s|
-|rust.day07.part1.realinput/part1_par.nosum        |         898248.98ns|            898.25µs|         0.90ms|          0.00s|
-|rust.day07.part2.realinput/part2                  |       55819189.74ns|          55819.19µs|        55.82ms|          0.06s|
-|rust.day07.part2.realinput/part2_par.nosum        |        2909440.46ns|           2909.44µs|         2.91ms|          0.00s|
-|rust.TOTAL                                        |     2057545870.86ns|        2057545.87µs|      2057.55ms|          2.06s|
+|rust.day07.parse.nosum.realinput/parse            |         257923.30ns|            257.92µs|         0.26ms|          0.00s|
+|rust.day07.part1.realinput/part1.nosum            |        1945154.66ns|           1945.15µs|         1.95ms|          0.00s|
+|rust.day07.part1.realinput/part1_par              |         895323.71ns|            895.32µs|         0.90ms|          0.00s|
+|rust.day07.part2.realinput/part2.nosum            |       56519105.97ns|          56519.11µs|        56.52ms|          0.06s|
+|rust.day07.part2.realinput/part2_par              |        2957869.66ns|           2957.87µs|         2.96ms|          0.00s|
+|rust.TOTAL                                        |     2003634075.23ns|        2003634.08µs|      2003.63ms|          2.00s|
