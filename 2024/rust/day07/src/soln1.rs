@@ -42,7 +42,7 @@ fn can_make_par(lhs: &Vec<usize>, target: usize, idx: usize, curr: usize, is_par
     if is_part2 {
         calls.push((lhs, target, idx + 1, concat_num(curr, lhs[idx]), is_part2))
     }
-    let results: Vec<bool> = calls
+    calls
         .into_par_iter()
         .map(|(lhs, target, idx, curr, is_part2)| {
             if depth < 4 {
@@ -51,9 +51,7 @@ fn can_make_par(lhs: &Vec<usize>, target: usize, idx: usize, curr: usize, is_par
                 can_make(lhs, target, idx, curr, is_part2)
             }
         })
-        .collect();
-
-    results.into_iter().any(|result| result)
+        .any(|result| result)
 }
 
 pub fn part1(raw_input: &str) -> Output {
