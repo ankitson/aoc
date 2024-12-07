@@ -15,23 +15,35 @@ pub fn main() {
 
     println!("Hello Day 07!");
     let input: &str = include_str!("../../inputs/sample07.txt");
+    let part1_orig = soln1::part1(input);
     let part1 = soln1::part1_par(input);
-    println!("part1/sample1 = {:?}", part1);
+    println!("part1/sample1 = {:?}", part1_orig);
+    println!("part1_par/sample1 = {:?}", part1);
+    assert_eq!(part1_orig, 3749);
     assert_eq!(part1, 3749);
 
     let input: &str = include_str!("../../inputs/day07.txt");
+    let part1_orig = soln1::part1(input);
     let part1 = soln1::part1_par(input);
-    println!("part1/day07 = {:?}", part1);
+    println!("part1/day07 = {:?}", part1_orig);
+    println!("part1_par/day07 = {:?}", part1);
+    assert_eq!(part1_orig, 2501605301465);
     assert_eq!(part1, 2501605301465);
 
     let input: &str = include_str!("../../inputs/sample07.txt");
+    let part2_orig = soln1::part2(input);
     let part2 = soln1::part2_par(input);
-    println!("part2/sample07 = {:?}", part2);
+    println!("part2/sample07 = {:?}", part2_orig);
+    println!("part2_par/sample07 = {:?}", part2);
+    assert_eq!(part2_orig, 11387);
     assert_eq!(part2, 11387);
 
     let input: &str = include_str!("../../inputs/day07.txt");
+    let part2_orig = soln1::part2(input);
     let part2 = soln1::part2_par(input);
-    println!("part2/day07 = {:?}", part2);
+    println!("part2/day07 = {:?}", part2_orig);
+    println!("part2_par/day07 = {:?}", part2);
+    assert_eq!(part2_orig, 44841372855953);
     assert_eq!(part2, 44841372855953);
 }
 
