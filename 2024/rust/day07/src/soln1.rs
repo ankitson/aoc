@@ -1,6 +1,7 @@
 use itertools::Itertools;
 use rayon::prelude::*;
 use regex::Regex;
+use util::num::concat_num;
 
 pub type Input = Vec<(Vec<usize>, usize)>;
 pub type Output = usize;
@@ -17,10 +18,6 @@ pub fn parse(input: &str) -> Input {
 }
 
 fn can_make(lhs: &Vec<usize>, idx: usize, target: usize, curr: usize, is_part2: bool) -> bool {
-    fn concat(n: usize, m: usize) -> usize {
-        m + n * 10usize.pow(m.ilog10() + 1)
-    }
-
     if idx >= lhs.len() {
         return curr == target;
     }
@@ -29,13 +26,10 @@ fn can_make(lhs: &Vec<usize>, idx: usize, target: usize, curr: usize, is_part2: 
     }
     can_make(&lhs, idx + 1, target, curr + lhs[idx], is_part2)
         || can_make(&lhs, idx + 1, target, curr * lhs[idx], is_part2)
-        || (is_part2 && can_make(&lhs, idx + 1, target, concat(curr, lhs[idx]), is_part2))
+        || (is_part2 && can_make(&lhs, idx + 1, target, concat_num(curr, lhs[idx]), is_part2))
 }
 
 fn can_make_par(lhs: &Vec<usize>, target: usize, idx: usize, curr: usize, is_part2: bool, depth: usize) -> bool {
-    fn concat(n: usize, m: usize) -> usize {
-        m + n * 10usize.pow(m.ilog10() + 1)
-    }
     if idx >= lhs.len() {
         return curr == target;
     }
@@ -46,7 +40,7 @@ fn can_make_par(lhs: &Vec<usize>, target: usize, idx: usize, curr: usize, is_par
     let mut calls =
         vec![(lhs, target, idx + 1, curr + lhs[idx], is_part2), (lhs, target, idx + 1, curr * lhs[idx], is_part2)];
     if is_part2 {
-        calls.push((lhs, target, idx + 1, concat(curr, lhs[idx]), is_part2))
+        calls.push((lhs, target, idx + 1, concat_num(curr, lhs[idx]), is_part2))
     }
     let results: Vec<bool> = calls
         .into_par_iter()
