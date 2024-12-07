@@ -22,9 +22,9 @@ We use `Justfiles` liberally to perform common tasks. You can run commands from 
 |rust.day05.part1.realinput/part1                  |         160490.13ns|            160.49µs|         0.16ms|          0.00s|
 |rust.day06.part1.realinput/part1                  |         398236.93ns|            398.24µs|         0.40ms|          0.00s|
 |rust.day06.part2.realinput/part2                  |     1990815847.60ns|        1990815.85µs|      1990.82ms|          1.99s|
-|rust.day07.part1.realinput/part1                  |        1703988.90ns|           1703.99µs|         1.70ms|          0.00s|
-|rust.day07.part2.realinput/part2                  |      666418228.56ns|         666418.23µs|       666.42ms|          0.67s|
-|rust.TOTAL                                        |     2667903099.31ns|        2667903.10µs|      2667.90ms|          2.67s|
+|rust.day07.part1.realinput/part1                  |        1795481.80ns|           1795.48µs|         1.80ms|          0.00s|
+|rust.day07.part2.realinput/part2                  |      699949107.58ns|         699949.11µs|       699.95ms|          0.70s|
+|rust.TOTAL                                        |     2701525471.23ns|        2701525.47µs|      2701.53ms|          2.70s|
 <tend></tend>
 
 ## Fetching Puzzles
@@ -50,4 +50,6 @@ After running the benchmarks from the language folder, you can run `just summari
 ## Other
 
 The rust folder has many other actions to e.g watch source files and rebuild, generate memory profiles, generate flamegraphs, run linters etc. Run `just --list` to view available actions.
+iles and rebuild, generate memory profiles, generate flamegraphs, run linters etc. Run `just --list` to view available actions.
+iles and rebuild, generate memory profiles, generate flamegraphs, run linters etc. Run `just --list` to view available actions.
 iles and rebuild, generate memory profiles, generate flamegraphs, run linters etc. Run `just --list` to view available actions.

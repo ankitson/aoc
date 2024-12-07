@@ -16,7 +16,7 @@ pub fn part1(c: &mut Criterion) {
     let mut group = c.benchmark_group("day07.part1.realinput");
 
     group.bench_function("part1", |b| b.iter(|| soln1::part1(black_box(contents))));
-    // group.bench_function("part1_par", |b| b.iter(|| soln1::part1_par(black_box(contents))));
+    group.bench_function("part1_par.nosum", |b| b.iter(|| soln1::part1_par(black_box(contents))));
     group.finish();
 }
 
@@ -25,7 +25,7 @@ pub fn part2(c: &mut Criterion) {
     let mut group = c.benchmark_group("day07.part2.realinput");
 
     group.bench_function("part2", |b| b.iter(|| soln1::part2(black_box(contents))));
-    // group.bench_function("part2_par", |b| b.iter(|| soln1::part2_par(black_box(contents))));
+    group.bench_function("part2_par.nosum", |b| b.iter(|| soln1::part2_par(black_box(contents))));
     group.finish();
 }
 
