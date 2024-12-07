@@ -16,6 +16,8 @@ itertools = "*"
 scan_fmt = "*"
 regex = "*"
 util = { path = "../util" }
+rustc-hash = "*"
+rayon = "*"
 
 [[bench]]
 name = "corebench"
