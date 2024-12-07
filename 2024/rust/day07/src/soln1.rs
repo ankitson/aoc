@@ -1,4 +1,5 @@
 use itertools::Itertools;
+use rayon::prelude::*;
 use regex::Regex;
 
 pub type Input = Vec<(Vec<usize>, usize)>;
@@ -15,23 +16,56 @@ pub fn parse(input: &str) -> Input {
         .collect_vec()
 }
 
-fn can_make(lhs: &Vec<usize>, target: usize, idx: usize, curr: usize, is_part2: bool) -> bool {
+fn can_make(lhs: &[usize], target: usize, curr: usize, is_part2: bool) -> bool {
+    if lhs.is_empty() {
+        return curr == target;
+    }
+    if curr > target {
+        return false;
+    }
+    can_make(&lhs[1..], target, curr + lhs[0], is_part2)
+        || can_make(&lhs[1..], target, curr * lhs[0], is_part2)
+        || (is_part2
+            && can_make(&lhs[1..], target, (curr.to_string() + &lhs[0].to_string()).parse().unwrap(), is_part2))
+}
+
+fn can_make_par(lhs: &Vec<usize>, target: usize, idx: usize, curr: usize, is_part2: bool) -> bool {
     if idx >= lhs.len() {
         return curr == target;
     }
-    let mut can = can_make(lhs, target, idx + 1, curr + lhs[idx], is_part2)
-        || can_make(lhs, target, idx + 1, curr * lhs[idx], is_part2);
-    if is_part2 {
-        can |= can_make(lhs, target, idx + 1, (curr.to_string() + &lhs[idx].to_string()).parse().unwrap(), is_part2)
+    if curr >= target {
+        return false;
     }
-    can
+
+    let mut calls =
+        vec![(lhs, target, idx + 1, curr + lhs[idx], is_part2), (lhs, target, idx + 1, curr * lhs[idx], is_part2)];
+    if is_part2 {
+        calls.push((lhs, target, idx + 1, (curr.to_string() + &lhs[idx].to_string()).parse().unwrap(), is_part2))
+    }
+    let results: Vec<bool> = calls
+        .into_par_iter()
+        .map(|(lhs, target, idx, curr, is_part2)| can_make_par(lhs, target, idx, curr, is_part2))
+        .collect();
+
+    results.into_iter().any(|result| result)
 }
+
 pub fn part1(raw_input: &str) -> Output {
     let eqns = parse(raw_input);
-    eqns.iter().filter_map(|(lhs, rhs)| can_make(&lhs, *rhs, 1, lhs[0], false).then(|| *rhs)).sum()
+    eqns.iter().filter_map(|(lhs, rhs)| can_make(&lhs[..], *rhs, 0, false).then(|| *rhs)).sum()
+}
+
+pub fn part1_par(raw_input: &str) -> Output {
+    let eqns = parse(raw_input);
+    eqns.iter().filter_map(|(lhs, rhs)| can_make_par(&lhs, *rhs, 1, lhs[0], false).then(|| *rhs)).sum()
 }
 
 pub fn part2(raw_input: &str) -> Output {
     let eqns = parse(raw_input);
-    eqns.iter().filter_map(|(lhs, rhs)| can_make(&lhs, *rhs, 1, lhs[0], true).then(|| *rhs)).sum()
+    eqns.iter().filter_map(|(lhs, rhs)| can_make(&lhs[..], *rhs, 0, true).then(|| *rhs)).sum()
+}
+
+pub fn part2_par(raw_input: &str) -> Output {
+    let eqns = parse(raw_input);
+    eqns.iter().filter_map(|(lhs, rhs)| can_make_par(&lhs, *rhs, 1, lhs[0], true).then(|| *rhs)).sum()
 }

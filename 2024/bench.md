@@ -19,7 +19,7 @@
 |rust.day06.parse.nosum.realinput/parse            |         102382.75ns|            102.38µs|         0.10ms|          0.00s|
 |rust.day06.part1.realinput/part1                  |         398236.93ns|            398.24µs|         0.40ms|          0.00s|
 |rust.day06.part2.realinput/part2                  |     1990815847.60ns|        1990815.85µs|      1990.82ms|          1.99s|
-|rust.day07.parse.nosum.realinput/parse            |         253441.24ns|            253.44µs|         0.25ms|          0.00s|
-|rust.day07.part1.realinput/part1                  |        1306368.43ns|           1306.37µs|         1.31ms|          0.00s|
-|rust.day07.part2.realinput/part2                  |      597558055.85ns|         597558.06µs|       597.56ms|          0.60s|
-|rust.TOTAL                                        |     2598645306.13ns|        2598645.31µs|      2598.65ms|          2.60s|
+|rust.day07.parse.nosum.realinput/parse            |         249339.37ns|            249.34µs|         0.25ms|          0.00s|
+|rust.day07.part1.realinput/part1                  |        1703988.90ns|           1703.99µs|         1.70ms|          0.00s|
+|rust.day07.part2.realinput/part2                  |      666418228.56ns|         666418.23µs|       666.42ms|          0.67s|
+|rust.TOTAL                                        |     2667903099.31ns|        2667903.10µs|      2667.90ms|          2.67s|
