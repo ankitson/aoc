@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::{collections::HashSet, fmt::Display};
 
 pub fn nbrs8(x: usize, y: usize, max_x: usize, max_y: usize) -> Vec<(usize, usize)> {
     let mut neighbors = Vec::new();
@@ -33,6 +33,14 @@ pub fn print_grid<T: Display>(grid: &Vec<Vec<T>>) {
         }
         println!("");
     }
+}
+
+pub fn print_grid_spcl_locs<U>(locs: &HashSet<(usize, usize), U>, num_rows: usize, num_cols: usize) {
+    let mut grid = vec![vec!['.'; num_cols]; num_rows];
+    for (lr, lc) in locs {
+        grid[*lr][*lc] = '#'
+    }
+    print_grid(&grid)
 }
 
 pub fn transpose(grid: Vec<Vec<char>>) -> Vec<Vec<char>> {
