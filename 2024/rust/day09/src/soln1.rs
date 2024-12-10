@@ -41,8 +41,6 @@ pub fn part1(raw_input: &str) -> Output {
     }
     let mut spc_ptr = spc_idxs[0].0;
     let mut file_ptr = files_actual[files_actual.len() - 1].0;
-    let dl = disk.len();
-    // println!("disk.len = {dl} spc = {spc_ptr} file = {file_ptr}");
     while disk[spc_ptr] == 10000 && disk[file_ptr] != 10000 {
         disk[spc_ptr] = disk[file_ptr];
         disk[file_ptr] = 10000;
@@ -58,7 +56,6 @@ pub fn part1(raw_input: &str) -> Output {
         if spc_ptr > file_ptr {
             break;
         }
-        // println!("disk = {disk:?} spc = {spc_ptr} file = {file_ptr}");
     }
     let mut total = 0;
     for (idx, num) in disk.iter().enumerate() {
@@ -66,12 +63,9 @@ pub fn part1(raw_input: &str) -> Output {
             total += idx * num
         }
     }
-    // println!("disk = {:?}", disk);
     total
 }
 
-//12101
-//[x,-,-,y,z]
 pub fn part2(raw_input: &str) -> Output {
     let (files, spaces) = parse(raw_input);
     let mut disk = vec![];
@@ -88,36 +82,19 @@ pub fn part2(raw_input: &str) -> Output {
             disk.extend(vec![50000; (*b).try_into().unwrap()]);
         }
     }
-    let mut spc_ptr = spc_idxs[0].0;
-    let mut file_ptr = files_actual[files_actual.len() - 1].0;
-    let dl = disk.len();
     let mut file_idx = files_actual.len() - 1;
-    // println!("files = {files_actual:?}");
-    let zf = files_actual.iter().filter(|v| v.2 == 0).count();
-    // println!("------INPUT = {raw_input}-----");
-    // println!("disk = {disk:?}");
-    // println!("disk.len = {dl} spc = {spc_ptr} file = {file_ptr}");
-    // println!("zero files = {zf:?}");
     'outer: while file_idx > 0 {
-        // println!("try file {file_idx}");
-        // if file_idx == 0 {
-        // was_zero_begin = true;
-        // }
         'inner: for (spc_start, spc_len) in &spc_idxs {
-            // println!("try spc {spc_start} len={spc_len} for file_idx={file_idx}");
             if *spc_len >= files_actual[file_idx].2 && *spc_start < files_actual[file_idx].0 {
-                // println!("match");
-                file_ptr = files_actual[file_idx].0;
                 let file_id = files_actual[file_idx].1;
-                spc_ptr = *spc_start;
-                // println!("file_ptr {file_ptr} file_id {file_id} spc_ptr {spc_ptr}");
+                let mut file_ptr = files_actual[file_idx].0;
+                let mut spc_ptr = *spc_start;
                 while file_ptr > 0 && disk[file_ptr] == file_id && spc_ptr < file_ptr {
                     disk[spc_ptr] = disk[file_ptr];
                     disk[file_ptr] = 50000;
                     file_ptr -= 1;
                     spc_ptr += 1;
                 }
-                // println!("after move disk = {disk:?}");
                 if file_idx == 0 {
                     break 'outer;
                 }
@@ -154,10 +131,7 @@ pub fn part2(raw_input: &str) -> Output {
         }
     }
 
-    // println!("disk = {:?}", disk);
     total
-    //6321896733106
-    //
 }
 
 // pub fn part1_broken(raw_input: &str) -> Output {
