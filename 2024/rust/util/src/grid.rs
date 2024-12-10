@@ -26,6 +26,34 @@ pub fn nbrs8(x: usize, y: usize, max_x: usize, max_y: usize) -> Vec<(usize, usiz
     neighbors
 }
 
+pub fn nbrs4(x: usize, y: usize, max_x: usize, max_y: usize) -> Vec<(usize, usize)> {
+    let mut neighbors = Vec::new();
+
+    let x = x as isize;
+    let y = y as isize;
+    let max_x = max_x as isize;
+    let max_y = max_y as isize;
+
+    for dx in -1..=1 {
+        for dy in -1..=1 {
+            if dx == 0 && dy == 0 {
+                continue;
+            } // Skip the cell itself
+
+            let nx = x + dx;
+            let ny = y + dy;
+
+            if nx >= 0 && nx < max_x && ny >= 0 && ny < max_y {
+                if (dx.abs() == 1 && dy.abs() == 0 || dy.abs() == 1 && dx.abs() == 0) {
+                    neighbors.push((nx as usize, ny as usize));
+                }
+            }
+        }
+    }
+
+    neighbors
+}
+
 pub fn print_grid<T: Display>(grid: &Vec<Vec<T>>) {
     for i in 0..grid.len() {
         for j in 0..grid[0].len() {

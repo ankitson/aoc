@@ -17,50 +17,57 @@ pub fn main() {
     let input: &str = include_str!("../../inputs/sample10.txt");
     let part1 = soln1::part1(input);
     println!("part1/sample1 = {:?}", part1);
+    assert_eq!(part1, 1);
 
     let input: &str = include_str!("../../inputs/sample10_2.txt");
     let part1 = soln1::part1(input);
     println!("part1/sample2 = {:?}", part1);
+    assert_eq!(part1, 2);
 
     let input: &str = include_str!("../../inputs/sample10_3.txt");
     let part1 = soln1::part1(input);
     println!("part1/sample3 = {:?}", part1);
+    assert_eq!(part1, 4);
 
     let input: &str = include_str!("../../inputs/sample10_4.txt");
     let part1 = soln1::part1(input);
     println!("part1/sample4 = {:?}", part1);
+    assert_eq!(part1, 3);
 
     let input: &str = include_str!("../../inputs/sample10_5.txt");
     let part1 = soln1::part1(input);
     println!("part1/sample5 = {:?}", part1);
+    assert_eq!(part1, 36);
 
     let input: &str = include_str!("../../inputs/day10.txt");
     let part1 = soln1::part1(input);
     println!("part1/day10 = {:?}", part1);
-
-    let input: &str = include_str!("../../inputs/sample10.txt");
-    let part2 = soln1::part2(input);
-    println!("part2/sample10 = {:?}", part2);
+    assert_eq!(part1, 638);
 
     let input: &str = include_str!("../../inputs/sample10_6.txt");
     let part2 = soln1::part2(input);
     println!("part2/sample10_6 = {:?}", part2);
+    assert_eq!(part2, 3);
 
     let input: &str = include_str!("../../inputs/sample10_7.txt");
     let part2 = soln1::part2(input);
     println!("part2/sample10_7 = {:?}", part2);
+    assert_eq!(part2, 13);
 
     let input: &str = include_str!("../../inputs/sample10_8.txt");
     let part2 = soln1::part2(input);
     println!("part2/sample10_8 = {:?}", part2);
+    assert_eq!(part2, 227);
 
     let input: &str = include_str!("../../inputs/sample10_5.txt");
     let part2 = soln1::part2(input);
     println!("part2/sample10_5 = {:?}", part2);
+    assert_eq!(part2, 81);
 
     let input: &str = include_str!("../../inputs/day10.txt");
     let part2 = soln1::part2(input);
     println!("part2/day10 = {:?}", part2);
+    assert_eq!(part2, 1289);
 }
 
 #[cfg(test)]
