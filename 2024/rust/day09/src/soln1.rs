@@ -42,7 +42,7 @@ pub fn part1(raw_input: &str) -> Output {
     let mut spc_ptr = spc_idxs[0].0;
     let mut file_ptr = files_actual[files_actual.len() - 1].0;
     let dl = disk.len();
-    println!("disk.len = {dl} spc = {spc_ptr} file = {file_ptr}");
+    // println!("disk.len = {dl} spc = {spc_ptr} file = {file_ptr}");
     while disk[spc_ptr] == 10000 && disk[file_ptr] != 10000 {
         disk[spc_ptr] = disk[file_ptr];
         disk[file_ptr] = 10000;
@@ -70,6 +70,8 @@ pub fn part1(raw_input: &str) -> Output {
     total
 }
 
+//12101
+//[x,-,-,y,z]
 pub fn part2(raw_input: &str) -> Output {
     let (files, spaces) = parse(raw_input);
     let mut disk = vec![];
@@ -92,10 +94,12 @@ pub fn part2(raw_input: &str) -> Output {
     let mut file_idx = files_actual.len() - 1;
     // println!("files = {files_actual:?}");
     let zf = files_actual.iter().filter(|v| v.2 == 0).count();
-    println!("zero files = {zf:?}");
-    println!("disk.len = {dl} spc = {spc_ptr} file = {file_ptr}");
+    // println!("------INPUT = {raw_input}-----");
     // println!("disk = {disk:?}");
+    // println!("disk.len = {dl} spc = {spc_ptr} file = {file_ptr}");
+    // println!("zero files = {zf:?}");
     'outer: while file_idx > 0 {
+        // println!("try file {file_idx}");
         // if file_idx == 0 {
         // was_zero_begin = true;
         // }
@@ -106,7 +110,8 @@ pub fn part2(raw_input: &str) -> Output {
                 file_ptr = files_actual[file_idx].0;
                 let file_id = files_actual[file_idx].1;
                 spc_ptr = *spc_start;
-                while file_ptr > 0 && disk[file_ptr] == file_id {
+                // println!("file_ptr {file_ptr} file_id {file_id} spc_ptr {spc_ptr}");
+                while file_ptr > 0 && disk[file_ptr] == file_id && spc_ptr < file_ptr {
                     disk[spc_ptr] = disk[file_ptr];
                     disk[file_ptr] = 50000;
                     file_ptr -= 1;
@@ -134,8 +139,7 @@ pub fn part2(raw_input: &str) -> Output {
                 cspc_size = 1;
             } else if disk[idx] == 50000 && cspc_start != -1 {
                 cspc_size += 1;
-            }
-            if disk[idx] != 50000 && cspc_start != -1 {
+            } else if disk[idx] != 50000 && cspc_start != -1 {
                 spc_idxs.push((cspc_start as usize, cspc_size));
                 cspc_start = -1isize;
                 cspc_size = 0;
@@ -153,6 +157,7 @@ pub fn part2(raw_input: &str) -> Output {
     // println!("disk = {:?}", disk);
     total
     //6321896733106
+    //
 }
 
 // pub fn part1_broken(raw_input: &str) -> Output {
