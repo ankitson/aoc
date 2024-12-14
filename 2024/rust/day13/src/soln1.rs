@@ -71,6 +71,10 @@ pub fn part1(raw_input: &str) -> Output {
 }
 
 pub fn part2(raw_input: &str) -> Output {
-    let input = parse(raw_input);
-    todo!()
+    let machines = parse(raw_input);
+    machines
+        .into_iter()
+        .map(|tup| (tup.0, tup.1, (tup.2 .0 + 10000000000000, tup.2 .1 + 10000000000000)))
+        .map(cost)
+        .sum()
 }
