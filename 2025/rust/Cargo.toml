@@ -1,0 +1,8 @@
+[workspace]
+resolver = "2"
+
+members = ["day*", "util"]
+
+[profile.release]
+debug = true
+rustflags = ["-C", "target-cpu=native"]
