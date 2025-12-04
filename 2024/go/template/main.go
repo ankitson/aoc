@@ -33,18 +33,18 @@ func part2(input []byte) Output {
 }
 
 func main() {
-	sample1, err := os.ReadFile("./inputs/sample02.txt")
+	sample1, err := os.ReadFile("./inputs/sample{DAY_NUM}.txt")
 	check(err)
-	inp1, err := os.ReadFile("./inputs/day02.txt")
+	inp1, err := os.ReadFile("./inputs/day{DAY_NUM}.txt")
 	check(err)
 
-	fmt.Println("Welcome to Day 2!!")
+	fmt.Println("Welcome to Day {DAY_NUM}!!")
 	ans_sample_p1 := part1(sample1)
 	fmt.Printf("part1/sample1 = %d\n", ans_sample_p1)
 	assertEqual(ans_sample_p1, "")
 
 	ans_p1 := part1(inp1)
-	fmt.Printf("part1/day01 = %d\n", ans_p1)
+	fmt.Printf("part1/day{DAY_NUM} = %d\n", ans_p1)
 	assertEqual(ans_p1, "")
 
 	ans_sample_p2 := part2(sample1)
@@ -52,6 +52,6 @@ func main() {
 	assertEqual(ans_sample_p2, "")
 
 	ans_p2 := part2(inp1)
-	fmt.Printf("part2/day01 = %d\n", ans_p2)
+	fmt.Printf("part2/day{DAY_NUM} = %d\n", ans_p2)
 	assertEqual(ans_p2, "")
 }

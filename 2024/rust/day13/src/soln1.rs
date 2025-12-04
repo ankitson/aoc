@@ -11,7 +11,6 @@ pub fn parse(input: &str) -> Input {
     let re = Regex::new(r"\d+").unwrap();
     let str_caps = re.captures_iter(input).map(|c| c.get(0).unwrap().as_str().parse().unwrap());
     let chunks = str_caps.chunks(6);
-    // let chunks = binding.into_iter();
     chunks
         .into_iter()
         .map(|mut chunk| {
@@ -40,29 +39,17 @@ fn cost(inp: ((NUM, NUM), (NUM, NUM), (NUM, NUM))) -> NUM {
     let a1 = *ans.get(0).unwrap() as NUM;
     let a2 = *ans.get(1).unwrap() as NUM;
 
+    //because we round down
     let a1_cands = vec![a1, a1 + 1];
-    let a2_cands = vec![a2, a2 + 1]; //because we round down
+    let a2_cands = vec![a2, a2 + 1];
     for (a1, a2) in a1_cands.into_iter().cartesian_product(a2_cands) {
         let reached_x = a1 * ax + a2 * bx;
         let reached_y = a1 * ay + a2 * by;
         if reached_x == tx && reached_y == ty {
-            println!("Inp = {inp:?} ans = {a1},{a2}");
             return a1 * 3 + a2;
         }
     }
     return 0;
-
-    // const TOLERANCE: f64 = 0.000001;
-    // if *a1 > 0.0
-    //     && *a2 > 0.0
-    //     && (a1.fract().abs() < TOLERANCE || 1.0 - a1.fract().abs() < TOLERANCE)
-    //     && (a2.fract().abs() < TOLERANCE || 1.0 - a2.fract().abs() < TOLERANCE)
-    // {
-    //     println!("counted");
-    //     unsafe { return a1.to_int_unchecked::<NUM>() * 3 + a2.to_int_unchecked::<NUM>() }
-    // } else {
-    //     return 0;
-    // }
 }
 
 pub fn part1(raw_input: &str) -> Output {

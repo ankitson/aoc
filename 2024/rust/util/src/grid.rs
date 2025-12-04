@@ -34,6 +34,7 @@ pub fn nbrs4(x: usize, y: usize, max_x: usize, max_y: usize) -> Vec<(usize, usiz
     let max_x = max_x as isize;
     let max_y = max_y as isize;
 
+    //(-1,0),(0,-1),(0,1),(1,0)
     for dx in -1..=1 {
         for dy in -1..=1 {
             if dx == 0 && dy == 0 {

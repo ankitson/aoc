@@ -64,8 +64,6 @@ pub fn part1_fast(raw_input: &str) -> Output {
     result as usize
 }
 
-// let REC: HashMap<usize, usize> = HashMap::new();
-
 pub fn part1_rec(raw_input: &str) -> Output {
     let nums = parse(raw_input);
     let mut result = 0;
@@ -121,7 +119,6 @@ pub fn step_rec(num: u64, iters: u64, acc: u64, cache: &mut FxHashMap<(u64, u64)
 }
 
 pub fn step_num(num: u64, iters: u64, acc: &mut u64) -> () {
-    // println!("step {num} iters = {iters} acc = {acc}");
     if iters == 0 {
         return;
     }

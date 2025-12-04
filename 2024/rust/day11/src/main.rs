@@ -29,24 +29,6 @@ pub fn main() {
         let part2 = soln1::part2(inp);
         println!("part2/{label} = {part2:?}");
     }
-
-    // let part1 = soln1::part1(input);
-    // println!("part1/sample2 = {:?}", part1);
-    // let part1 = soln1::part1_fast(input);
-    // println!("part1_fast/sample2 = {:?}", part1);
-
-    // let part1 = soln1::part1(input);
-    // println!("part1/day11 = {:?}", part1);
-    // let part1 = soln1::part1_fast(input);
-    // println!("part1_fast/day11 = {:?}", part1);
-
-    // let input: &str = include_str!("../../inputs/sample11.txt");
-    // let part2 = soln1::part2(input);
-    // println!("part2/sample11 = {:?}", part2);
-
-    // let input: &str = include_str!("../../inputs/day11.txt");
-    // let part2 = soln1::part2(input);
-    // println!("part2/day11 = {:?}", part2);
 }
 
 #[cfg(test)]

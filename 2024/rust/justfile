@@ -15,6 +15,11 @@ run target:
   @echo 'running {{target}}..'
   cargo run -p {{target}}
 
+alias t := test
+test target:
+  @echo 'testing {{target}}..'
+  cargo test -p {{target}}
+
 alias rr := run_release
 run_release target:
   @echo 'running {{target}}..'

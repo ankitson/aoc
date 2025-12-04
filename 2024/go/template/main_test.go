@@ -5,8 +5,8 @@ import (
 	"testing"
 )
 
-//go:generate cp -r ../inputs/day02.txt ./day02.txt
-//go:embed day02.txt
+//go:generate cp -r ../inputs/day{DAY_NUM}.txt ./day{DAY_NUM}.txt
+//go:embed day{DAY_NUM}.txt
 var input []byte
 
 func Benchmark_Parse(b *testing.B) {

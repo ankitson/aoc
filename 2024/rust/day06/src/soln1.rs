@@ -92,11 +92,10 @@ pub fn part2(raw_input: &str) -> Output {
             (dr, dc) = (sdr, sdc);
             let mut visited = HashSet::new();
             while inbounds2z((cr, cc), grid.len() as isize, grid[0].len() as isize) {
-                if visited.contains(&(cr, cc, dr, dc)) {
+                if !visited.insert((cr, cc, dr, dc)) {
                     causes_loop.insert((rownum, colnum));
                     break;
                 }
-                visited.insert((cr, cc, dr, dc));
                 let (nr, nc) = (cr + dr, cc + dc);
                 if !inbounds2z((nr, nc), grid.len() as isize, grid[0].len() as isize) {
                     break;

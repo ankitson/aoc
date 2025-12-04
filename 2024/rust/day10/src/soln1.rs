@@ -23,9 +23,7 @@ pub fn part1(raw_input: &str) -> Output {
     let mut total = 0;
     for (sr, sc) in starts {
         let mut visited = FxHashSet::default();
-        let mut acc = 0;
-        bfs(&grid, sr, sc, &mut acc, &mut visited, false);
-        total += acc;
+        bfs(&grid, sr, sc, &mut total, &mut visited, false);
     }
     total
 }
@@ -72,9 +70,7 @@ pub fn part2(raw_input: &str) -> Output {
     let mut total = 0;
     for (sr, sc) in starts {
         let mut visited = FxHashSet::default();
-        let mut acc = 0;
-        bfs(&grid, sr, sc, &mut acc, &mut visited, true);
-        total += acc;
+        bfs(&grid, sr, sc, &mut total, &mut visited, true);
     }
     total
 }
