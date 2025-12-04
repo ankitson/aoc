@@ -14,7 +14,7 @@ pub fn parse(input: &str) -> Input {
 
 pub fn part1(raw_input: &str) -> Output {
     let input = parse(raw_input);
-    let mut pos = 50isize;
+    let mut pos = 50;
     let mut num_zeros = 0;
     for offset in &input {
         pos = (pos + offset).rem_euclid(100);
@@ -27,5 +27,20 @@ pub fn part1(raw_input: &str) -> Output {
 
 pub fn part2(raw_input: &str) -> Output {
     let input = parse(raw_input);
-    todo!()
+    let mut num_zeros = 0usize;
+    let mut pos = 50;
+    for &offset in &input {
+        if offset < 0 {
+            num_zeros += (offset.abs() as usize) / 100;
+            if pos != 0 && offset.abs() % 100 >= pos {
+                num_zeros += 1;
+            }
+            pos = (pos + offset).rem_euclid(100);
+        } else {
+            pos += offset;
+            num_zeros += (pos as usize) / 100;
+            pos = pos.rem_euclid(100);
+        }
+    }
+    num_zeros
 }
