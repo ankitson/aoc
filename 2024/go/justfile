@@ -1,0 +1,8 @@
+alias g := genday
+genday target:
+  ./genday.sh {{target}}
+
+alias r := run
+run target:
+  @echo 'running {{target}}..'
+  go run {{target}}/main.go
